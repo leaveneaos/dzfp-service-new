@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.rjxx.taxeasy</groupId>
+    <groupId>com.rjxx.taxease</groupId>
     <artifactId>dzfp-service-new</artifactId>
     <packaging>war</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>dzfp-service</name>
+    <name>dzfp-service-new</name>
     <url>http://maven.apache.org</url>
 
     <parent>
@@ -17,7 +17,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.rjxx.Application</start-class>
-        <axis2.version>1.7.3</axis2.version>
     </properties>
 
     <dependencies>
@@ -27,16 +26,25 @@
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-        </dependency>
-        <dependency>
+			<groupId>com.rjxx.taxeasy</groupId>
+			<artifactId>dzfp-svc</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency> 
+       <dependency>
             <groupId>org.apache.mina</groupId>
             <artifactId>mina-core</artifactId>
         </dependency>
         <dependency>
             <groupId>jaxen</groupId>
             <artifactId>jaxen</artifactId>
+        </dependency>
+         <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-api</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -100,6 +108,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
+            <version>1.0.16</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -108,10 +117,12 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -165,7 +176,6 @@
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                 </includes>
-                <filtering>false</filtering>
             </resource>
         </resources>
         <plugins>
@@ -191,6 +201,6 @@
             </plugin>
         </plugins>
 
-        <finalName>dzfp-service</finalName>
+        <finalName>dzfp-service-new</finalName>
     </build>
 </project>
