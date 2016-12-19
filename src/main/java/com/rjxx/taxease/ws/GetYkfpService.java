@@ -14,6 +14,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.jws.WebParam;
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -29,7 +30,7 @@ public class GetYkfpService {
 	@Autowired
 	private KplsService  kplsservice;
 	
-    public String CallQuery(String AppKey, String Secret, String QueryData) {
+    public String CallQuery(@WebParam(name = "AppKey") String AppKey,@WebParam(name = "Secret") String Secret,@WebParam(name = "QueryData") String QueryData) {
         String result = "";
        
         Map tempMap = new HashMap();

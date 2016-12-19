@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.rjxx.taxease.ws.GetYkfpService;
+import com.rjxx.taxease.ws.HanderJysjxxService;
+import com.rjxx.taxease.ws.UploadInvoiceService;
 
 import javax.jws.WebParam;
 import java.util.*;
@@ -33,16 +35,49 @@ public class WebServiceImpl implements WebService {
     @Autowired
     private GetYkfpService getykfpservice;
   
+    @Autowired
+    private HanderJysjxxService handerjysjxxservice;
+    
+    @Autowired
+    private UploadInvoiceService uploadinvoiceservice;
 
     public WebServiceImpl() {
     }
 
 	@Override
-	public String CallQuery(String AppKey, String Secret, String QueryData) {
+	public String CallQuery(@WebParam(name = "AppId") String AppId,@WebParam(name = "Sign") String Sign,@WebParam(name = "QueryData") String QueryData) {
 		// TODO Auto-generated method stub
-        logger.debug(AppKey + "," + Secret + "," + QueryData);
-        //getykfpservice = 
-        String result = getykfpservice.CallQuery(AppKey, Secret, QueryData);
+        logger.debug(AppId + "," + Sign + "," + QueryData);
+        String result = getykfpservice.CallQuery(AppId, Sign, QueryData);
+		return result;
+	}
+
+	@Override
+	public String UploadOrder(@WebParam(name = "AppId") String AppId, @WebParam(name = "Sign") String Sign,
+			@WebParam(name = "OrderData") String OrderData) {
+		// TODO Auto-generated method stub
+		logger.debug(AppId + "," + Sign + "," + OrderData);
+		String result = "";
+		try {
+			result = handerjysjxxservice.uploadOrder(AppId, Sign, OrderData);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result = e.getMessage();
+		}
+		return result;
+	}
+
+	@Override
+	public String CallService(String AppId, String Sign, String invoiceData) {
+		// TODO Auto-generated method stub
+		logger.debug(AppId + "," + Sign + "," + invoiceData);
+		String result = "";
+		try {
+			result = uploadinvoiceservice.callService(AppId, Sign, invoiceData);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result = e.getMessage();
+		}
 		return result;
 	}
 
