@@ -208,6 +208,56 @@ public class WebServiceTestCall {
        System.out.println(objects[0].toString());
    }
     
+    public static void testinvoiceUpload() throws Exception {
+    	final String xml="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Request>\n" +
+    			"    <TotalAmount>1</TotalAmount>\n" +
+    			"    <SerialNumber>7000138899059495305</SerialNumber>\n" +
+    			"    <Main>\n" +
+    			"        <OrderNumber>70001388990</OrderNumber>\n" +
+    			"        <OrderDate>2016-07-11</OrderDate>\n" +
+    			"        <OrderTime>06:08:41</OrderTime>\n" +
+    			"        <Seller>\n" +
+    			"            <Identifier>91310101MA1FW0008P</Identifier>\n" +
+    			"            <Name>上海百旺测试盘</Name>\n" +
+    			"            <Address>Shanghai JingAn District West Nanjing Road No.15, JingAn JiaLi Center Room 607</Address>\n" +
+    			"            <TelephoneNumber>021-xxxxxxxx</TelephoneNumber>\n" +
+    			"        </Seller>\n" +
+    			"        <Buyer>\n" +
+    			"            <Identifier/>\n" +
+    			"            <Name>王五</Name>\n" +
+    			"            <IsSend>1</IsSend>\n" +
+    			"            <Payment>ALIPAY-FASTPAY</Payment>\n" +
+    			"            <Address>&#x6c5f;&#x82cf;&#x7701;,&#x5357;&#x4eac;&#x5e02; CN &#x8f6f;&#x4ef6;&#x5927;&#x9053;108&#x53f7;&#x84dd;&#x7b79;&#x8c37;2&#x680b;1&#x5355;&#x5143;401 ;;;;210012;;;; &#x9648;&#x4e16;&#x6770;</Address>\n" +
+    			"            <TelephoneNumber>18811049101</TelephoneNumber>\n" +
+    			"            <Email>zhangbing@datarj.com</Email>\n" +
+    			"        </Buyer>\n" +
+    			"    </Main>\n" +
+    			"    <Details size=\"2\">\n" +
+    			"        <ProductItem>\n" +
+    			"            <Description>Abercrombie and Fitch Apparel</Description>\n" +
+    			"            <Unit>EACH</Unit>\n" +
+    			"            <Quantity>1</Quantity>\n" +
+    			"            <UnitPrice>1000</UnitPrice>\n" +
+    			"            <Amount>1000.00</Amount>\n" +
+    			"        </ProductItem>\n" +
+    			"        <ProductItem>\n" +
+    			"            <Description>Abercrombie and Fitch Apparel</Description>\n" +
+    			"            <Unit>EACH</Unit>\n" +
+    			"            <Quantity>1</Quantity>\n" +
+    			"            <UnitPrice>1000</UnitPrice>\n" +
+    			"            <Amount>1000.00</Amount>\n" +
+    			"        </ProductItem>\n" +
+    			"    </Details>\n" +
+    			"</Request>\n";
+       JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+       Client client = dcf.createClient(WS_URL);
+       String methodName = "invoiceUpload";
+     
+       Object[] objects = client.invoke(methodName,xml);
+       //输出调用结果
+       System.out.println(objects[0].toString());
+    }
+    
     private static String getSign(String QueryData,String key){
     	String signSourceData = "data=" + QueryData + "&key=" + key;
         String newSign =  DigestUtils.md5Hex(signSourceData);
@@ -219,7 +269,8 @@ public class WebServiceTestCall {
     public static void main(String[] args) throws Exception {
     	//testCallQuery();
     	//testUploadOrder();
-    	testCallService();
+    	//testCallService();
+    	testinvoiceUpload();
 
     }
 

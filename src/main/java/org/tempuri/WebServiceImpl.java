@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.rjxx.taxease.ws.GetYkfpService;
 import com.rjxx.taxease.ws.HanderJysjxxService;
+import com.rjxx.taxease.ws.InvoiceService;
 import com.rjxx.taxease.ws.UploadInvoiceService;
 
 import javax.jws.WebParam;
@@ -40,6 +41,9 @@ public class WebServiceImpl implements WebService {
     
     @Autowired
     private UploadInvoiceService uploadinvoiceservice;
+    
+    @Autowired
+    private InvoiceService invoiceservice;
 
     public WebServiceImpl() {
     }
@@ -68,12 +72,26 @@ public class WebServiceImpl implements WebService {
 	}
 
 	@Override
-	public String CallService(String AppId, String Sign, String invoiceData) {
+	public String CallService(@WebParam(name = "AppId") String AppId,@WebParam(name = "Sign") String Sign,@WebParam(name = "invoiceData") String invoiceData) {
 		// TODO Auto-generated method stub
 		logger.debug(AppId + "," + Sign + "," + invoiceData);
 		String result = "";
 		try {
 			result = uploadinvoiceservice.callService(AppId, Sign, invoiceData);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result = e.getMessage();
+		}
+		return result;
+	}
+
+	@Override
+	public String invoiceUpload(@WebParam(name = "xml") String xml) {
+		// TODO Auto-generated method stub
+		logger.debug(xml);
+		String result = "";
+		try {
+			result = invoiceservice.invoiceUpload("invoiceUpload", xml);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			result = e.getMessage();
