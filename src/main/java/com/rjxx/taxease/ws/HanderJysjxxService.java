@@ -80,7 +80,7 @@ public class HanderJysjxxService {
 				root = xml2OMElement(OrderData);
 			} catch (Exception e) {
 				e.printStackTrace();
-				result = ResponseUtils.printFailure1("9099:" + e.getMessage());
+				result = e.getMessage();
 				return result;
 			}
 			List rootList = xml2List(root, "Row");// 获取xml中的row标签下的数据
@@ -157,10 +157,10 @@ public class HanderJysjxxService {
 					jyxxservice.save(jyxx);
 				} catch (Exception e) {
 					e.printStackTrace();
-					result = printFailure("9917:第" + (i + 1) + "行数据已经上传，请勿再次上传");
+					result = "第" + (i + 1) + "行数据已经上传，请勿再次上传";
 					//TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-					return result;
-					//throw new RuntimeException();
+					//return result;
+					throw new RuntimeException(result);
 					
 				}
 			}

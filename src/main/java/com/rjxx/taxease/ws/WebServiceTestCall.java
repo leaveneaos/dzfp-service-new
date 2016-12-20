@@ -39,11 +39,11 @@ public class WebServiceTestCall {
     	String OrderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<Request>\n" +
         		"<Row> \n"+
-                "  <OrderNo>ME24156113</OrderNo>\n" +
+                "  <OrderNo>ME241561114</OrderNo>\n" +
                 "  <!--OrderNo必选，订单号，String20-->\n" +
-                "  <OrderTime>20161110093914</OrderTime>\n" +
+                "  <OrderTime>20161220103914</OrderTime>\n" +
                 "  <!--OrderTime必选，订单时间，String14-->\n" +
-                "  <Price>23</Price>\n" +
+                "  <Price>60.77</Price>\n" +
                 "  <!--Price必选，金额，Double(10,2) -->\n" +
                 "  <Sign>b0c87cce86a4dfebedc05d83e7f76790</Sign>\n" +
                 "  <!--Sign必选，签名串String32-->\n" +
@@ -51,11 +51,11 @@ public class WebServiceTestCall {
                 "  <!--StoreNo可选，门店编号String20-->\n" +
                 "  </Row>\n" +
                 "<Row> \n"+
-                "  <OrderNo>ME24156112</OrderNo>\n" +
+                "  <OrderNo>ME24156115</OrderNo>\n" +
                 "  <!--OrderNo必选，订单号，String20-->\n" +
-                "  <OrderTime>20161110093916</OrderTime>\n" +
+                "  <OrderTime>20161220112216</OrderTime>\n" +
                 "  <!--OrderTime必选，订单时间，String14-->\n" +
-                "  <Price>22</Price>\n" +
+                "  <Price>80.00</Price>\n" +
                 "  <!--Price必选，金额，Double(10,2) -->\n" +
                 "  <Sign>b0c87cce86a4dfebedc05d83e7aaaaaa</Sign>\n" +
                 "  <!--Sign必选，签名串String32-->\n" +
@@ -268,9 +268,9 @@ public class WebServiceTestCall {
 
     public static void main(String[] args) throws Exception {
     	//testCallQuery();
-    	//testUploadOrder();
+    	testUploadOrder();
     	//testCallService();
-    	testinvoiceUpload();
+    	//testinvoiceUpload();
 
     }
 
