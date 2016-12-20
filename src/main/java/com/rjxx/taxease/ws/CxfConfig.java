@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.tempuri.WebService;
 import org.tempuri.WebServiceImpl;
 
-import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
 
 @Configuration

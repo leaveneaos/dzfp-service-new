@@ -1,9 +1,6 @@
 package org.tempuri;
 
 import javax.jws.WebMethod;
-
-import org.springframework.transaction.annotation.Transactional;
-
 /**
  * Created by kzx on 2016/12/15.
  */

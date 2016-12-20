@@ -1,10 +1,5 @@
 package org.tempuri;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +11,6 @@ import com.rjxx.taxease.ws.InvoiceService;
 import com.rjxx.taxease.ws.UploadInvoiceService;
 
 import javax.jws.WebParam;
-import java.util.*;
 
 /**
  * Created by Administrator on 2016/10/17.
