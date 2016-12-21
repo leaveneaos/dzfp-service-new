@@ -78,20 +78,12 @@ public class GetYkfpService {
                 		+ "  <Invoices count=\""+ kplsList.size() + "\">\n";
                 for (KplsVO3 kplsvo3 : kplsList) {
                 	String kprq = String.valueOf(kplsvo3.getKprq());
-                	Date kprqt = new Date();
-                	
-					try {
 						if(null ==kprq || kprq.equals("") || kprq.equals("null")){
 							kprq = "";
 	                	}else{
-	                		kprqt = formatter.parse(kprq);
-	                		kprq = for2.format(kprqt);
+	                		//kprqt = formatter.parse(kprq);
+	                		kprq = for2.format(kplsvo3.getKprq());
 	                	}
-						
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 					String errorReason = kplsvo3.getErrorReason();
 					if(null ==errorReason || errorReason.equals("") || errorReason.equals("null")){
 						errorReason = "";
