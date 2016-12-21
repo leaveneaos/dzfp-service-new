@@ -1,6 +1,5 @@
 package com.rjxx.taxease.ws;
 
-import com.rjxx.comm.mybatis.Pagination;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.KplsService;
@@ -18,7 +17,6 @@ import javax.jws.WebParam;
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 @Service
@@ -64,14 +62,12 @@ public class GetYkfpService {
             String BuyerTel = (String) rootMap.get("BuyerTel");            //购方电话
 */
             String ExtractCode = (String) rootMap.get("ExtractCode");      //提取码
-            Pagination pagination = new Pagination();
-            pagination.addParam("jylsh", serialNumber);
-            pagination.addParam("ddh", OrderNumber);
-            pagination.addParam("tqm", ExtractCode);
-            //pagination.addParam("gfdh", BuyerTel);
-            pagination.addParam("gsdm", gsdm);
-            List<KplsVO3> kplsList = kplsservice.findList2ByPagination(pagination);
-            SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("jylsh", serialNumber);
+            map.put("ddh", OrderNumber);
+            map.put("tqm", ExtractCode);
+            map.put("gsdm", gsdm);
+            List<KplsVO3> kplsList = kplsservice.findList2ByPagination(map);
             SimpleDateFormat for2 = new SimpleDateFormat ("yyyyMMddHHmmss"); 
             if (kplsList != null && kplsList.size() != 0) {
                 result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage>发票查询成功</ReturnMessage>\n  <TotalCount>"+kplsList.size()+"</TotalCount>\n"
