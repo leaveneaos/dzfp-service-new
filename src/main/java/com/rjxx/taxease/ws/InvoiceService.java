@@ -28,9 +28,14 @@ import com.rjxx.utils.TimeUtil;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -43,7 +48,10 @@ import java.util.*;
  */
 @Service
 public class InvoiceService {
-	
+	 
+	 public InvoiceService(){
+		 
+	 }
 	 private Properties p=new Properties();    
 	 private  String path=null;   
 	 private  String CONFIG_FILE_NAME="attr.properties"; 
@@ -82,21 +90,21 @@ public class InvoiceService {
 		}                 
        
         //PropKit.use("attr.properties");
-        final String Seller_Identifier =p.getProperty("Seller_Identifier");
-        final String Seller_Name = p.getProperty("Seller_Name");
-        final String TelephoneNumberDEfault = p.getProperty("TelephoneNumber");
-        final String Drawer = p.getProperty("Drawer");
-        final String Seller_BankAcc = p.getProperty("Seller_BankAcc");
-        final String Payee = p.getProperty("Payee");
-        final String Reviewer = p.getProperty("Reviewer");
-        final String TaxRate = p.getProperty("TaxRate");
-        final String description = p.getProperty("Description");
-        final String unit = p.getProperty("Unit");
-        final String quantityStr = p.getProperty("Quantity");
-        final String hsbz = p.getProperty("Hsbz");
-        final int Xgry = Integer.parseInt(p.getProperty("Xgry"));
-        final int Lrry = Integer.parseInt(p.getProperty("Lrry"));
-        final String productCode = p.getProperty("Product_Code");
+        final String Seller_Identifier =this.readFile("Seller_Identifier");
+        final String Seller_Name = this.readFile("Seller_Name");
+        final String TelephoneNumberDEfault = this.readFile("TelephoneNumber");
+        final String Drawer = this.readFile("Drawer");
+        final String Seller_BankAcc = this.readFile("Seller_BankAcc");
+        final String Payee = this.readFile("Payee");
+        final String Reviewer = this.readFile("Reviewer");
+        final String TaxRate = this.readFile("TaxRate");
+        final String description = this.readFile("Description");
+        final String unit = this.readFile("Unit");
+        final String quantityStr = this.readFile("Quantity");
+        final String hsbz = this.readFile("Hsbz");
+        final int Xgry = Integer.parseInt(this.readFile("Xgry"));
+        final int Lrry = Integer.parseInt(this.readFile("Lrry"));
+        final String productCode = this.readFile("Product_Code");
         /**************************************/
         OMElement root;
         final Map rootMap;
@@ -435,4 +443,24 @@ public class InvoiceService {
     private static String str2Trim(String str) {
         return str == "" ? null : str.trim();
     }
+    
+   /* public static void main(String args[]){
+    	InvoiceService t  = new InvoiceService();
+    	System.out.println(t.readFile("Reviewer"));
+    }*/
+    
+    //读取af的默认配置
+    private String readFile(String str){
+    	    Properties properties = new Properties();  
+	        InputStream inputStream = this.getClass().getResourceAsStream("/attr.properties");  
+	        BufferedReader bf = new BufferedReader(new  InputStreamReader(inputStream));  
+	        try {
+				properties.load(bf);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+	        return properties.getProperty(str);
+    }
+    
 }
