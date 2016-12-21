@@ -52,9 +52,6 @@ public class InvoiceService {
 	 public InvoiceService(){
 		 
 	 }
-	 private Properties p=new Properties();    
-	 private  String path=null;   
-	 private  String CONFIG_FILE_NAME="attr.properties"; 
 	 
 	 @Autowired
 	 private SkpService skpservice;
@@ -79,16 +76,7 @@ public class InvoiceService {
 
         //ActiveRecordHelper.start();
         /**************************************/
-        // A&F 配置的默认信息
-    	path=InvoiceService.class.getResource("/").getPath()+CONFIG_FILE_NAME;  
-    	try {
-			path=URLDecoder.decode(path,"utf-8");
-			p.load(new FileInputStream(new File(path)));    
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}                 
-       
+        // A&F 配置的默认信息                     
         //PropKit.use("attr.properties");
         final String Seller_Identifier =this.readFile("Seller_Identifier");
         final String Seller_Name = this.readFile("Seller_Name");
@@ -331,7 +319,7 @@ public class InvoiceService {
      * @return
      * @throws XMLStreamException
      */
-    public static String invoiceRtnXml(Jyls iurb) throws XMLStreamException {
+    /*public static String invoiceRtnXml(Jyls iurb) throws XMLStreamException {
         OMFactory factory = OMAbstractFactory.getOMFactory();
         OMDocument doc = factory.createOMDocument();
         doc.setCharsetEncoding("utf-8");
@@ -356,44 +344,6 @@ public class InvoiceService {
                 ContentIDGenerator.DEFAULT, OptimizationPolicy.DEFAULT);
         Response.serialize(encoder);
         return sw.toString();
-    }
-
-    /**
-     * 保存接受及发送的报文信息
-     *
-     * @param djh
-     * @param clztdm
-     * @param cljgdm
-     * @param ffcs
-     * @param ycms
-     * @param lrry
-     * @param xfsh
-     * @param jylsh
-     */
-/*    private static void saveLog(int djh, String clztdm, String cljgdm,
-                                String ffcs, String ycms, int lrry, String xfsh, String jylsh) {
-        Map bean = new HashMap();
-        if (djh > 0) {
-            bean.put("djh", djh);//单据号
-        }
-        bean.put("clztdm", clztdm);//电子发票处理状态代码
-        bean.put("cljgdm", cljgdm);//电子发票处理结果代码
-        bean.put("ffcs", ffcs);//调用方法和处理参数 调用方法名及传入参数
-        bean.put("ycms", ycms); //异常描述
-        bean.put("lrsj", new Date());//录入时间 系统时间
-        bean.put("lrry", lrry);//录入人员
-        bean.put("xfsh", xfsh);
-        bean.put("jylsh", jylsh);
-        //new DzfplogBean().setAttrs(bean).save();
-    }*/
-
- /*   private static void saveXml(String sh, String jylsh, String xml) {
-        Map bean = new HashMap();
-        bean.put("xfsh", sh);
-        bean.put("jylsh", jylsh);//电子发票处理状态代码
-        bean.put("xml_file", xml);//电子发票处理结果代码
-        bean.put("lrsj", new Date());//录入时间 系统时间
-        //new XmlBean().setAttrs(bean).save();
     }*/
 
     private static OMElement xml2OMElement(String xml) throws XMLStreamException, UnsupportedEncodingException {
