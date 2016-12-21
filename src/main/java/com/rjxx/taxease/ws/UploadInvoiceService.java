@@ -832,6 +832,7 @@ public class UploadInvoiceService {
 					result = updateKhcAndYhc(kpspmxList2, detailsNew, jylsBean, map);
 					
 					if (!result.equals("0")) {
+						//数据不匹配必须手动回滚
 						TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 						return ResponseUtils.printFailure("第" + result + "明细数据红冲金额大于系统可红冲金额！");
 					}else{
