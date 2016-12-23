@@ -1059,8 +1059,10 @@ public class UploadInvoiceService {
 	@Transactional
 	public  Jyls saveJyls(Kpls kplsBean, Jyls jylsBean, Map map){
 		String jshj;
+		String hsbz = jylsBean.getHsbz();
 		if (map.get("sfqhcbz").equals("1")) {// 表示全部红冲
 			jshj = "-" + kplsBean.getJshj();
+			hsbz= "0";
 		} else {
 			jshj = map.get("hcjshj").toString();
 		}
@@ -1097,7 +1099,7 @@ public class UploadInvoiceService {
 		iurb.setJshj(Double.valueOf(jshj));// 价税合计
 		iurb.setYkpjshj(Double.valueOf("0.00"));// 已开发票价税合计
 		iurb.setSsyf(TimeUtil.getSysDateString());// 所属月份 6位
-		iurb.setHsbz("0");// 含税标志
+		iurb.setHsbz(hsbz);// 含税标志
 		iurb.setYxbz("1");// 有效标志
 		iurb.setLrsj(new Date());// 录入日期
 		iurb.setLrry(kplsBean.getLrry());// 录入人员
