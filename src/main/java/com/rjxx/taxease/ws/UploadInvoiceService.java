@@ -491,7 +491,7 @@ public class UploadInvoiceService {
 			}
 			if (flag) {
 				BigDecimal bd = new BigDecimal(TotalAmount);
-				if (bd.subtract(jshj).doubleValue() != 0) {
+				if (bd.subtract(jshj.setScale(2,BigDecimal.ROUND_HALF_UP)).doubleValue() != 0) {
 					msg += "订单号为" + OrderNumber + "的订单TotalAmount，Amount，TaxAmount计算校验不通过";
 					flag = false;
 				}
