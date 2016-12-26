@@ -14,14 +14,12 @@ public class WebServiceTestCall {
     	 String QueryData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                  "<Request>\n" +
                  "  <!--以下查询条件可任选-->\n" +
-                 "  <SerialNumber>YJ-2016-00084849</SerialNumber>\n" +
+                 "  <SerialNumber></SerialNumber>\n" +
                  "  <!--SerialNumber可选，交易流水号String20-->\n" +
                  "  <OrderNumber></OrderNumber>\n" +
                  "  <!--OrderNumber可选，来源系统订单号，String20-->\n" +
-                 "  <BuyerName></BuyerName>\n" +
-                 "  <!--BuyerName可选，购买方名称String100-->\n" +
-                 "  <BuyerTel></BuyerTel>\n" +
-                 "  <!--BuyerTel可选，购买方电话String20-->\n" +
+                 "  <ExtractCode></ExtractCode>\n" +
+                 "  <!--ExtractCode可选，提取码String20-->\n" +
                  "</Request>\n";
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient(WS_URL);
@@ -147,13 +145,13 @@ public class WebServiceTestCall {
                 "</Request>\n";
     	String qbhcData ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
     			"<Request>"
-    			+ "<SerialNumber>2016072412444500022</SerialNumber>"
+    			+ "<SerialNumber>2016073412444500022</SerialNumber>"
     			+ "<InvType>12</InvType>"
     			+ "<ServiceType>1</ServiceType>"
     			+ "<CNNoticeNo>专用发票红票通知单号</CNNoticeNo>"
     			+ "<CNDNCode>131001570055</CNDNCode>"
-    			+ "<CNDNNo>09103536</CNDNNo>"
-    			+ "<TotalAmount>-5410.00</TotalAmount>"
+    			+ "<CNDNNo>09103035</CNDNNo>"
+    			+ "<TotalAmount>-80000.00</TotalAmount>"
     			+ "</Request>";
     	
     	String bfhcData ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -201,8 +199,8 @@ public class WebServiceTestCall {
        String methodName = "CallService";
        String AppKey = "RJ9b458d60149c";
        String key ="85a7764f0372dd7b04067e02985830d7";
-       String Secret = getSign(bfhcData,key);
-       String InvoiceData1 = bfhcData;
+       String Secret = getSign(qbhcData,key);
+       String InvoiceData1 = qbhcData;
        Object[] objects = client.invoke(methodName, AppKey, Secret, InvoiceData1);
        //输出调用结果
        System.out.println(objects[0].toString());
@@ -211,7 +209,7 @@ public class WebServiceTestCall {
     public static void testinvoiceUpload() throws Exception {
     	final String xml="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Request>\n" +
     			"    <TotalAmount>1</TotalAmount>\n" +
-    			"    <SerialNumber>7000138899059495305</SerialNumber>\n" +
+    			"    <SerialNumber>7000138809059495305</SerialNumber>\n" +
     			"    <Main>\n" +
     			"        <OrderNumber>70001388990</OrderNumber>\n" +
     			"        <OrderDate>2016-07-11</OrderDate>\n" +
@@ -267,8 +265,8 @@ public class WebServiceTestCall {
     public static String WS_URL = "http://localhost:8080/dzfp-service-new/Service.asmx?wsdl";
 
     public static void main(String[] args) throws Exception {
-    	//testCallQuery();
-    	testUploadOrder();
+    	testCallQuery();
+    	//testUploadOrder();
     	//testCallService();
     	//testinvoiceUpload();
 
