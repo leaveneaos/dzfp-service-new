@@ -159,6 +159,7 @@ public class HanderJysjxxService {
 						params2.put("xgsj", new Date());
 						jyxxservice.update(params2);
 					} else {
+						jyxx = new Jyxx(); // 主表
 						jyxx.setOrderNo(orderNo);// 订单号
 						jyxx.setOrderTime(orderTime);// 订单时间
 						jyxx.setPrice(price);// 金额
