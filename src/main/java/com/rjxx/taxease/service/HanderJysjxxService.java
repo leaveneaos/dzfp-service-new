@@ -141,22 +141,40 @@ public class HanderJysjxxService {
 					price = Double.valueOf((String) jyxxMap.get("Price")); // 金额
 																			// 必选
 				}
+				sign = (String) jyxxMap.get("Sign");
 				try {
 					Jyxx jyxx = new Jyxx(); // 主表
-					jyxx.setOrderNo(orderNo);// 订单号
-					jyxx.setOrderTime(orderTime);// 订单时间
-					jyxx.setPrice(price);// 金额
-					jyxx.setSign(sign);// 签名串
-					jyxx.setGsdm(gsdm);// 公司代码
-					jyxx.setLrry(gsdm);// 录入人员
-					jyxx.setLrsj(new Date());// 录入时间
-					jyxx.setXgry(gsdm);// 修改人员
-					jyxx.setXgsj(new Date());// 修改
-					jyxx.setYxbz("1");// 有效标志 1有效 0 无效
-					jyxxservice.save(jyxx);
+					Map params = new HashMap();
+					params.put("gsdm", gsdm);
+					params.put("tqm", orderNo);
+					jyxx = jyxxservice.findOneByParams(params);
+					if (null != jyxx) {
+						Map params2 = new HashMap();
+						params2.put("gsdm", gsdm);
+						params2.put("order_no", orderNo);
+						params2.put("store_no", storeNo);
+						params2.put("order_time", orderTime);
+						params2.put("price", price);
+						params2.put("sign", sign);
+						params2.put("xgsj", new Date());
+						jyxxservice.update(params2);
+					} else {
+						jyxx.setOrderNo(orderNo);// 订单号
+						jyxx.setOrderTime(orderTime);// 订单时间
+						jyxx.setPrice(price);// 金额
+						jyxx.setSign(sign);// 签名串
+						jyxx.setGsdm(gsdm);// 公司代码
+						jyxx.setLrry(gsdm);// 录入人员
+						jyxx.setLrsj(new Date());// 录入时间
+						jyxx.setXgry(gsdm);// 修改人员
+						jyxx.setXgsj(new Date());// 修改
+						jyxx.setYxbz("1");// 有效标志 1有效 0 无效
+						jyxx.setStoreNo(storeNo);
+						jyxxservice.save(jyxx);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					result = "第" + (i + 1) + "行数据已经上传，请勿再次上传";
+					result = "交易数据上传失败："+e.getMessage();
 					//TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 					//return result;
 					throw new RuntimeException(result);
