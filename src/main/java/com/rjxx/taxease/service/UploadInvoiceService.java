@@ -843,6 +843,7 @@ public class UploadInvoiceService {
                     return ResponseUtils.printFailure("明细数据可红冲金额大于系统可红冲金额！");
                 }
             }
+            djh = jylsBean.getDjh();
         }
         return ResponseUtils.printSuccess(djh);
     }
