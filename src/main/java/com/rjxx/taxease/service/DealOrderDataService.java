@@ -759,7 +759,11 @@ public class DealOrderDataService {
 		Document doc = DocumentHelper.createDocument();
 		StringWriter sendXml = new StringWriter();
 		// 增加根节点
-		Element InvoiceData = doc.addElement("InvoiceData");
+		Element Responese = doc.addElement("Responese");
+		Element returnCode = Responese.addElement("ReturnCode");
+		returnCode.setText("0000");
+		Element returnMessage = Responese.addElement("ReturnMessage");
+		returnMessage.setText("成功");
 		if (null != list && !list.isEmpty()) {
 			for (int i = 0; i < list.size(); i++) {
 				String tmp = String.valueOf(list.get(i));
@@ -771,7 +775,8 @@ public class DealOrderDataService {
 				}
 				Element xnt = (Element) xmlDoc.selectSingleNode("InvoiceData/body/output");
 				// 为根节点增加元素body
-				Element RCF = InvoiceData.addElement("invoice");
+				
+				Element RCF = Responese.addElement("invoice");
 				Element CLIENTNO = RCF.addElement("CLIENTNO");
 				CLIENTNO.setText(xnt.selectSingleNode("CLIENTNO").getText() == null ? ""
 						: xnt.selectSingleNode("CLIENTNO").getText());// 添加值
