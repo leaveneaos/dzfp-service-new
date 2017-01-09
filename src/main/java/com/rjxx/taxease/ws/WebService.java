@@ -17,4 +17,8 @@ public interface WebService {
     
     @WebMethod
     public String invoiceUpload(String xml);//af 发票上传
+    
+    @WebMethod
+    public String UploadOrderData(String AppId, String Sign, String Operation,String invoiceData);
+    
 }

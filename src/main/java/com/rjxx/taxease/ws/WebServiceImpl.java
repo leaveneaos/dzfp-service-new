@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.rjxx.taxease.service.DealOrderDataService;
 import com.rjxx.taxease.service.GetYkfpService;
 import com.rjxx.taxease.service.HanderJysjxxService;
 import com.rjxx.taxease.service.InvoiceService;
@@ -38,6 +39,9 @@ public class WebServiceImpl implements WebService {
     
     @Autowired
     private InvoiceService invoiceservice;
+    
+    @Autowired
+    private DealOrderDataService dealorderdataservice;
 
     public WebServiceImpl() {
     }
@@ -86,6 +90,20 @@ public class WebServiceImpl implements WebService {
 		String result = "";
 		try {
 			result = invoiceservice.invoiceUpload("invoiceUpload", xml);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result = e.getMessage();
+		}
+		return result;
+	}
+
+	@Override
+	public String UploadOrderData(@WebParam(name = "AppId") String AppId,@WebParam(name = "Sign") String Sign,@WebParam(name = "Operation") String Operation,@WebParam(name = "InvoiceData") String InvoiceData) {
+		// TODO Auto-generated method stub
+		logger.debug(AppId + "," + Sign + "," + InvoiceData);
+		String result = "";
+		try {
+			result = dealorderdataservice.uploadOrderData(AppId, Sign, Operation, InvoiceData);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			result = e.getMessage();
