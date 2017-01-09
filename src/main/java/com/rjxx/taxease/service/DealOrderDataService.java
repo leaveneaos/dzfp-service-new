@@ -182,8 +182,7 @@ public class DealOrderDataService {
 				// List<Jymxsq> tmpList = null;
 				Jyxxsq jyxxsq = new Jyxxsq();
 				Jymxsq jymxsq = new Jymxsq();
-				//String tmp = checkorderutil.checkAll(jyxxsqList, jymxsqList, gsdm);
-				String tmp = "";
+				String tmp = checkorderutil.checkAll(jyxxsqList, jymxsqList, gsdm,Operation);
 				if (null == tmp || tmp.equals("")) {
 					String tmp3 = saveorderdata.saveAllData(jyxxsqList, jymxsqList);
 					if (null != tmp3 && !tmp3.equals("")) {
@@ -482,6 +481,11 @@ public class DealOrderDataService {
 				orderTime = (String) jyxxsqMap.get("OrderTime");// 订单日期 必选
 				totalAmount = String.valueOf(jyxxsqMap.get("TotalAmount"));// 计税合计
 				invType = (String) jyxxsqMap.get("InvType");// 发票种类01、专用发票(纸质)；02、普通发票（纸质）；12、普通发票（电子）
+				if(invType.equals("01")){
+					invType="0";
+				}else if(invType.equals("02")){
+					invType="1";
+				}
 				identifier = (String) jyxxsqMap.get("Identifier");// 购方税号
 				name = (String) jyxxsqMap.get("Name");// 购方名称
 				address = String.valueOf(jyxxsqMap.get("Address"));// 购方地址
@@ -582,6 +586,11 @@ public class DealOrderDataService {
 				// orderTime = (String) jyxxsqMap.get("OrderTime");// 订单日期 必选
 				totalAmount = String.valueOf(row.selectSingleNode("TotalAmount").getText());// 计税合计
 				invType = row.selectSingleNode("InvType").getText();// 发票种类01、专用发票(纸质)；02、普通发票（纸质）；12、普通发票（电子）
+				if(invType.equals("01")){
+					invType="0";
+				}else if(invType.equals("02")){
+					invType="1";
+				}
 				taxMark = String.valueOf(row.selectSingleNode("TaxMark").getText());
 				
 				 invoiceList = row.selectSingleNode("InvoiceList").getText();
