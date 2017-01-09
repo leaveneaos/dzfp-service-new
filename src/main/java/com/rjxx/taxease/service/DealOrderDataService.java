@@ -102,7 +102,7 @@ public class DealOrderDataService {
 			String gsdm = gsxxBean.getGsdm();
 			if (Operation.equals("03")) {
 				List<Jyxxsq> jyxxsqList = dealOperation03(gsdm, OrderData);
-				String tmp = checkorderutil.checkBuyer(jyxxsqList, gsdm);
+				String tmp = checkorderutil.checkBuyer(jyxxsqList, gsdm,Operation);
 				if (null == tmp || tmp.equals("")) {
 					String tmp1 = saveorderdata.saveBuyerData(jyxxsqList);
 					if (null != tmp1 && !tmp1.equals("")) {
@@ -124,7 +124,7 @@ public class DealOrderDataService {
 				Jyxxsq jyxxsq = new Jyxxsq();
 				Jymxsq jymxsq = new Jymxsq();
 
-				String tmp = checkorderutil.checkAll(jyxxsqList, jymxsqList, gsdm);
+				String tmp = checkorderutil.checkAll(jyxxsqList, jymxsqList, gsdm,Operation);
 				if (null == tmp || tmp.equals("")) {
 					String tmp2 = saveorderdata.saveAllData(jyxxsqList, jymxsqList);
 					if (null != tmp2 && !tmp2.equals("")) {
