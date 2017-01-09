@@ -9,7 +9,6 @@ import com.rjxx.taxeasy.domains.Yh;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JyxxsqService;
 import com.rjxx.taxeasy.service.YhService;
-import com.rjxx.test.ObjectToXmlUtilTest;
 import com.rjxx.utils.CheckOrderUtil;
 import com.rjxx.utils.ResponseUtils;
 import com.rjxx.utils.TemplateUtils;
