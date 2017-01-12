@@ -889,8 +889,13 @@ public class DealOrderDataService {
 				ClientNO.setText(xnt.selectSingleNode("CLIENTNO").getText() == null ? ""
 						: xnt.selectSingleNode("CLIENTNO").getText());// 添加值
 				Element Fplxdm = Responese.addElement("Fplxdm");
-				Fplxdm.setText(xnt.selectSingleNode("fplxdm").getText() == null ? ""
-						: xnt.selectSingleNode("fplxdm").getText());// 添加值
+				String fplxdm = xnt.selectSingleNode("fplxdm").getText();
+				if(fplxdm.equals("0")){
+					fplxdm ="01";
+				}else if(fplxdm.equals("1")){
+					fplxdm ="02";
+				}
+				Fplxdm.setText(fplxdm);// 添加值
 				Element Dqfpdm = Responese.addElement("Dqfpdm");
 				Dqfpdm.setText(
 						xnt.selectSingleNode("dqfpdm") == null ? "" : xnt.selectSingleNode("dqfpdm").getText());
