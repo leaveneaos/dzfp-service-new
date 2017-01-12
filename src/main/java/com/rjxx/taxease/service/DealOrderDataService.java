@@ -20,6 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
@@ -154,7 +155,7 @@ public class DealOrderDataService {
 								params.put("count", tmpList.size());
 								params.put("hjje", hjje);
 								params.put("hjse", hjse);
-
+								params.put("Operation", Operation);
 								path = URLDecoder.decode(path, "UTF-8");
 								File templateFile = new File(path);
 								String result2 = TemplateUtils.generateContent(templateFile, params, "gbk");
@@ -199,6 +200,23 @@ public class DealOrderDataService {
 					result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp
 							+ "</ReturnMessage> \n</Responese>";
 				}
+			}else if (Operation.equals("08")){
+				//08代表当前发票号码
+				Map inputMap = dealOperation08(gsdm,OrderData);
+				String clientNO = String.valueOf(inputMap.get("clientNO"));
+				String fpzldm = String.valueOf(inputMap.get("fpzldm"));
+				if(null ==clientNO ||clientNO.equals("") ||null ==fpzldm ||fpzldm.equals("")){
+					result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + "ClientNO或Fplxdm不能为空！"
+							+ "</ReturnMessage> \n</Responese>";
+				}else{
+					Map map = new HashMap();
+					map.put("clientNO", clientNO);
+					map.put("fpzldm", fpzldm);
+					map.put("Operation",Operation);
+					result =callDllWebSevice(gsdm,map);
+					result =response08(result);
+				}
+				
 			}
 
 		}
@@ -209,19 +227,29 @@ public class DealOrderDataService {
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 		String dllwspath = readFile("DllWebServicePath");
 		Client client = dcf.createClient(dllwspath);
-		Jyxxsq jyxxsq = (Jyxxsq) map.get("jyxxsq");
-		String methodName = "CallService";
-		String CLIENTNO = jyxxsq.getKpddm();
-		String TaxMachineIP = "";
-		String SysInvNo = jyxxsq.getDdh();
-		String InvoiceList = jyxxsq.getSfdyqd();
-		String InvoiceSplit = jyxxsq.getSfcp();
-		String InvoiceConsolidate = "0";
+		String Operation = (String) map.get("Operation");
 		String result = "";
 		try {
-			Object[] objects = client.invoke(methodName, CLIENTNO, TaxMachineIP, SysInvNo, InvoiceList, InvoiceSplit,
-					InvoiceConsolidate, xml);
-			result = objects[0].toString();
+			if (Operation.equals("01")) {
+				Jyxxsq jyxxsq = (Jyxxsq) map.get("jyxxsq");
+				String CLIENTNO = jyxxsq.getKpddm();
+				String TaxMachineIP = "";
+				String SysInvNo = jyxxsq.getDdh();
+				String InvoiceList = jyxxsq.getSfdyqd();
+				String InvoiceSplit = jyxxsq.getSfcp();
+				String InvoiceConsolidate = "0";
+				String methodName = "CallService";
+				Object[] objects = client.invoke(methodName, CLIENTNO, TaxMachineIP, SysInvNo, InvoiceList,
+						InvoiceSplit, InvoiceConsolidate, xml);
+				result = objects[0].toString();
+			}else if(Operation.equals("08")){
+				String methodName = "GetCodeAndNo";
+				String CLIENTNO = String.valueOf(map.get("clientNO"));
+				String fplxdm = String.valueOf(map.get("fpzldm"));
+				Object[] objects =client.invoke(methodName, CLIENTNO, null, fplxdm);
+				result = objects[0].toString();
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -230,6 +258,23 @@ public class DealOrderDataService {
 		return result;
 	}
 
+	private Map dealOperation08(String gsdm, String OrderData) {
+		OMElement root = null;
+		Map inputMap = new HashMap();
+		try {
+			root = xml2OMElement(OrderData);
+			Map rootMap = xml2Map(root, "");
+			String clientNO = (String) rootMap.get("ClientNO");
+			String fpzldm = (String) rootMap.get("Fplxdm");
+			inputMap.put("clientNO", clientNO);
+			inputMap.put("fpzldm", fpzldm);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return inputMap;
+	}
 	private Map dealOperation01(String gsdm, String OrderData) {
 		Map params1 = new HashMap();
 		params1.put("gsdm", gsdm);
@@ -824,7 +869,56 @@ public class DealOrderDataService {
 
 		return sendXml.toString();
 	}
-
+    
+	private String response08(String result) {
+		Document xmlDoc = null;
+		XMLWriter xw;
+		Document doc = DocumentHelper.createDocument();
+		StringWriter sendXml = new StringWriter();
+		// 增加根节点
+			Element Responese = doc.addElement("Responese");
+			try {
+				xmlDoc = DocumentHelper.parseText(result);
+				Element xnt = (Element) xmlDoc.selectSingleNode("InvoiceData/body/output");
+				Element ClientNO = Responese.addElement("CLIENTNO");
+				ClientNO.setText(xnt.selectSingleNode("CLIENTNO").getText() == null ? ""
+						: xnt.selectSingleNode("CLIENTNO").getText());// 添加值
+				Element Fplxdm = Responese.addElement("Fplxdm");
+				Fplxdm.setText(xnt.selectSingleNode("fplxdm").getText() == null ? ""
+						: xnt.selectSingleNode("fplxdm").getText());// 添加值
+				Element Dqfpdm = Responese.addElement("Dqfpdm");
+				Dqfpdm.setText(
+						xnt.selectSingleNode("dqfpdm") == null ? "" : xnt.selectSingleNode("dqfpdm").getText());
+				Element Dqfphm = Responese.addElement("Dqfphm");
+				Dqfphm.setText(
+						xnt.selectSingleNode("dqfphm") == null ? "" : xnt.selectSingleNode("dqfphm").getText());
+				Element OperateFlag = Responese.addElement("OperateFlag");
+				OperateFlag.setText(xnt.selectSingleNode("OperateFlag") == null ? ""
+						: xnt.selectSingleNode("OperateFlag").getText());
+				Element PrintFlag = Responese.addElement("PrintFlag");
+				PrintFlag.setText(
+						xnt.selectSingleNode("PrintFlag") == null ? "" : xnt.selectSingleNode("PrintFlag").getText());
+				Element Returnmsg = Responese.addElement("Returnmsg");
+				Returnmsg.setText(
+						xnt.selectSingleNode("returnmsg") == null ? "" : xnt.selectSingleNode("returnmsg").getText());
+			} catch (DocumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// 规范格式
+						OutputFormat format = OutputFormat.createPrettyPrint();
+						// 设置输出编码
+						format.setEncoding("gbk");
+						xw = new XMLWriter(sendXml, format);
+						try {
+							xw.write(doc);
+							xw.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		return sendXml.toString();
+	}
 	private static String str2Trim(String str) {
 		return "".equals(str) ? null : str.trim();
 	}
