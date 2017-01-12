@@ -209,6 +209,11 @@ public class DealOrderDataService {
 					result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + "ClientNO或Fplxdm不能为空！"
 							+ "</ReturnMessage> \n</Responese>";
 				}else{
+					if(fpzldm.equals("01")){
+						fpzldm="0";
+					}else if(fpzldm.equals("02")){
+						fpzldm="1";
+					}
 					Map map = new HashMap();
 					map.put("clientNO", clientNO);
 					map.put("fpzldm", fpzldm);
