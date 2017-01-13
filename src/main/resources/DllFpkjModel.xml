@@ -2,51 +2,51 @@
 <InvoiceData>
 	<body>
 		<input>
-			<SwiftNumber>${jyxxsq.jylsh}</SwiftNumber>
-			<InvType>${jyxxsq.fpzldm}</InvType>
+			<SwiftNumber>${jyxxsq.jylsh!}</SwiftNumber>
+			<InvType>${jyxxsq.fpzldm!}</InvType>
 			<CreditNoteInv>0</CreditNoteInv>
 			<CancelInvType>0</CancelInvType>
-			<VenderTaxNo>${jyxxsq.xfsh}</VenderTaxNo>
+			<VenderTaxNo>${jyxxsq.xfsh!}</VenderTaxNo>
 			<VenderName>${jyxxsq.xfmc}</VenderName>
-			<VenderAddressTel>${jyxxsq.xfdz}${jyxxsq.xfdh}</VenderAddressTel>
-			<VenderBankNameNo>${jyxxsq.xfyh}${jyxxsq.xfyhzh}</VenderBankNameNo>
-			<CustomerTaxNo>${jyxxsq.gfsh}</CustomerTaxNo>
-			<CustomerName>${jyxxsq.gfmc}</CustomerName>
-			<CustomerAddressTel>${jyxxsq.gfdz}${jyxxsq.gfdh}</CustomerAddressTel>
-			<CustomerBankNameNo>${jyxxsq.gfyh}${jyxxsq.gfyhzh}</CustomerBankNameNo>
+			<VenderAddressTel>${jyxxsq.xfdz!}${jyxxsq.xfdh!}</VenderAddressTel>
+			<VenderBankNameNo>${jyxxsq.xfyh!}${jyxxsq.xfyhzh!}</VenderBankNameNo>
+			<CustomerTaxNo>${jyxxsq.gfsh!}</CustomerTaxNo>
+			<CustomerName>${jyxxsq.gfmc!}</CustomerName>
+			<CustomerAddressTel>${jyxxsq.gfdz!}${jyxxsq.gfdh!}</CustomerAddressTel>
+			<CustomerBankNameNo>${jyxxsq.gfyh!}${jyxxsq.gfyhzh!}</CustomerBankNameNo>
 			<CodeVersion>10.0</CodeVersion>
-			<ChargeTaxWay>${jyxxsq.zsfs}</ChargeTaxWay>
+			<ChargeTaxWay>${jyxxsq.zsfs!}</ChargeTaxWay>
 			<InvoiceDetail count="${count}">
 			 <#list tmpList as dd>
 				<group xh="${dd.spmxxh}">
-					<fphxz>${dd.fphxz}</fphxz>
-					<ProductName>${dd.spmc}</ProductName>
+					<fphxz>${dd.fphxz!}</fphxz>
+					<ProductName>${dd.spmc!}</ProductName>
 					<Spsm></Spsm>
-					<ProductSize>${dd.spggxh}</ProductSize>
-					<ProductUnit>${dd.spdw}</ProductUnit>
-					<ProductAmount>${dd.sps}</ProductAmount>
-					<UnitPrice>${dd.spdj?string('###.00')}</UnitPrice>
-					<TotalAmount>${dd.spje?string('###.00')}</TotalAmount>
-					<DeductAmount>${dd.kce?string('###.00')}</DeductAmount>
-					<TaxRate>${dd.spsl}</TaxRate>
-					<TaxAmount>${dd.spse?string('###.00')}</TaxAmount>
-					<TaxMark>${dd.hsbz}</TaxMark>
-					<ProductCode>${dd.spdm}</ProductCode>
-					<VenderOwnCode>${dd.spggxh}</VenderOwnCode>
-					<PolicyMark>${dd.yhzcbs}</PolicyMark>
-					<TaxRateMark>${dd.lslbz}</TaxRateMark>
-					<PolicyName>${dd.yhzcmc}</PolicyName>
+					<ProductSize>${dd.spggxh!}</ProductSize>
+					<ProductUnit>${dd.spdw!}</ProductUnit>
+					<ProductAmount>${dd.sps!}</ProductAmount>
+					<UnitPrice>${dd.spdj?string('###.00')!}</UnitPrice>
+					<TotalAmount>${dd.spje?string('###.00')!}</TotalAmount>
+					<DeductAmount>${dd.kce?string('###.00')!}</DeductAmount>
+					<TaxRate>${dd.spsl!}</TaxRate>
+					<TaxAmount>${dd.spse?string('###.00')!}</TaxAmount>
+					<TaxMark>${dd.hsbz!}</TaxMark>
+					<ProductCode>${dd.spdm!}</ProductCode>
+					<VenderOwnCode>${dd.spggxh!}</VenderOwnCode>
+					<PolicyMark>${dd.yhzcbs!}</PolicyMark>
+					<TaxRateMark>${dd.lslbz!}</TaxRateMark>
+					<PolicyName>${dd.yhzcmc!}</PolicyName>
 				</group>
 				</#list>
 			</InvoiceDetail>
 			<Zhsl/>
-			<SumTotalAmount>${hjje?string('###.00')}</SumTotalAmount>
-			<SumTaxAmount>${hjse?string('###.00')}</SumTaxAmount>
-			<Total>${jyxxsq.jshj?string('###.00')}</Total>
-			<Remark>${jyxxsq.bz}</Remark>
-			<Receiver>${jyxxsq.skr}</Receiver>
-			<Checker>${jyxxsq.fhr}</Checker>
-			<Issuer>${jyxxsq.kpr}</Issuer>
+			<SumTotalAmount>${hjje?string('###.00')!}</SumTotalAmount>
+			<SumTaxAmount>${hjse?string('###.00')!}</SumTaxAmount>
+			<Total>${jyxxsq.jshj?string('###.00')!}</Total>
+			<Remark>${jyxxsq.bz!}</Remark>
+			<Receiver>${jyxxsq.skr!}</Receiver>
+			<Checker>${jyxxsq.fhr!}</Checker>
+			<Issuer>${jyxxsq.kpr!}</Issuer>
 			<Jmbbh/>
 			<Zyspmc/>
 			<Spsm/>
