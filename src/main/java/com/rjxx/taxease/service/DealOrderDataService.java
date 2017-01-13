@@ -150,6 +150,11 @@ public class DealOrderDataService {
 							String path = this.getClass().getClassLoader().getResource("DllFpkjModel.xml").getPath();
 							try {
 								Map params = new HashMap();
+								if(jyxxsq.getFpzldm().equals("01")){
+									jyxxsq.setFpzldm("0");
+								}else if(jyxxsq.getFpzldm().equals("02")){
+									jyxxsq.setFpzldm("1");
+								}
 								params.put("jyxxsq", jyxxsq);
 								params.put("tmpList", tmpList);
 								params.put("count", tmpList.size());
@@ -316,13 +321,19 @@ public class DealOrderDataService {
 
 		// 开票人
 		String drawer = (String) rootMap.get("Drawer");
-
+		if(null == drawer){
+			drawer="";
+		}
 		// 收款人
 		String payee = (String) rootMap.get("Payee");
-
+		if(null == payee){
+			payee="";
+		}
 		// 复核人
 		String reviewer = (String) rootMap.get("Reviewer");
-
+		if(null == reviewer){
+			reviewer ="";
+		}
 		// 销方信息
 		Map sellerMap = (Map) rootMap.get("Seller");
 		String identifier = (String) sellerMap.get("Identifier");
