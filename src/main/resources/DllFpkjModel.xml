@@ -25,11 +25,11 @@
 					<ProductSize>${dd.spggxh!}</ProductSize>
 					<ProductUnit>${dd.spdw!}</ProductUnit>
 					<ProductAmount>${dd.sps!}</ProductAmount>
-					<UnitPrice>${dd.spdj?string('###.00')!}</UnitPrice>
-					<TotalAmount>${dd.spje?string('###.00')!}</TotalAmount>
-					<DeductAmount>${dd.kce?string('###.00')!}</DeductAmount>
+					<UnitPrice>${dd.spdj?string('0.00')!}</UnitPrice>
+					<TotalAmount>${dd.spje?string('0.00')!}</TotalAmount>
+					<DeductAmount>${dd.kce?string('0.00')!}</DeductAmount>
 					<TaxRate>${dd.spsl!}</TaxRate>
-					<TaxAmount>${dd.spse?string('###.00')!}</TaxAmount>
+					<TaxAmount>${dd.spse?string('0.00')!}</TaxAmount>
 					<TaxMark>${dd.hsbz!}</TaxMark>
 					<ProductCode>${dd.spdm!}</ProductCode>
 					<VenderOwnCode>${dd.spggxh!}</VenderOwnCode>
@@ -40,9 +40,9 @@
 				</#list>
 			</InvoiceDetail>
 			<Zhsl/>
-			<SumTotalAmount>${hjje?string('###.00')!}</SumTotalAmount>
-			<SumTaxAmount>${hjse?string('###.00')!}</SumTaxAmount>
-			<Total>${jyxxsq.jshj?string('###.00')!}</Total>
+			<SumTotalAmount>${hjje?string('0.00')!}</SumTotalAmount>
+			<SumTaxAmount>${hjse?string('0.00')!}</SumTaxAmount>
+			<Total>${jyxxsq.jshj?string('0.00')!}</Total>
 			<Remark>${jyxxsq.bz!}</Remark>
 			<Receiver>${jyxxsq.skr!}</Receiver>
 			<Checker>${jyxxsq.fhr!}</Checker>
