@@ -16,7 +16,7 @@ import javax.jws.WebParam;
 /**
  * Created by Administrator on 2016/10/17.
  */
-@javax.jws.WebService(targetNamespace = "http://service.rj.com", name = "Service", serviceName = "Service")
+@javax.jws.WebService(targetNamespace = "http://service.rj.com/", name = "Service", serviceName = "Service")
 public class WebServiceImpl implements WebService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
