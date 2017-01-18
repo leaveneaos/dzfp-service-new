@@ -25,6 +25,8 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +63,7 @@ public class DealOrderDataService {
 	@Autowired
 	private YhService yhservice;
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	/**
 	 * 处理交易数据上传
 	 *
@@ -168,6 +171,7 @@ public class DealOrderDataService {
 								result = callDllWebSevice(result2, params);
 								resultList.add(result);
 								System.out.println(result);
+								 logger.debug("封装传开票通的报文"+result);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
