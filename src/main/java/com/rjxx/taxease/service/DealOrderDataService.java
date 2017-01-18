@@ -183,6 +183,7 @@ public class DealOrderDataService {
 					}
 				} else {
 					result = ResponseUtils.printFailure(tmp);
+					logger.debug("封装校验不通过信息"+result);
 				}
 
 			} else if (Operation.equals("02")) {
