@@ -168,10 +168,11 @@ public class DealOrderDataService {
 								File templateFile = new File(path);
 								String result2 = TemplateUtils.generateContent(templateFile, params, "gbk");
 								System.out.println(result2);
+								 logger.debug("封装传开票通的报文"+result2);
 								result = callDllWebSevice(result2, params);
 								resultList.add(result);
 								System.out.println(result);
-								 logger.debug("封装传开票通的报文"+result);
+								
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
