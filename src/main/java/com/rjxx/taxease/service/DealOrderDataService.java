@@ -167,7 +167,7 @@ public class DealOrderDataService {
 					Jyxxsq jyxxsq = jyxxsqList.get(i);
 					if (null != cszb && cszb.getCsz().equals("是")) {
 						jyxxsq.setSfzlkp("1");
-						jyxxsq.setZtbz("1");
+						jyxxsq.setZtbz("6");
 					}
 					// reList.add(jyxxsq);
 				  }
@@ -175,7 +175,7 @@ public class DealOrderDataService {
 					for (int i = 0; i < jyxxsqList.size(); i++) {
 						Jyxxsq jyxxsq = jyxxsqList.get(i);
 							jyxxsq.setSfzlkp("0");
-							jyxxsq.setZtbz("0");
+							jyxxsq.setZtbz("6");
 						// reList.add(jyxxsq);
 					}
 				}

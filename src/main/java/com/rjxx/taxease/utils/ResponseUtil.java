@@ -290,7 +290,7 @@ public class ResponseUtil {
 		} else {
 			Kpls kpls = kplsService.findOne(Integer.valueOf(response.getLsh()));
 			kpls.setFpztdm("05");
-			kpls.setErrorReason(response.getReturnMessage());
+			kpls.setErrorReason(response.getReturnMessage().substring(0, 300));
 			kpls.setXgsj(new Date());
 			kpls.setXgry(1);
 			kplsService.save(kpls);
