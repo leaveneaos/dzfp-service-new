@@ -12,9 +12,10 @@ import javax.xml.ws.Endpoint;
 
 @Configuration
 public class CxfConfig {
+	
     @Bean
-    public ServletRegistrationBean dispatcherServlet() {
-        return new ServletRegistrationBean(new CXFServlet(), "/services/invoiceService");
+    public ServletRegistrationBean cxfServlet() {
+    	return new ServletRegistrationBean(new CXFServlet(), "/services/*");
     }
 
     @Bean(name = Bus.DEFAULT_BUS_ID)
@@ -30,7 +31,7 @@ public class CxfConfig {
     @Bean
     public Endpoint endpoint() {
         EndpointImpl endpoint = new EndpointImpl(springBus(), webService());
-        endpoint.publish("/");
+        endpoint.publish("/invoiceService");
         return endpoint;
     }
 }
