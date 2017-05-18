@@ -1,5 +1,6 @@
 package com.rjxx.taxease.service;
 
+import com.rjxx.taxease.service.result.Result08;
 import com.rjxx.taxease.utils.CallDllWebServiceUtil;
 import com.rjxx.taxease.utils.ResponseUtil;
 import com.rjxx.taxeasy.bizcomm.utils.FpclService;
@@ -9,10 +10,7 @@ import com.rjxx.taxeasy.bizcomm.utils.SkService;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.KplsVO4;
-import com.rjxx.utils.CheckOrderUtil;
-import com.rjxx.utils.ResponseUtils;
-import com.rjxx.utils.TemplateUtils;
-import com.rjxx.utils.XmlJaxbUtils;
+import com.rjxx.utils.*;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -323,23 +321,27 @@ public class DealOrderDataService {
                         + "</ReturnMessage> \n</Responese>";
             }
         } else if (Operation.equals("08")) {
+
             // 08代表当前发票号码
             Map inputMap = dealOperation08(gsdm, OrderData);
             String clientNO = String.valueOf(inputMap.get("clientNO"));
             String fpzldm = String.valueOf(inputMap.get("fpzldm"));
-            if (null == clientNO || clientNO.equals("") || null == fpzldm || fpzldm.equals("")) {
-                result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + "ClientNO或Fplxdm不能为空！"
-                        + "</ReturnMessage> \n</Responese>";
-                return result;
+            Result08 result08 = new Result08();
+            result08.setClientNO(clientNO);
+            result08.setFplxdm(fpzldm);
+            if (StringUtils.isBlank(clientNO) || StringUtils.isBlank(fpzldm)) {
+                result08.setOperateFlag("1");
+                result08.setReturnmsg("ClientNO或Fplxdm不能为空！");
+                return XmlJaxbUtils.toXml(result08);
             }
             Map params = new HashMap();
             params.put("kpddm", clientNO);
             params.put("gsdm", gsdm);
             Skp skp = skpservice.findOneByParams(params);
             if (skp == null) {
-                result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + "开票点：" + clientNO + "不存在！"
-                        + "</ReturnMessage> \n</Responese>";
-                return result;
+                result08.setOperateFlag("1");
+                result08.setReturnmsg("开票点：" + clientNO + "不存在！");
+                return XmlJaxbUtils.toXml(result08);
             }
             int xfid = skp.getXfid();
             int kpdid = skp.getId();
@@ -349,13 +351,19 @@ public class DealOrderDataService {
                 //文本
                 try {
                     InvoiceResponse response = skService.getCodeAndNo(kpdid, fpzldm);
-                    response.setKpddm(clientNO);
-                    response.setFplxdm(fpzldm);
-                    result = XmlJaxbUtils.toXml(response);
-                    return result;
+                    if ("0000".equals(response.getReturnCode())) {
+                        result08.setOperateFlag("0");
+                    } else {
+                        result08.setOperateFlag("1");
+                    }
+                    result08.setDqfpdm(response.getFpdm());
+                    result08.setDqfphm(response.getFphm());
+                    result08.setReturnmsg(response.getReturnMessage());
+                    return XmlJaxbUtils.toXml(result08);
                 } catch (Exception e) {
-                    result = "<Responese>\n<ReturnCode>9999</ReturnCode>\n<ReturnMessage>" + e.getMessage() + "</ReturnMessage>\n</Responese>";
-                    return result;
+                    result08.setOperateFlag("1");
+                    result08.setReturnmsg(e.getMessage());
+                    return XmlJaxbUtils.toXml(result08);
                 }
             } else if ("02".equals("kpfs")) {
                 if (fpzldm.equals("01")) {
@@ -372,12 +380,10 @@ public class DealOrderDataService {
                 result = responseUtil.response08(result);
                 return result;
             } else {
-                result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + "开票点：" + clientNO + "的开票方式不支持该接口！"
-                        + "</ReturnMessage> \n</Responese>";
-                return result;
+                result08.setOperateFlag("1");
+                result08.setReturnmsg("开票点：" + clientNO + "的开票方式不支持该接口！");
+                return XmlJaxbUtils.toXml(result08);
             }
-
-
         }
         return result;
     }
