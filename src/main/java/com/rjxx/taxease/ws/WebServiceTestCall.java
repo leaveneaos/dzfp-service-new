@@ -24,8 +24,8 @@ public class WebServiceTestCall {
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient(WS_URL);
         String methodName = "CallQuery";
-        String AppKey = "RJc68ad2517ad3";
-        String key ="105c29bc32a1319b945170e25a19f1ea";
+        String AppKey = "RJ874afd58e67b";
+        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
         String Secret = getSign(QueryData,key);
         String InvoiceData = QueryData;
         Object[] objects = client.invoke(methodName, AppKey, Secret, InvoiceData);
@@ -258,81 +258,57 @@ public class WebServiceTestCall {
     }
     
     public static void testuploadOrderData() throws Exception {
-    	final String xml03="<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-    			+ "<Request>"
-    			+ "<Row>"
-    			+ "<ClientNO>kp005</ClientNO>"
-    			+ "<!--必须,开票点编号 ,每个开票点对应唯一编号，比如KP001，KP002-->"
-    			+ "<OrderNo>ME24256075</OrderNo>"
-    			+ "<!--OrderNo必选,每笔订单号必须唯一，订单号，String20-->"
-    			+ "<OrderTime>2016-06-22 23:59:59</OrderTime>"
-    			+ "<!--OrderTime必选，订单时间，String14-->"
-    			+ "<TaxMark>1</TaxMark>"
-				+ "<!--TaxMark必须，交易流水中的金额是否含税？（1、含税；0、不含税）-->"
-    			+ "<TotalAmount>5410.00</TotalAmount>"
-    			+ "<!--TotalAmount必须，价税合计，小数点后2位小数，该栏目打印在发票上-->"
-    			+ "<InvType>02</InvType>"
-    			+ "<!--InvType必须，发票种类（01、专用发票(纸质)；02、普通发票（纸质）；12、普通发票（电子）），电子发票使用12-->"
-    			+ "<Identifier>310105987654321</Identifier>"
-    			+ "<!--Identifier可选，购买方税号String20，15、18或20位，该栏目打印在发票上，专用发票必须-->"
-    			+ "<Name>购买方名称</Name>"
-    			+ "<!--Name必须，购买方名称String100，该栏目打印在发票上-->"
-    			+ "<Address>某某路20号203室</Address>"
-    			+ "<!--Address可选，购买方地址String100，该栏目打印在发票上，专用发票必须-->"
-    			+ "<TelephoneNo>13912345678</TelephoneNo>"
-    			+ "<!--TelephoneNo可选，购买方电话String20，该栏目打印在发票上，专用发票必须-->"
-    			+ "<Bank>中国建设银行打浦桥支行</Bank>"
-    			+ "<!--Bank可选，购买方银行String100，该栏目打印在发票上，专用发票必须-->"
-    			+ "<BankAcc>123456789-0</BankAcc>"
-    			+ "<!--BankAcc可选，购买方银行账号String30，该栏目打印在发票上，专用发票必须-->"
-    			+ "<Email>abc@163.com</Email>"
-    			+ "<!--Email可选，客户接收电子发票的电子邮箱地址String50-->"
-    			+ "<IsSend>1</IsSend>"
-    			+ "<!--IsSend电子发票生成后是否发送电子邮件（1、是；0、否）-->"
-    			+ "<Recipient>张三</Recipient>"
-    			+ "<!--Recipient可选，纸质发票收件人姓名String50-->"
-    			+ "<ReciAddress>收件人地址</ReciAddress>"
-    			+ "<!--Address可选，纸质发票收件人地址String200-->"
-    			+ "<Zip>200000</Zip>"
-    			+ "<!--zip可选，纸质发票收件人邮编String10-->"
-    			+ "</Row>"
-    			+ "<Row>"
-    			+ "<ClientNO>kp005</ClientNO>"
-    			+ "<!--必须,开票点编号 ,每个开票点对应唯一编号，比如KP001，KP002-->"
-    			+ "<OrderNo>ME24256072</OrderNo>"
-    			+ "<!--OrderNo必选，每笔订单号必须唯一，订单号，String20-->"
-    			+ "<OrderTime>2016-06-22 23:59:59</OrderTime>"
-    			+ "<!--OrderTime必选，订单时间，String14-->"
-    			+ "<TaxMark>1</TaxMark>"
-				+ "<!--TaxMark必须，交易流水中的金额是否含税？（1、含税；0、不含税）-->"
-    			+ "<TotalAmount>5410.00</TotalAmount>"
-    			+ "<!--TotalAmount必须，价税合计，小数点后2位小数，该栏目打印在发票上-->"
-    			+ "<InvType>02</InvType>"
-    			+ "<!--InvType必须，发票种类（01、专用发票(纸质)；02、普通发票（纸质）；12、普通发票（电子）），电子发票使用12-->"
-    			+ "<Identifier>310105987654321</Identifier>"
-    			+ "<!--Identifier可选，购买方税号String20，15、18或20位，该栏目打印在发票上，专用发票必须-->"
-    			+ "<Name>购买方名称</Name>"
-    			+ "<!--Name必须，购买方名称String100，该栏目打印在发票上-->"
-    			+ "<Address>某某路20号203室</Address>"
-    			+ "<!--Address可选，购买方地址String100，该栏目打印在发票上，专用发票必须-->"
-    			+ "<TelephoneNo>13912345678</TelephoneNo>"
-    			+ "<!--TelephoneNo可选，购买方电话String20，该栏目打印在发票上，专用发票必须-->"
-    			+ "<Bank>中国建设银行打浦桥支行</Bank>"
-    			+ "<!--Bank可选，购买方银行String100，该栏目打印在发票上，专用发票必须-->"
-    			+ "<BankAcc>123456789-0</BankAcc>"
-    			+ "<!--BankAcc可选，购买方银行账号String30，该栏目打印在发票上，专用发票必须-->"
-    			+ "<Email>abc@163.com</Email>"
-    			+ "<!--Email可选，客户接收电子发票的电子邮箱地址String50-->"
-    			+ "<IsSend>1</IsSend>"
-    			+ "<!--IsSend电子发票生成后是否发送电子邮件（1、是；0、否）-->"
-    			+ "<Recipient>张三</Recipient>"
-    			+ "<!--Recipient可选，纸质发票收件人姓名String50-->"
-    			+ "<ReciAddress>收件人地址</ReciAddress>"
-    			+ "<!--Address可选，纸质发票收件人地址String200-->"
-    			+ "<Zip>200000</Zip>"
-    			+ "<!--zip可选，纸质发票收件人邮编String10-->"
-    			+ "</Row>"
-    			+ "</Request>";
+    	final String xml03="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+				"<Request>\n" +
+				"  <ClientNO>tujia_01</ClientNO>\n" +
+				"  <SerialNumber>2016062412444500001</SerialNumber>\n" +
+				"  <InvType>02</InvType>\n" +
+				"  <ServiceType>0</ServiceType>\n" +
+				"  <Spbmbbh>12.0</Spbmbbh>\n" +
+				"  <Drawer>张三</Drawer>\n" +
+				"  <Seller>\n" +
+				"    <Identifier>310101123456789</Identifier>\n" +
+				"    <Name>11111</Name>\n" +
+				"    <Address>某某路10号1203室</Address>\n" +
+				"    <TelephoneNo>021-55555555</TelephoneNo>\n" +
+				"    <Bank>中国建设银行打浦桥支行</Bank>\n" +
+				"    <BankAcc>123456789-0</BankAcc>\n" +
+				"  </Seller>\n" +
+				"   <OrderSize count=\"1\">\n" +
+				"    <Order>\n" +
+				"      <OrderMain>\n" +
+				"        <OrderNo>ME24156071</OrderNo>\n" +
+				"        <InvoiceList>0</InvoiceList>\n" +
+				"        <InvoiceSplit>1</InvoiceSplit>\n" +
+				"        <InvoiceSfdy>1</InvoiceSfdy>\n" +
+				"        <OrderDate>2017-05-16 17:39:57</OrderDate>\n" +
+				"        <ChargeTaxWay>0</ChargeTaxWay>\n" +
+				"        <TotalAmount>1000</TotalAmount>\n" +
+				"        <TaxMark>1</TaxMark>\n" +
+				"        <Remark>tesr</Remark>\n" +
+				"        <Buyer>\n" +
+				"          <Name>上海途逸公寓管理有限公司</Name>\n" +
+				"          <IsSend>0</IsSend>\n" +
+				"        </Buyer>\n" +
+				"      </OrderMain>\n" +
+				"      <OrderDetails count=\"1\">\n" +
+				"        <ProductItem>\n" +
+				"          <ProductCode>1000000000000000000</ProductCode>\n" +
+				"          <ProductName>房费</ProductName>\n" +
+				"          <RowType>0</RowType>\n" +
+				"          <Quantity>0</Quantity>\n" +
+				"          <UnitPrice>0</UnitPrice>\n" +
+				"          <Amount>1000</Amount>\n" +
+				"          <DeductAmount>0</DeductAmount>\n" +
+				"          <TaxRate>0.17</TaxRate>\n" +
+				"          <TaxAmount>170</TaxAmount>\n" +
+				"          <MxTotalAmount>1170</MxTotalAmount>\n" +
+				"          <PolicyMark>0</PolicyMark>\n" +
+				"        </ProductItem>\n" +
+				"      </OrderDetails>\n" +
+				"    </Order>\n" +
+				"  </OrderSize>\n" +
+				"</Request>";
     	
     	final String xml01 ="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
     			+ "<Request>"
@@ -606,7 +582,7 @@ public class WebServiceTestCall {
 + "</Request>";
     	
     	String xml08 = "<Request>"
-    			+ "<ClientNO>kp005</ClientNO>"
+    			+ "<ClientNO>tujia_01</ClientNO>"
     			+ "<!--纸质票必须,开票点编号 ,每个开票点对应唯一编号，比如KP001，KP002-->"
     			+ "<Fplxdm>02</Fplxdm>"
     			+ "<!--必须，发票类型代码，01增值税专用发票，02增值税普通发票；-->"
@@ -614,10 +590,10 @@ public class WebServiceTestCall {
        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
        Client client = dcf.createClient(WS_URL);
        String methodName = "UploadOrderData";
-       String AppKey = "RJe598af996905";
-       String key ="974bf21fe93ed0d07865d56e382f41a2";
-       String Secret = getSign(xml01,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"01",xml01);
+       String AppKey = "RJ874afd58e67b";
+       String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
+       String Secret = getSign(xml08,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"08",xml08);
        //输出调用结果
        System.out.println(objects[0].toString());
     }
@@ -630,14 +606,14 @@ public class WebServiceTestCall {
     
    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://localhost:8080/dzfp-service-new/services/invoiceService?wsdl";
+   public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
-        testCallQuery();
+        //testCallQuery();
     	//testUploadOrder();
     	//testCallService();
     	//testinvoiceUpload();
-    	//testuploadOrderData();
+    	testuploadOrderData();
     }
 
 }
