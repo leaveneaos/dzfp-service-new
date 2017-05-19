@@ -48,8 +48,8 @@ public class DealOrder08 implements IDealOrder {
         result08.setClientNO(clientNO);
         result08.setFplxdm(fpzldm);
         if (StringUtils.isBlank(clientNO) || StringUtils.isBlank(fpzldm)) {
-            result08.setOperateFlag("1");
-            result08.setReturnmsg("ClientNO或Fplxdm不能为空！");
+            result08.setReturnCode("9999");
+            result08.setReturnMessage("ClientNO或Fplxdm不能为空！");
             return XmlJaxbUtils.toXml(result08);
         }
         Map params = new HashMap();
@@ -57,8 +57,8 @@ public class DealOrder08 implements IDealOrder {
         params.put("gsdm", gsdm);
         Skp skp = skpService.findOneByParams(params);
         if (skp == null) {
-            result08.setOperateFlag("1");
-            result08.setReturnmsg("开票点：" + clientNO + "不存在！");
+            result08.setReturnCode("9999");
+            result08.setReturnMessage("开票点：" + clientNO + "不存在！");
             return XmlJaxbUtils.toXml(result08);
         }
         int xfid = skp.getXfid();
@@ -70,17 +70,17 @@ public class DealOrder08 implements IDealOrder {
             try {
                 InvoiceResponse response = skService.getCodeAndNo(kpdid, fpzldm);
                 if ("0000".equals(response.getReturnCode())) {
-                    result08.setOperateFlag("0");
+                    result08.setReturnCode("0000");
                 } else {
-                    result08.setOperateFlag("1");
+                    result08.setReturnCode("9999");
                 }
                 result08.setDqfpdm(response.getFpdm());
                 result08.setDqfphm(response.getFphm());
-                result08.setReturnmsg(response.getReturnMessage());
+                result08.setReturnMessage(response.getReturnMessage());
                 return XmlJaxbUtils.toXml(result08);
             } catch (Exception e) {
-                result08.setOperateFlag("1");
-                result08.setReturnmsg(e.getMessage());
+                result08.setReturnCode("9999");
+                result08.setReturnMessage(e.getMessage());
                 return XmlJaxbUtils.toXml(result08);
             }
         } else if ("02".equals("kpfs")) {
@@ -98,8 +98,8 @@ public class DealOrder08 implements IDealOrder {
             result = responseUtil.response08(result);
             return result;
         } else {
-            result08.setOperateFlag("1");
-            result08.setReturnmsg("开票点：" + clientNO + "的开票方式不支持该接口！");
+            result08.setReturnCode("9999");
+            result08.setReturnMessage("开票点：" + clientNO + "的开票方式不支持该接口！");
             return XmlJaxbUtils.toXml(result08);
         }
     }
