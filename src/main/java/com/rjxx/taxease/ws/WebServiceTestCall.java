@@ -261,14 +261,14 @@ public class WebServiceTestCall {
     	final String xml03="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 				"<Request>\n" +
 				"  <ClientNO>tujia_01</ClientNO>\n" +
-				"  <SerialNumber>2016062412444500001</SerialNumber>\n" +
+				"  <SerialNumber>2016062412444500003</SerialNumber>\n" +
 				"  <InvType>02</InvType>\n" +
 				"  <ServiceType>0</ServiceType>\n" +
 				"  <Spbmbbh>12.0</Spbmbbh>\n" +
 				"  <Drawer>张三</Drawer>\n" +
 				"  <Seller>\n" +
-				"    <Identifier>310101123456789</Identifier>\n" +
-				"    <Name>11111</Name>\n" +
+				"    <Identifier>500102010003643</Identifier>\n" +
+				"    <Name>上海百旺测试3643</Name>\n" +
 				"    <Address>某某路10号1203室</Address>\n" +
 				"    <TelephoneNo>021-55555555</TelephoneNo>\n" +
 				"    <Bank>中国建设银行打浦桥支行</Bank>\n" +
@@ -593,7 +593,7 @@ public class WebServiceTestCall {
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
        String Secret = getSign(xml08,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"08",xml08);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"13",xml08);
        //输出调用结果
        System.out.println(objects[0].toString());
     }
@@ -606,7 +606,7 @@ public class WebServiceTestCall {
     
    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
+   public static String WS_URL = "http://localhost:8080/webService/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();

@@ -1,12 +1,10 @@
 package com.rjxx.taxease.service;
 
-import com.rjxx.taxease.service.dealorder.DealOrder01;
-import com.rjxx.taxease.service.dealorder.DealOrder02;
-import com.rjxx.taxease.service.dealorder.DealOrder03;
-import com.rjxx.taxease.service.dealorder.DealOrder08;
+import com.rjxx.taxease.service.dealorder.*;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.utils.ResponseUtils;
+import com.sun.tools.corba.se.idl.constExpr.Or;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +31,9 @@ public class DealOrderDataService {
 
     @Autowired
     private DealOrder08 dealOrder08;
+
+    @Autowired
+    private DealOrder13 dealOrder13;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -95,6 +96,8 @@ public class DealOrderDataService {
             return dealOrder08.execute(gsdm, OrderData, Operation);
         } else if (Operation.equals("11")) {
 
+        } else if (Operation.equals("13")) {
+            return dealOrder13.execute(gsdm, OrderData, Operation);
         }
         return result;
     }

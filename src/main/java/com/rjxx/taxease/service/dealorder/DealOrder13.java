@@ -1,7 +1,6 @@
 package com.rjxx.taxease.service.dealorder;
 
-import com.rjxx.taxease.service.result.Result08;
-import com.rjxx.taxease.utils.CallDllWebServiceUtil;
+import com.rjxx.taxease.service.result.Result13;
 import com.rjxx.taxease.utils.ResponseUtil;
 import com.rjxx.taxease.utils.XmlMapUtils;
 import com.rjxx.taxeasy.bizcomm.utils.InvoiceResponse;
@@ -24,7 +23,7 @@ import java.util.Map;
  * Created by Administrator on 2017-05-18.
  */
 @Service
-public class DealOrder08 implements IDealOrder {
+public class DealOrder13 implements IDealOrder {
 
     @Autowired
     private SkService skService;
@@ -40,26 +39,26 @@ public class DealOrder08 implements IDealOrder {
 
     public String execute(String gsdm, String orderData, String Operation) {
         String result = "";
-        // 08代表当前发票号码
-        Map inputMap = dealOperation08(gsdm, orderData);
+        // 13代表当前发票号码
+        Map inputMap = dealOperation13(gsdm, orderData);
         String clientNO = String.valueOf(inputMap.get("clientNO"));
         String fpzldm = String.valueOf(inputMap.get("fpzldm"));
-        Result08 result08 = new Result08();
-        result08.setClientNO(clientNO);
-        result08.setFplxdm(fpzldm);
+        Result13 result13 = new Result13();
+        result13.setClientNO(clientNO);
+        result13.setFplxdm(fpzldm);
         if (StringUtils.isBlank(clientNO) || StringUtils.isBlank(fpzldm)) {
-            result08.setOperateFlag("1");
-            result08.setReturnmsg("ClientNO或Fplxdm不能为空！");
-            return XmlJaxbUtils.toXml(result08);
+            result13.setReturnCode("9999");
+            result13.setReturnMessage("ClientNO或Fplxdm不能为空！");
+            return XmlJaxbUtils.toXml(result13);
         }
         Map params = new HashMap();
         params.put("kpddm", clientNO);
         params.put("gsdm", gsdm);
         Skp skp = skpService.findOneByParams(params);
         if (skp == null) {
-            result08.setOperateFlag("1");
-            result08.setReturnmsg("开票点：" + clientNO + "不存在！");
-            return XmlJaxbUtils.toXml(result08);
+            result13.setReturnCode("9999");
+            result13.setReturnMessage("开票点：" + clientNO + "不存在！");
+            return XmlJaxbUtils.toXml(result13);
         }
         int xfid = skp.getXfid();
         int kpdid = skp.getId();
@@ -70,38 +69,26 @@ public class DealOrder08 implements IDealOrder {
             try {
                 InvoiceResponse response = skService.getCodeAndNo(kpdid, fpzldm);
                 if ("0000".equals(response.getReturnCode())) {
-                    result08.setOperateFlag("0");
-                    result08.setReturnmsg("");
+                    result13.setReturnCode("0000");
                 } else {
-                    result08.setOperateFlag("1");
-                    result08.setReturnmsg(response.getReturnMessage());
+                    result13.setReturnCode("9999");
+                    result13.setReturnMessage(response.getReturnMessage());
                 }
-                result08.setDqfpdm(response.getFpdm());
-                result08.setDqfphm(response.getFphm());
-                return XmlJaxbUtils.toXml(result08);
+                result13.setDqfpdm(response.getFpdm());
+                result13.setDqfphm(response.getFphm());
+                return XmlJaxbUtils.toXml(result13);
             } catch (Exception e) {
-                result08.setOperateFlag("1");
-                result08.setReturnmsg(e.getMessage());
-                return XmlJaxbUtils.toXml(result08);
+                result13.setReturnCode("9999");
+                result13.setReturnMessage(e.getMessage());
+                return XmlJaxbUtils.toXml(result13);
             }
         } else if ("02".equals("kpfs")) {
-            if (fpzldm.equals("01")) {
-                fpzldm = "0";
-            } else if (fpzldm.equals("02")) {
-                fpzldm = "1";
-            }
-            Map map = new HashMap();
-            map.put("clientNO", clientNO);
-            map.put("fpzldm", fpzldm);
-            map.put("Operation", Operation);
-            CallDllWebServiceUtil utils = new CallDllWebServiceUtil();
-            result = utils.callDllWebSevice(gsdm, map);
-            result = responseUtil.response08(result);
+            //TODO 组件接口开发
             return result;
         } else {
-            result08.setOperateFlag("1");
-            result08.setReturnmsg("开票点：" + clientNO + "的开票方式不支持该接口！");
-            return XmlJaxbUtils.toXml(result08);
+            result13.setReturnCode("9999");
+            result13.setReturnMessage("开票点：" + clientNO + "的开票方式不支持该接口！");
+            return XmlJaxbUtils.toXml(result13);
         }
     }
 
@@ -111,7 +98,7 @@ public class DealOrder08 implements IDealOrder {
      * @param gsdm,OrderData
      * @return Map
      */
-    private Map dealOperation08(String gsdm, String OrderData) {
+    private Map dealOperation13(String gsdm, String OrderData) {
         OMElement root = null;
         Map inputMap = new HashMap();
         try {

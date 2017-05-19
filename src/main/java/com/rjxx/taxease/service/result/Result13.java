@@ -10,7 +10,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Responese")
-public class Result08 {
+public class Result13 {
+
+    @XmlElement
+    private String ReturnCode;
+
+    @XmlElement
+    private String ReturnMessage;
 
     @XmlElement
     private String ClientNO;
@@ -24,11 +30,21 @@ public class Result08 {
     @XmlElement
     private String Dqfphm;
 
-    @XmlElement
-    private String OperateFlag;
+    public String getReturnCode() {
+        return ReturnCode;
+    }
 
-    @XmlElement
-    private String Returnmsg;
+    public void setReturnCode(String returnCode) {
+        ReturnCode = returnCode;
+    }
+
+    public String getReturnMessage() {
+        return ReturnMessage;
+    }
+
+    public void setReturnMessage(String returnMessage) {
+        ReturnMessage = returnMessage;
+    }
 
     public String getClientNO() {
         return ClientNO;
@@ -60,21 +76,5 @@ public class Result08 {
 
     public void setDqfphm(String dqfphm) {
         Dqfphm = dqfphm;
-    }
-
-    public String getOperateFlag() {
-        return OperateFlag;
-    }
-
-    public void setOperateFlag(String operateFlag) {
-        OperateFlag = operateFlag;
-    }
-
-    public String getReturnmsg() {
-        return Returnmsg;
-    }
-
-    public void setReturnmsg(String returnmsg) {
-        Returnmsg = returnmsg;
     }
 }
