@@ -72,36 +72,22 @@ public class DealOrder01 implements IDealOrder {
         jyxxsqList = (List<Jyxxsq>) this.addMoreDate(jyxxsqList, gsdm);
         //String fpje = (String) moreDate.get("fpje");
         // 取出xfid、skpid等用来插叙该开票点是否直连开票
-        String xfid = String.valueOf(jyxxsqList.get(0).getXfid());
-        String skpid = String.valueOf(jyxxsqList.get(0).getSkpid());
-        String csm = "sfzlkp";
-        Map cszbMap = new HashMap();
-        cszbMap.put("xfid", xfid);
-        cszbMap.put("kpdid", skpid);
-        cszbMap.put("csm", csm);
-        cszbMap.put("gsdm", gsdm);
-        List cszbList = cszbservice.findAllByParams(cszbMap);
-        Cszb cszb = null;
-        if (null != cszbList && cszbList.size() > 0) {
-            cszb = (Cszb) cszbList.get(0);
+        int xfid = jyxxsqList.get(0).getXfid();
+        int skpid = jyxxsqList.get(0).getSkpid();
+        Cszb cszb = cszbservice.getSpbmbbh(gsdm, xfid, skpid, "sfzlkp");
 
-            // List<Jyxxsq> reList = new ArrayList<Jyxxsq>();
-            // t_jyxxsq表中sfzlkp设置为对应的值，1直连开，0非直连开
-            for (int i = 0; i < jyxxsqList.size(); i++) {
-                Jyxxsq jyxxsq = jyxxsqList.get(i);
-                if (null != cszb && cszb.getCsz().equals("是")) {
-                    jyxxsq.setSfzlkp("1");
-                    jyxxsq.setZtbz("6");
-                }
-                // reList.add(jyxxsq);
-            }
-        } else {
-            for (int i = 0; i < jyxxsqList.size(); i++) {
-                Jyxxsq jyxxsq = jyxxsqList.get(i);
+        // List<Jyxxsq> reList = new ArrayList<Jyxxsq>();
+        // t_jyxxsq表中sfzlkp设置为对应的值，1直连开，0非直连开
+        for (int i = 0; i < jyxxsqList.size(); i++) {
+            Jyxxsq jyxxsq = jyxxsqList.get(i);
+            if (null != cszb && cszb.getCsz().equals("是")) {
+                jyxxsq.setSfzlkp("1");
+                jyxxsq.setZtbz("6");
+            } else {
                 jyxxsq.setSfzlkp("0");
                 jyxxsq.setZtbz("6");
-                // reList.add(jyxxsq);
             }
+            // reList.add(jyxxsq);
         }
         // jyxxsqList = reList;
 
@@ -122,15 +108,7 @@ public class DealOrder01 implements IDealOrder {
             } else {
                 if (null != cszb && cszb.getCsz().equals("是")) {
                     // 需考虑是否直连开票，若不是直连，不需要实时接口，考虑用参数配置,分为组件接口，录屏方式01录屏，02组件，03其他
-                    Map cszbMap2 = new HashMap();
-                    cszbMap2.put("xfid", xfid);
-                    cszbMap2.put("kpdid", skpid);
-                    cszbMap2.put("csm", "kpfs");
-                    cszbMap2.put("gsdm", gsdm);
-                    List cszbList2 = cszbservice.findAllByParams(cszbMap2);
-                    Cszb cszb2 = null;
-                    if (null != cszbList2 && cszbList2.size() > 0)
-                        cszb2 = (Cszb) cszbList2.get(0);
+                    Cszb cszb2 = cszbservice.getSpbmbbh(gsdm, Integer.valueOf(xfid), Integer.valueOf(skpid), "kpfs");
                     // 录屏方式
                     if (cszb2.getCsz().equals("01")) {
                         List resultList = new ArrayList();

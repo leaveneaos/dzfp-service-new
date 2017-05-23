@@ -258,11 +258,11 @@ public class WebServiceTestCall {
     }
     
     public static void testuploadOrderData() throws Exception {
-    	final String xml03="<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+    	final String xml011="<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
 				"<Request>" +
 				"  <ClientNO>tujia_01</ClientNO>" +
-				"  <SerialNumber>2016062412444500003</SerialNumber>" +
-				"  <InvType>02</InvType>" +
+				"  <SerialNumber>2016062412444500014</SerialNumber>" +
+				"  <InvType>12</InvType>" +
 				"  <ServiceType>0</ServiceType>" +
 				"  <Spbmbbh>12.0</Spbmbbh>" +
 				"  <Drawer>张三</Drawer>" +
@@ -288,7 +288,8 @@ public class WebServiceTestCall {
 				"        <Remark>tesr</Remark>" +
 				"        <Buyer>" +
 				"          <Name>上海途逸公寓管理有限公司</Name>" +
-				"          <IsSend>0</IsSend>" +
+				"			 <Email>179637014@qq.com</Email>" +
+				"			 <IsSend>1</IsSend>" +
 				"        </Buyer>" +
 				"      </OrderMain>" +
 				"      <OrderDetails count=\"1\">" +
@@ -601,8 +602,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml11,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"11",xml11);
+       String Secret = getSign(xml011,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"01",xml011);
        //输出调用结果
        System.out.println(objects[0].toString());
     }

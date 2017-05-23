@@ -188,21 +188,19 @@ public class ResponseUtil {
                         ? "" : invoiceresponse.getReturnMessage());
 
             }
-            // 规范格式
-            OutputFormat format = OutputFormat.createPrettyPrint();
-            // 设置输出编码
-            format.setEncoding("gbk");
-            xw = new XMLWriter(sendXml, format);
-            try {
-                xw.write(doc);
-                xw.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
         }
-
+        // 规范格式
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        // 设置输出编码
+        format.setEncoding("gbk");
+        xw = new XMLWriter(sendXml, format);
+        try {
+            xw.write(doc);
+            xw.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return sendXml.toString();
     }
 
@@ -263,7 +261,7 @@ public class ResponseUtil {
         }
         return sendXml.toString();
     }
-    
+
     /**
      * 调用组件接口时，回写发票代码和发票号码
      *

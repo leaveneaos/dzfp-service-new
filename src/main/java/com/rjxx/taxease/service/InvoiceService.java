@@ -302,7 +302,7 @@ public class InvoiceService {
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new RuntimeException("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Responese>\n  <ReturnCode>9999</ReturnCode>\n" +
-                            "  <Djh></Djh>\n  <ReturnMessage>9099:" + e.getMessage() + "</ReturnMessage>\n</Responese>");
+                            "<ReturnMessage>9099:" + e.getMessage() + "</ReturnMessage>\n</Responese>");
       /*              resultMap.put("result", "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Responese>\n  <ReturnCode>9999</ReturnCode>\n" +
                             "  <Djh></Djh>\n  <ReturnMessage>9099:" + e.getMessage() + "</ReturnMessage>\n</Responese>");*/
                     //return false;
