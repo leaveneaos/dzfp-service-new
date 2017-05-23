@@ -441,7 +441,7 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setSfdyqd(invoiceList);
                 jyxxsq.setSfcp(invoiceSplit);
                 jyxxsq.setSfdy(InvoiceSfdy);
-                SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
                     jyxxsq.setDdrq(orderDate == null ? new Date() : sim.parse(orderDate));
                 } catch (ParseException e) {

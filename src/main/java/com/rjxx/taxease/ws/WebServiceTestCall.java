@@ -11,16 +11,16 @@ public class WebServiceTestCall {
 
    
     public static void testCallQuery() throws Exception {
-    	 String QueryData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                 "<Request>\n" +
-                 "  <!--以下查询条件可任选-->\n" +
-                 "  <SerialNumber>20170122115605432522</SerialNumber>\n" +
-                 "  <!--SerialNumber可选，交易流水号String20-->\n" +
-                 "  <OrderNumber></OrderNumber>\n" +
-                 "  <!--OrderNumber可选，来源系统订单号，String20-->\n" +
-                 "  <ExtractCode></ExtractCode>\n" +
-                 "  <!--ExtractCode可选，提取码String20-->\n" +
-                 "</Request>\n";
+    	 String QueryData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                 "<Request>" +
+                 "  <!--以下查询条件可任选-->" +
+                 "  <SerialNumber>20170122115605432522</SerialNumber>" +
+                 "  <!--SerialNumber可选，交易流水号String20-->" +
+                 "  <OrderNumber></OrderNumber>" +
+                 "  <!--OrderNumber可选，来源系统订单号，String20-->" +
+                 "  <ExtractCode></ExtractCode>" +
+                 "  <!--ExtractCode可选，提取码String20-->" +
+                 "</Request>";
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient(WS_URL);
         String methodName = "CallQuery";
@@ -34,33 +34,33 @@ public class WebServiceTestCall {
     }
  
     public static void testUploadOrder() throws Exception {
-    	String OrderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<Request>\n" +
-        		"<Row> \n"+
-                "  <OrderNo>ME241561114</OrderNo>\n" +
-                "  <!--OrderNo必选，订单号，String20-->\n" +
-                "  <OrderTime>20161220103914</OrderTime>\n" +
-                "  <!--OrderTime必选，订单时间，String14-->\n" +
-                "  <Price>438.33</Price>\n" +
-                "  <!--Price必选，金额，Double(10,2) -->\n" +
-                "  <Sign>b0c87cce86a4dfebedc05d83e7f76790</Sign>\n" +
-                "  <!--Sign必选，签名串String32-->\n" +
-                "  <StoreNo>8001</StoreNo>\n" +
-                "  <!--StoreNo可选，门店编号String20-->\n" +
-                "  </Row>\n" +
-                "<Row> \n"+
-                "  <OrderNo>ME24156115</OrderNo>\n" +
-                "  <!--OrderNo必选，订单号，String20-->\n" +
-                "  <OrderTime>20161220112216</OrderTime>\n" +
-                "  <!--OrderTime必选，订单时间，String14-->\n" +
-                "  <Price>438.99</Price>\n" +
-                "  <!--Price必选，金额，Double(10,2) -->\n" +
-                "  <Sign>b0c87cce86a4dfebedc05d83e7aaaaaa</Sign>\n" +
-                "  <!--Sign必选，签名串String32-->\n" +
-                "  <StoreNo>8001</StoreNo>\n" +
-                "  <!--StoreNo可选，门店编号String20-->\n" +
-                "  </Row>\n" +
-                "</Request>\n";
+    	String OrderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<Request>" +
+        		"<Row> "+
+                "  <OrderNo>ME241561114</OrderNo>" +
+                "  <!--OrderNo必选，订单号，String20-->" +
+                "  <OrderTime>20161220103914</OrderTime>" +
+                "  <!--OrderTime必选，订单时间，String14-->" +
+                "  <Price>438.33</Price>" +
+                "  <!--Price必选，金额，Double(10,2) -->" +
+                "  <Sign>b0c87cce86a4dfebedc05d83e7f76790</Sign>" +
+                "  <!--Sign必选，签名串String32-->" +
+                "  <StoreNo>8001</StoreNo>" +
+                "  <!--StoreNo可选，门店编号String20-->" +
+                "  </Row>" +
+                "<Row> "+
+                "  <OrderNo>ME24156115</OrderNo>" +
+                "  <!--OrderNo必选，订单号，String20-->" +
+                "  <OrderTime>20161220112216</OrderTime>" +
+                "  <!--OrderTime必选，订单时间，String14-->" +
+                "  <Price>438.99</Price>" +
+                "  <!--Price必选，金额，Double(10,2) -->" +
+                "  <Sign>b0c87cce86a4dfebedc05d83e7aaaaaa</Sign>" +
+                "  <!--Sign必选，签名串String32-->" +
+                "  <StoreNo>8001</StoreNo>" +
+                "  <!--StoreNo可选，门店编号String20-->" +
+                "  </Row>" +
+                "</Request>";
        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
        Client client = dcf.createClient(WS_URL);
        String methodName = "UploadOrder";
@@ -74,76 +74,76 @@ public class WebServiceTestCall {
    }
     
     public static void testCallService() throws Exception {
-    	String lzData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<Request>\n" +
-                "\t<SerialNumber>2016082512444500078</SerialNumber>\n" +
-                "\t<InvType>12</InvType>\n" +
-                "\t<InvoiceSplit>1</InvoiceSplit>\n" +
-                "\t<ServiceType>0</ServiceType>\n" +
-                "\t<Email>zhangbing@datarj.com</Email>\n" +
-                "\t<IsSend>1</IsSend>\n" +
-                "\t<ExtractedCode>d2127a</ExtractedCode>\n" +
-                "\t<Recipient>张三</Recipient>\n" +
-                "\t<Zip>200000</Zip>\n" +
-                "\t<LetterAddress>上海市漕宝路</LetterAddress>\n" +
-                "\t<Drawer>开票人</Drawer>\n" +
-                "\t<Payee>收款人</Payee>\n" +
-                "\t<Reviewer>复核人</Reviewer>\n" +
-                "\t<CancelUser>作废人</CancelUser>\n" +
-                "\t<CNNoticeNo></CNNoticeNo>\n" +
-                "\t<CNDNCode></CNDNCode>\n" +
-                "\t<CNDNNo></CNDNNo>\n" +
-                "\t<InvoiceMain>\n" +
-                "\t\t<OrderNumber>ME24156071</OrderNumber>\n" +
-                "\t\t<OrderDate>2016-06-22 23:59:59</OrderDate>\n" +
-                "\t\t<TotalAmount>5410.00</TotalAmount>\n" +
-                "\t\t<TaxMark>0</TaxMark>\n" +
-                "\t\t<Remark>这是备注</Remark>\n" +
-                "\t\t<Seller>\n" +
-                "\t\t\t<Identifier>91310101MA1FW0008P</Identifier>\n" +
-                "\t\t\t<Name>上海百旺测试盘</Name>\n" +
-                "\t\t\t<Address>某某路10号1203室</Address>\n" +
-                "\t\t\t<TelephoneNo>021-55555555</TelephoneNo>\n" +
-                "\t\t\t<Bank>中国建设银行打浦桥支行</Bank>\n" +
-                "\t\t\t<BankAcc>123456789-0</BankAcc>\n" +
-                "\t\t</Seller>\n" +
-                "\t\t<Buyer>\n" +
-                "\t\t\t<Identifier></Identifier>\n" +
-                "\t\t\t<Name>购方名称</Name>\n" +
-                "\t\t\t<Address>某某路20号203室</Address>\n" +
-                "\t\t\t<TelephoneNo>13912345678</TelephoneNo>\n" +
-                "\t\t\t<Bank>中国建设银行打浦桥支行</Bank>\n" +
-                "\t\t\t<BankAcc>123456789-0</BankAcc>\n" +
-                "\t\t</Buyer>\n" +
-                "\t</InvoiceMain>\n" +
-                "\t<InvoiceDetails count=\"2\">\n" +
-                "\t\t<ProductItem>\n" +
-                "\t\t\t<ProductCode>1000000000000000000</ProductCode>\n" +
-                "\t\t\t<ProductName>商品1</ProductName>\n" +
-                "\t\t\t<RowType>0</RowType>\n" +
-                "\t\t\t<Spec>规格型号1</Spec>\n" +
-                "\t\t\t<Unit>单位1</Unit>\n" +
-                "\t\t\t<Quantity>1</Quantity>\n" +
-                "\t\t\t<UnitPrice>1000.00</UnitPrice>\n" +
-                "\t\t\t<Amount>1000.00</Amount>\n" +
-                "\t\t\t<TaxRate>0.17</TaxRate>\n" +
-                "\t\t\t<TaxAmount>170.00</TaxAmount>\n" +
-                "\t\t</ProductItem>\n" +
-                "\t\t<ProductItem>\n" +
-                "\t\t\t<ProductCode>1000000000000000000</ProductCode>\n" +
-                "\t\t\t<ProductName>商品2</ProductName>\n" +
-                "\t\t\t<RowType>0</RowType>\n" +
-                "\t\t\t<Spec>规格型号2</Spec>\n" +
-                "\t\t\t<Unit>单位2</Unit>\n" +
-                "\t\t\t<Quantity>2</Quantity>\n" +
-                "\t\t\t<UnitPrice>2000.00</UnitPrice>\n" +
-                "\t\t\t<Amount>4000.00</Amount>\n" +
-                "\t\t\t<TaxRate>0.06</TaxRate>\n" +
-                "\t\t\t<TaxAmount>240.00</TaxAmount>\n" +
-                "\t\t</ProductItem>\n" +
-                "\t</InvoiceDetails>\n" +
-                "</Request>\n";
-    	String qbhcData ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    	String lzData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<Request>" +
+                "<SerialNumber>2016082512444500078</SerialNumber>" +
+                "<InvType>12</InvType>" +
+                "<InvoiceSplit>1</InvoiceSplit>" +
+                "<ServiceType>0</ServiceType>" +
+                "<Email>zhangbing@datarj.com</Email>" +
+                "<IsSend>1</IsSend>" +
+                "<ExtractedCode>d2127a</ExtractedCode>" +
+                "<Recipient>张三</Recipient>" +
+                "<Zip>200000</Zip>" +
+                "<LetterAddress>上海市漕宝路</LetterAddress>" +
+                "<Drawer>开票人</Drawer>" +
+                "<Payee>收款人</Payee>" +
+                "<Reviewer>复核人</Reviewer>" +
+                "<CancelUser>作废人</CancelUser>" +
+                "<CNNoticeNo></CNNoticeNo>" +
+                "<CNDNCode></CNDNCode>" +
+                "<CNDNNo></CNDNNo>" +
+                "<InvoiceMain>" +
+                "<OrderNumber>ME24156071</OrderNumber>" +
+                "<OrderDate>2016-06-22 23:59:59</OrderDate>" +
+                "<TotalAmount>5410.00</TotalAmount>" +
+                "<TaxMark>0</TaxMark>" +
+                "<Remark>这是备注</Remark>" +
+                "<Seller>" +
+                "<Identifier>91310101MA1FW0008P</Identifier>" +
+                "<Name>上海百旺测试盘</Name>" +
+                "<Address>某某路10号1203室</Address>" +
+                "<TelephoneNo>021-55555555</TelephoneNo>" +
+                "<Bank>中国建设银行打浦桥支行</Bank>" +
+                "<BankAcc>123456789-0</BankAcc>" +
+                "</Seller>" +
+                "<Buyer>" +
+                "<Identifier></Identifier>" +
+                "<Name>购方名称</Name>" +
+                "<Address>某某路20号203室</Address>" +
+                "<TelephoneNo>13912345678</TelephoneNo>" +
+                "<Bank>中国建设银行打浦桥支行</Bank>" +
+                "<BankAcc>123456789-0</BankAcc>" +
+                "</Buyer>" +
+                "</InvoiceMain>" +
+                "<InvoiceDetails count=\"2\">" +
+                "<ProductItem>" +
+                "<ProductCode>1000000000000000000</ProductCode>" +
+                "<ProductName>商品1</ProductName>" +
+                "<RowType>0</RowType>" +
+                "<Spec>规格型号1</Spec>" +
+                "<Unit>单位1</Unit>" +
+                "<Quantity>1</Quantity>" +
+                "<UnitPrice>1000.00</UnitPrice>" +
+                "<Amount>1000.00</Amount>" +
+                "<TaxRate>0.17</TaxRate>" +
+                "<TaxAmount>170.00</TaxAmount>" +
+                "</ProductItem>" +
+                "<ProductItem>" +
+                "<ProductCode>1000000000000000000</ProductCode>" +
+                "<ProductName>商品2</ProductName>" +
+                "<RowType>0</RowType>" +
+                "<Spec>规格型号2</Spec>" +
+                "<Unit>单位2</Unit>" +
+                "<Quantity>2</Quantity>" +
+                "<UnitPrice>2000.00</UnitPrice>" +
+                "<Amount>4000.00</Amount>" +
+                "<TaxRate>0.06</TaxRate>" +
+                "<TaxAmount>240.00</TaxAmount>" +
+                "</ProductItem>" +
+                "</InvoiceDetails>" +
+                "</Request>";
+    	String qbhcData ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
     			"<Request>"
     			+ "<SerialNumber>2016083412444500022</SerialNumber>"
     			+ "<InvType>12</InvType>"
@@ -168,31 +168,31 @@ public class WebServiceTestCall {
     			+ "<!--CNDNNo，作废或红字发票必须，作废时对应的原始发票号码或红票对应蓝字发票号码String20-->"
     			+ "<TaxMark>0</TaxMark>"
     			+ "<!--TaxMark必须，明细的金额是否含税？（1、含税；0、不含税）-->"
-    			+ "\t<InvoiceDetails count=\"2\">\n" +
-                 "\t\t<ProductItem>\n" +
-                 "\t\t\t<ProductCode>1000000000000000000</ProductCode>\n" +
-                 "\t\t\t<ProductName>商品1</ProductName>\n" +
-                 "\t\t\t<RowType>0</RowType>\n" +
-                 "\t\t\t<Spec>规格型号1</Spec>\n" +
-                 "\t\t\t<Unit>单位1</Unit>\n" +
-                 "\t\t\t<Quantity>-1</Quantity>\n" +
-                 "\t\t\t<UnitPrice>500.00</UnitPrice>\n" +
-                 "\t\t\t<Amount>-500</Amount>\n" +
-                 "\t\t\t<TaxRate>0.17</TaxRate>\n" +
-                 "\t\t\t<TaxAmount>-85.00</TaxAmount>\n" +
-                 "\t\t</ProductItem>\n" +
-                 "\t\t<ProductItem>\n" +
-                 "\t\t\t<ProductCode>1000000000000000000</ProductCode>\n" +
-                 "\t\t\t<ProductName>商品2</ProductName>\n" +
-                 "\t\t\t<RowType>0</RowType>\n" +
-                 "\t\t\t<Spec>规格型号2</Spec>\n" +
-                 "\t\t\t<Unit>单位2</Unit>\n" +
-                 "\t\t\t<Quantity>-2</Quantity>\n" +
-                 "\t\t\t<UnitPrice>1000.00</UnitPrice>\n" +
-                 "\t\t\t<Amount>-2000.00</Amount>\n" +
-                 "\t\t\t<TaxRate>0.06</TaxRate>\n" +
-                 "\t\t\t<TaxAmount>-120.00</TaxAmount>\n" +
-                   "\t\t</ProductItem>\n" 
+    			+ "<InvoiceDetails count=\"2\">" +
+                 "<ProductItem>" +
+                 "<ProductCode>1000000000000000000</ProductCode>" +
+                 "<ProductName>商品1</ProductName>" +
+                 "<RowType>0</RowType>" +
+                 "<Spec>规格型号1</Spec>" +
+                 "<Unit>单位1</Unit>" +
+                 "<Quantity>-1</Quantity>" +
+                 "<UnitPrice>500.00</UnitPrice>" +
+                 "<Amount>-500</Amount>" +
+                 "<TaxRate>0.17</TaxRate>" +
+                 "<TaxAmount>-85.00</TaxAmount>" +
+                 "</ProductItem>" +
+                 "<ProductItem>" +
+                 "<ProductCode>1000000000000000000</ProductCode>" +
+                 "<ProductName>商品2</ProductName>" +
+                 "<RowType>0</RowType>" +
+                 "<Spec>规格型号2</Spec>" +
+                 "<Unit>单位2</Unit>" +
+                 "<Quantity>-2</Quantity>" +
+                 "<UnitPrice>1000.00</UnitPrice>" +
+                 "<Amount>-2000.00</Amount>" +
+                 "<TaxRate>0.06</TaxRate>" +
+                 "<TaxAmount>-120.00</TaxAmount>" +
+                   "</ProductItem>" 
     					+ "</InvoiceDetails>"
     					+ "</Request>";
        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
@@ -208,46 +208,46 @@ public class WebServiceTestCall {
    }
     
     public static void testinvoiceUpload() throws Exception {
-    	final String xml="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Request>\n" +
-    			"    <TotalAmount>1</TotalAmount>\n" +
-    			"    <SerialNumber>7000138809059495305</SerialNumber>\n" +
-    			"    <Main>\n" +
-    			"        <OrderNumber>70001388990</OrderNumber>\n" +
-    			"        <OrderDate>2016-07-11</OrderDate>\n" +
-    			"        <OrderTime>06:08:41</OrderTime>\n" +
-    			"        <Seller>\n" +
-    			"            <Identifier>91310101MA1FW0008P</Identifier>\n" +
-    			"            <Name>上海百旺测试盘</Name>\n" +
-    			"            <Address>Shanghai JingAn District West Nanjing Road No.15, JingAn JiaLi Center Room 607</Address>\n" +
-    			"            <TelephoneNumber>021-xxxxxxxx</TelephoneNumber>\n" +
-    			"        </Seller>\n" +
-    			"        <Buyer>\n" +
-    			"            <Identifier/>\n" +
-    			"            <Name>王五</Name>\n" +
-    			"            <IsSend>1</IsSend>\n" +
-    			"            <Payment>ALIPAY-FASTPAY</Payment>\n" +
-    			"            <Address>&#x6c5f;&#x82cf;&#x7701;,&#x5357;&#x4eac;&#x5e02; CN &#x8f6f;&#x4ef6;&#x5927;&#x9053;108&#x53f7;&#x84dd;&#x7b79;&#x8c37;2&#x680b;1&#x5355;&#x5143;401 ;;;;210012;;;; &#x9648;&#x4e16;&#x6770;</Address>\n" +
-    			"            <TelephoneNumber>18811049101</TelephoneNumber>\n" +
-    			"            <Email>zhangbing@datarj.com</Email>\n" +
-    			"        </Buyer>\n" +
-    			"    </Main>\n" +
-    			"    <Details size=\"2\">\n" +
-    			"        <ProductItem>\n" +
-    			"            <Description>Abercrombie and Fitch Apparel</Description>\n" +
-    			"            <Unit>EACH</Unit>\n" +
-    			"            <Quantity>1</Quantity>\n" +
-    			"            <UnitPrice>1000</UnitPrice>\n" +
-    			"            <Amount>1000.00</Amount>\n" +
-    			"        </ProductItem>\n" +
-    			"        <ProductItem>\n" +
-    			"            <Description>Abercrombie and Fitch Apparel</Description>\n" +
-    			"            <Unit>EACH</Unit>\n" +
-    			"            <Quantity>1</Quantity>\n" +
-    			"            <UnitPrice>1000</UnitPrice>\n" +
-    			"            <Amount>1000.00</Amount>\n" +
-    			"        </ProductItem>\n" +
-    			"    </Details>\n" +
-    			"</Request>\n";
+    	final String xml="<?xml version=\"1.0\" encoding=\"utf-8\"?><Request>" +
+    			"    <TotalAmount>1</TotalAmount>" +
+    			"    <SerialNumber>7000138809059495305</SerialNumber>" +
+    			"    <Main>" +
+    			"        <OrderNumber>70001388990</OrderNumber>" +
+    			"        <OrderDate>2016-07-11</OrderDate>" +
+    			"        <OrderTime>06:08:41</OrderTime>" +
+    			"        <Seller>" +
+    			"            <Identifier>91310101MA1FW0008P</Identifier>" +
+    			"            <Name>上海百旺测试盘</Name>" +
+    			"            <Address>Shanghai JingAn District West Nanjing Road No.15, JingAn JiaLi Center Room 607</Address>" +
+    			"            <TelephoneNumber>021-xxxxxxxx</TelephoneNumber>" +
+    			"        </Seller>" +
+    			"        <Buyer>" +
+    			"            <Identifier/>" +
+    			"            <Name>王五</Name>" +
+    			"            <IsSend>1</IsSend>" +
+    			"            <Payment>ALIPAY-FASTPAY</Payment>" +
+    			"            <Address>&#x6c5f;&#x82cf;&#x7701;,&#x5357;&#x4eac;&#x5e02; CN &#x8f6f;&#x4ef6;&#x5927;&#x9053;108&#x53f7;&#x84dd;&#x7b79;&#x8c37;2&#x680b;1&#x5355;&#x5143;401 ;;;;210012;;;; &#x9648;&#x4e16;&#x6770;</Address>" +
+    			"            <TelephoneNumber>18811049101</TelephoneNumber>" +
+    			"            <Email>zhangbing@datarj.com</Email>" +
+    			"        </Buyer>" +
+    			"    </Main>" +
+    			"    <Details size=\"2\">" +
+    			"        <ProductItem>" +
+    			"            <Description>Abercrombie and Fitch Apparel</Description>" +
+    			"            <Unit>EACH</Unit>" +
+    			"            <Quantity>1</Quantity>" +
+    			"            <UnitPrice>1000</UnitPrice>" +
+    			"            <Amount>1000.00</Amount>" +
+    			"        </ProductItem>" +
+    			"        <ProductItem>" +
+    			"            <Description>Abercrombie and Fitch Apparel</Description>" +
+    			"            <Unit>EACH</Unit>" +
+    			"            <Quantity>1</Quantity>" +
+    			"            <UnitPrice>1000</UnitPrice>" +
+    			"            <Amount>1000.00</Amount>" +
+    			"        </ProductItem>" +
+    			"    </Details>" +
+    			"</Request>";
        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
        Client client = dcf.createClient(WS_URL);
        String methodName = "invoiceUpload";
@@ -258,56 +258,56 @@ public class WebServiceTestCall {
     }
     
     public static void testuploadOrderData() throws Exception {
-    	final String xml03="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-				"<Request>\n" +
-				"  <ClientNO>tujia_01</ClientNO>\n" +
-				"  <SerialNumber>2016062412444500003</SerialNumber>\n" +
-				"  <InvType>02</InvType>\n" +
-				"  <ServiceType>0</ServiceType>\n" +
-				"  <Spbmbbh>12.0</Spbmbbh>\n" +
-				"  <Drawer>张三</Drawer>\n" +
-				"  <Seller>\n" +
-				"    <Identifier>500102010003643</Identifier>\n" +
-				"    <Name>上海百旺测试3643</Name>\n" +
-				"    <Address>某某路10号1203室</Address>\n" +
-				"    <TelephoneNo>021-55555555</TelephoneNo>\n" +
-				"    <Bank>中国建设银行打浦桥支行</Bank>\n" +
-				"    <BankAcc>123456789-0</BankAcc>\n" +
-				"  </Seller>\n" +
-				"   <OrderSize count=\"1\">\n" +
-				"    <Order>\n" +
-				"      <OrderMain>\n" +
-				"        <OrderNo>ME24156071</OrderNo>\n" +
-				"        <InvoiceList>0</InvoiceList>\n" +
-				"        <InvoiceSplit>1</InvoiceSplit>\n" +
-				"        <InvoiceSfdy>1</InvoiceSfdy>\n" +
-				"        <OrderDate>2017-05-16 17:39:57</OrderDate>\n" +
-				"        <ChargeTaxWay>0</ChargeTaxWay>\n" +
-				"        <TotalAmount>1000</TotalAmount>\n" +
-				"        <TaxMark>1</TaxMark>\n" +
-				"        <Remark>tesr</Remark>\n" +
-				"        <Buyer>\n" +
-				"          <Name>上海途逸公寓管理有限公司</Name>\n" +
-				"          <IsSend>0</IsSend>\n" +
-				"        </Buyer>\n" +
-				"      </OrderMain>\n" +
-				"      <OrderDetails count=\"1\">\n" +
-				"        <ProductItem>\n" +
-				"          <ProductCode>1000000000000000000</ProductCode>\n" +
-				"          <ProductName>房费</ProductName>\n" +
-				"          <RowType>0</RowType>\n" +
-				"          <Quantity>0</Quantity>\n" +
-				"          <UnitPrice>0</UnitPrice>\n" +
-				"          <Amount>1000</Amount>\n" +
-				"          <DeductAmount>0</DeductAmount>\n" +
-				"          <TaxRate>0.17</TaxRate>\n" +
-				"          <TaxAmount>170</TaxAmount>\n" +
-				"          <MxTotalAmount>1170</MxTotalAmount>\n" +
-				"          <PolicyMark>0</PolicyMark>\n" +
-				"        </ProductItem>\n" +
-				"      </OrderDetails>\n" +
-				"    </Order>\n" +
-				"  </OrderSize>\n" +
+    	final String xml03="<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+				"<Request>" +
+				"  <ClientNO>tujia_01</ClientNO>" +
+				"  <SerialNumber>2016062412444500003</SerialNumber>" +
+				"  <InvType>02</InvType>" +
+				"  <ServiceType>0</ServiceType>" +
+				"  <Spbmbbh>12.0</Spbmbbh>" +
+				"  <Drawer>张三</Drawer>" +
+				"  <Seller>" +
+				"    <Identifier>500102010003643</Identifier>" +
+				"    <Name>上海百旺测试3643</Name>" +
+				"    <Address>某某路10号1203室</Address>" +
+				"    <TelephoneNo>021-55555555</TelephoneNo>" +
+				"    <Bank>中国建设银行打浦桥支行</Bank>" +
+				"    <BankAcc>123456789-0</BankAcc>" +
+				"  </Seller>" +
+				"   <OrderSize count=\"1\">" +
+				"    <Order>" +
+				"      <OrderMain>" +
+				"        <OrderNo>ME24156071</OrderNo>" +
+				"        <InvoiceList>0</InvoiceList>" +
+				"        <InvoiceSplit>1</InvoiceSplit>" +
+				"        <InvoiceSfdy>1</InvoiceSfdy>" +
+				"        <OrderDate>2017-05-16 17:39:57</OrderDate>" +
+				"        <ChargeTaxWay>0</ChargeTaxWay>" +
+				"        <TotalAmount>1000</TotalAmount>" +
+				"        <TaxMark>1</TaxMark>" +
+				"        <Remark>tesr</Remark>" +
+				"        <Buyer>" +
+				"          <Name>上海途逸公寓管理有限公司</Name>" +
+				"          <IsSend>0</IsSend>" +
+				"        </Buyer>" +
+				"      </OrderMain>" +
+				"      <OrderDetails count=\"1\">" +
+				"        <ProductItem>" +
+				"          <ProductCode>1000000000000000000</ProductCode>" +
+				"          <ProductName>房费</ProductName>" +
+				"          <RowType>0</RowType>" +
+				"          <Quantity>0</Quantity>" +
+				"          <UnitPrice>0</UnitPrice>" +
+				"          <Amount>1000</Amount>" +
+				"          <DeductAmount>0</DeductAmount>" +
+				"          <TaxRate>0.17</TaxRate>" +
+				"          <TaxAmount>170</TaxAmount>" +
+				"          <MxTotalAmount>1170</MxTotalAmount>" +
+				"          <PolicyMark>0</PolicyMark>" +
+				"        </ProductItem>" +
+				"      </OrderDetails>" +
+				"    </Order>" +
+				"  </OrderSize>" +
 				"</Request>";
     	
     	final String xml01 ="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -587,13 +587,22 @@ public class WebServiceTestCall {
     			+ "<Fplxdm>02</Fplxdm>"
     			+ "<!--必须，发票类型代码，01增值税专用发票，02增值税普通发票；-->"
     			+ "</Request>";
+
+		String xml11 = "<Request>" +
+				"<ClientNO></ClientNO>" +
+				"<Fplxdm></Fplxdm>" +
+				"<SerialNumber></SerialNumber>" +
+				"<OrderNumber>2608771</OrderNumber>" +
+				"<ExtractCode></ExtractCode>" +
+				"</Request>";
+
        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
        Client client = dcf.createClient(WS_URL);
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml08,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"13",xml08);
+       String Secret = getSign(xml11,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"11",xml11);
        //输出调用结果
        System.out.println(objects[0].toString());
     }
