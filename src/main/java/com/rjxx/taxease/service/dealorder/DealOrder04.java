@@ -97,6 +97,11 @@ public class DealOrder04 implements IDealOrder{
             parms.setFpdm(CNDNCode);
             parms.setFphm(CNDNNo);
             Kpls kpls = kplsService.findByfphm(parms);//查询原开票流水
+            if(kpls==null){
+                result04.setReturnCode("9999");
+                result04.setReturnMessage("没有该笔数据！");
+                return XmlJaxbUtils.toXml(result04);
+            }
             if (TotalAmount != -kpls.getJshj()) {
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("价税合计与原开票价税合计不符！");
@@ -130,7 +135,7 @@ public class DealOrder04 implements IDealOrder{
                 kpls2.setFpztdm("04");
                 kplsService.save(kpls2);
                 result04.setReturnCode("0000");
-                result04.setReturnMessage("红冲成功！请再开票软件中查看！");
+                result04.setReturnMessage("红冲请求已接受！");
             }
             return XmlJaxbUtils.toXml(result04);
         }catch (Exception e){

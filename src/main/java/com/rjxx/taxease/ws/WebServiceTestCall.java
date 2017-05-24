@@ -608,7 +608,7 @@ public class WebServiceTestCall {
 		String xml04="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<Request>\n" +
 				"\t<ClientNO>tujia_01</ClientNO>\n" +
-				"\t<SerialNumber>2016062412444500013</SerialNumber>\n" +
+				"\t<SerialNumber>2016062412444500008</SerialNumber>\n" +
 				"\t<InvType>12</InvType>\n" +
 				"\t<ServiceType>1</ServiceType>\n" +
 				"\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
@@ -616,7 +616,7 @@ public class WebServiceTestCall {
 				"\t\n" +
 				"\t<CNNoticeNo></CNNoticeNo>\n" +
 				"\t<CNDNCode>150007899501</CNDNCode>\n" +
-				"\t<CNDNNo>21321349</CNDNNo>\n" +
+				"\t<CNDNNo>21321344</CNDNNo>\n" +
 				"</Request>\n";
 
        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
