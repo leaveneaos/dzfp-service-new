@@ -38,6 +38,9 @@ public class DealOrderDataService {
     @Autowired
     private DealOrder11 dealOrder11;
 
+    @Autowired
+    private DealOrder04 dealOrder04;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -101,6 +104,8 @@ public class DealOrderDataService {
             return dealOrder11.execute(gsdm, OrderData, Operation);
         } else if (Operation.equals("13")) {
             return dealOrder13.execute(gsdm, OrderData, Operation);
+        }else if(Operation.equals("04")){
+            return dealOrder04.execute(gsdm, OrderData, Operation);
         }
         return result;
     }

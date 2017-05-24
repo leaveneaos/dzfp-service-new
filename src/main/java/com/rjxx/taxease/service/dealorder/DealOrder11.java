@@ -68,7 +68,7 @@ public class DealOrder11 implements IDealOrder {
             Invoices invoices = new Invoices();
             result11.setInvoices(invoices);
             List<InvoiceItem> itemList = new ArrayList<>(dataList.size());
-            invoices.setInvoiceItems(itemList);
+            invoices.setInvoiceItem(itemList);
             invoices.setCount(dataList.size());
             for (KpcxjgVo kpcxjgVo : dataList) {
                 InvoiceItem item = new InvoiceItem();

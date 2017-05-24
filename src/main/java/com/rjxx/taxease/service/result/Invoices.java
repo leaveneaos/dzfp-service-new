@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+
 /**
  * Created by Administrator on 2017-05-22.
  */
@@ -16,7 +17,7 @@ public class Invoices {
     @XmlAttribute
     private int count;
 
-    private List<InvoiceItem> InvoiceItems;
+    private List<InvoiceItem> InvoiceItem;
 
     public int getCount() {
         return count;
@@ -26,11 +27,11 @@ public class Invoices {
         this.count = count;
     }
 
-    public List<InvoiceItem> getInvoiceItems() {
-        return InvoiceItems;
+    public List<InvoiceItem> getInvoiceItem() {
+        return InvoiceItem;
     }
 
-    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
-        InvoiceItems = invoiceItems;
+    public void setInvoiceItem(List<InvoiceItem> invoiceItem) {
+        InvoiceItem = invoiceItem;
     }
 }
