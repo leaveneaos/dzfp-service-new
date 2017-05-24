@@ -2,22 +2,20 @@ package com.rjxx.taxease.service.result;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by Administrator on 2017-05-19.
+ * Created by xlm on 2017/5/23.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Responese")
-public class Result11 {
-
+public class Result04 {
+    @XmlElement
     private String ReturnCode;
 
+    @XmlElement
     private String ReturnMessage;
-
-    private int TotalCount;
-
-    private Invoices Invoices;
 
     public String getReturnCode() {
         return ReturnCode;
@@ -34,24 +32,4 @@ public class Result11 {
     public void setReturnMessage(String returnMessage) {
         ReturnMessage = returnMessage;
     }
-
-    public int getTotalCount() {
-        return TotalCount;
-    }
-
-    public void setTotalCount(int totalCount) {
-        TotalCount = totalCount;
-    }
-
-    public Invoices getInvoices() {
-        return Invoices;
-    }
-
-    public void setInvoices(Invoices invoices) {
-        Invoices = invoices;
-    }
 }
-
-
-
-

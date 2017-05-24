@@ -605,15 +605,29 @@ public class WebServiceTestCall {
                 "<ExtractCode></ExtractCode>" +
                 "</Request>";
 
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient(WS_URL);
-        String methodName = "UploadOrderData";
-        String AppKey = "RJ874afd58e67b";
-        String key = "8e37be80cd6dcd8051d589d32f4d0ff2";
-        String Secret = getSign(xml09, key);
-        Object[] objects = client.invoke(methodName, AppKey, Secret, "09", xml09);
-        //输出调用结果
-        System.out.println(objects[0].toString());
+		String xml04="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+				"<Request>\n" +
+				"\t<ClientNO>tujia_01</ClientNO>\n" +
+				"\t<SerialNumber>2016062412444500013</SerialNumber>\n" +
+				"\t<InvType>12</InvType>\n" +
+				"\t<ServiceType>1</ServiceType>\n" +
+				"\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
+				"\t<TotalAmount>-1170.000000</TotalAmount>\n" +
+				"\t\n" +
+				"\t<CNNoticeNo></CNNoticeNo>\n" +
+				"\t<CNDNCode>150007899501</CNDNCode>\n" +
+				"\t<CNDNNo>21321349</CNDNNo>\n" +
+				"</Request>\n";
+
+       JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+       Client client = dcf.createClient(WS_URL);
+       String methodName = "UploadOrderData";
+       String AppKey = "RJ874afd58e67b";
+       String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
+       String Secret = getSign(xml04,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"04",xml04);
+       //输出调用结果
+       System.out.println(objects[0].toString());
     }
 
     private static String getSign(String QueryData, String key) {
@@ -622,9 +636,9 @@ public class WebServiceTestCall {
         return newSign;
     }
 
-    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
-    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-    public static String WS_URL = "http://localhost:8081/webService/services/invoiceService?wsdl";
+   //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
+   //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
+   public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();
