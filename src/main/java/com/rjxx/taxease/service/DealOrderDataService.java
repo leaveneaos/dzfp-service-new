@@ -4,7 +4,6 @@ import com.rjxx.taxease.service.dealorder.*;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.utils.ResponseUtils;
-import com.sun.tools.corba.se.idl.constExpr.Or;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +30,9 @@ public class DealOrderDataService {
 
     @Autowired
     private DealOrder08 dealOrder08;
+
+    @Autowired
+    private DealOrder09 dealOrder09;
 
     @Autowired
     private DealOrder13 dealOrder13;
@@ -97,6 +99,8 @@ public class DealOrderDataService {
             return dealOrder02.execute(gsdm, OrderData, Operation);
         } else if (Operation.equals("08")) {
             return dealOrder08.execute(gsdm, OrderData, Operation);
+        } else if (Operation.equals("09")) {
+            return dealOrder09.execute(gsdm, OrderData, Operation);
         } else if (Operation.equals("11")) {
             return dealOrder11.execute(gsdm, OrderData, Operation);
         } else if (Operation.equals("13")) {
