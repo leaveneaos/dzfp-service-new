@@ -17,7 +17,7 @@ public class Result11 {
 
     private int TotalCount;
 
-    private Invoices invoices;
+    private Invoices Invoices;
 
     public String getReturnCode() {
         return ReturnCode;
@@ -44,11 +44,11 @@ public class Result11 {
     }
 
     public Invoices getInvoices() {
-        return invoices;
+        return Invoices;
     }
 
     public void setInvoices(Invoices invoices) {
-        this.invoices = invoices;
+        Invoices = invoices;
     }
 }
 

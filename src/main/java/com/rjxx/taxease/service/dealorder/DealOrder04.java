@@ -101,6 +101,10 @@ public class DealOrder04 implements IDealOrder{
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("价税合计与原开票价税合计不符！");
                 return XmlJaxbUtils.toXml(result04);
+            }else if(kpls.getFpztdm().equals("02")){
+                result04.setReturnCode("9999");
+                result04.setReturnMessage("该笔发票已红冲！不能重复红冲！");
+                return XmlJaxbUtils.toXml(result04);
             }
             Map map = new HashMap();
             map.put("kplsh", kpls.getKplsh());
