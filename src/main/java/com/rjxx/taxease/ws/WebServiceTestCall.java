@@ -608,16 +608,38 @@ public class WebServiceTestCall {
 		String xml04="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<Request>\n" +
 				"\t<ClientNO>tujia_01</ClientNO>\n" +
-				"\t<SerialNumber>19cbcf11fc7945eb8bf97d705ebd81e9</SerialNumber>\n" +
+				"\t<SerialNumber>790ec0e3fa51415abe41abb1c1629c94</SerialNumber>\n" +
 				"\t<InvType>12</InvType>\n" +
 				"\t<ServiceType>1</ServiceType>\n" +
 				"\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
-				"\t<TotalAmount>-1170.000000</TotalAmount>\n" +
+				"\t<TotalAmount>-350.000000</TotalAmount>\n" +
 				"\t\n" +
 				"\t<CNNoticeNo></CNNoticeNo>\n" +
 				"\t<CNDNCode>150007899501</CNDNCode>\n" +
-				"\t<CNDNNo>21321344</CNDNNo>\n" +
+				"\t<CNDNNo>21321458</CNDNNo>\n" +
 				"</Request>\n";
+       String xml07="<?xml version=\"1.0\" encoding=\"gbk\"?>\n" +
+               "<Request>\n" +
+               "\t<ClientNO>KP001</ClientNO>\n" +
+               "\t<!--纸质票必须,开票点编号 ,每个开票点对应唯一编号，比如KP001，KP002-->\n" +
+               "\t<SerialNumber>2016062412444500001</SerialNumber>\n" +
+               "\t<!--必须，请求的交易流水号，每次请求不同。-->\n" +
+               "\t<InvType>发票种类</InvType>\n" +
+               "\t<!--必须，01-专用发票；02普通发票-->\n" +
+               "\t<CancelInvType>作废类型</CancelInvType>\n" +
+               "\t<!--必须，2作废已开发票-->\n" +
+               "\t<VenderTaxNo>销货单位识别号</VenderTaxNo>\n" +
+               "\t<!--必须-->\n" +
+               "\t<SumTotalAmount>合计金额</SumTotalAmount>\n" +
+               "\t<!--必须-->\n" +
+               "\t<CancelUser>作废人</CancelUser>\n" +
+               "\t<!--必须-->\n" +
+               "\t<CNDNCode>作废时对应的原始发票号码</CNDNCode>\n" +
+               "\t<!--必须 -->\n" +
+               "\t<CNDNNo>作废时对应的原始发票号码</CNDNNo>\n" +
+               "\t<!--必须-->\n" +
+               "</Request>\n";
+
 
        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
        Client client = dcf.createClient(WS_URL);

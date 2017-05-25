@@ -162,7 +162,7 @@ public class DealOrder04 implements IDealOrder{
         }
     }
 
-    public Kpls save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber){
+    public Kpls save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber)throws Exception{
         //保存交易流水
         Jyls jyls1 = new Jyls();
         jyls1.setDdh(ddh);
@@ -263,8 +263,12 @@ public class DealOrder04 implements IDealOrder{
             jyspmx.setSpmc(kpspmx.getSpmc());
             jyspmx.setSpggxh(kpspmx.getSpggxh());
             jyspmx.setSpdw(kpspmx.getSpdw());
-            jyspmx.setSps(-kpspmx.getSps());
-            jyspmx.setSpdj(-(kpspmx.getSpdj() == null ? null : -kpspmx.getSpdj()));
+            if(kpspmx.getSps()!=null){
+                jyspmx.setSps(-kpspmx.getSps());
+            }
+            if(kpspmx.getSpdj()!=null){
+                jyspmx.setSpdj((kpspmx.getSpdj() == null ? null : kpspmx.getSpdj()));
+            }
             jyspmx.setSpje(-kpspmx.getSpje());
             jyspmx.setSpsl(kpspmx.getSpsl());
             jyspmx.setSpse(-kpspmx.getSpse());
