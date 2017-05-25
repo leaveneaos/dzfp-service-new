@@ -608,7 +608,7 @@ public class WebServiceTestCall {
 		String xml04="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<Request>\n" +
 				"\t<ClientNO>tujia_01</ClientNO>\n" +
-				"\t<SerialNumber>2016062412444500008</SerialNumber>\n" +
+				"\t<SerialNumber>19cbcf11fc7945eb8bf97d705ebd81e9</SerialNumber>\n" +
 				"\t<InvType>12</InvType>\n" +
 				"\t<ServiceType>1</ServiceType>\n" +
 				"\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
