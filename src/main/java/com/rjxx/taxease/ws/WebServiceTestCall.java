@@ -620,24 +620,15 @@ public class WebServiceTestCall {
 				"</Request>\n";
        String xml07="<?xml version=\"1.0\" encoding=\"gbk\"?>\n" +
                "<Request>\n" +
-               "\t<ClientNO>KP001</ClientNO>\n" +
-               "\t<!--纸质票必须,开票点编号 ,每个开票点对应唯一编号，比如KP001，KP002-->\n" +
-               "\t<SerialNumber>2016062412444500001</SerialNumber>\n" +
-               "\t<!--必须，请求的交易流水号，每次请求不同。-->\n" +
-               "\t<InvType>发票种类</InvType>\n" +
-               "\t<!--必须，01-专用发票；02普通发票-->\n" +
-               "\t<CancelInvType>作废类型</CancelInvType>\n" +
-               "\t<!--必须，2作废已开发票-->\n" +
-               "\t<VenderTaxNo>销货单位识别号</VenderTaxNo>\n" +
-               "\t<!--必须-->\n" +
-               "\t<SumTotalAmount>合计金额</SumTotalAmount>\n" +
-               "\t<!--必须-->\n" +
-               "\t<CancelUser>作废人</CancelUser>\n" +
-               "\t<!--必须-->\n" +
-               "\t<CNDNCode>作废时对应的原始发票号码</CNDNCode>\n" +
-               "\t<!--必须 -->\n" +
-               "\t<CNDNNo>作废时对应的原始发票号码</CNDNNo>\n" +
-               "\t<!--必须-->\n" +
+               "\t<ClientNO>tujia_01</ClientNO>\n" +
+               "\t<SerialNumber>c293f5ed577d4c17883595536260c307</SerialNumber>\n" +
+               "\t<InvType>02</InvType>\n" +
+               "\t<CancelInvType></CancelInvType>\n" +
+               "\t<VenderTaxNo></VenderTaxNo>\n" +
+               "\t<SumTotalAmount>111.000000</SumTotalAmount>\n" +
+               "\t<CancelUser>tt</CancelUser>\n" +
+               "\t<CNDNCode>3330000444</CNDNCode>\n" +
+               "\t<CNDNNo>67683325</CNDNNo>\n" +
                "</Request>\n";
 
 
@@ -646,8 +637,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml11,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"11",xml11);
+       String Secret = getSign(xml07,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"07",xml07);
        //输出调用结果
        System.out.println(objects[0].toString());
     }
