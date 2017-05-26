@@ -598,25 +598,25 @@ public class WebServiceTestCall {
                 "</Request>";
 
         String xml11 = "<Request>" +
-                "<ClientNO></ClientNO>" +
-                "<Fplxdm></Fplxdm>" +
-                "<SerialNumber></SerialNumber>" +
-                "<OrderNumber>2608771</OrderNumber>" +
+                "<ClientNO>tujia_01</ClientNO>" +
+                "<Fplxdm>12</Fplxdm>" +
+                "<SerialNumber>45fc3302eca24fb08286f39b17796233</SerialNumber>" +
+                "<OrderNumber></OrderNumber>" +
                 "<ExtractCode></ExtractCode>" +
                 "</Request>";
 
 		String xml04="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<Request>\n" +
 				"\t<ClientNO>tujia_01</ClientNO>\n" +
-				"\t<SerialNumber>790ec0e3fa51415abe41abb1c1629c94</SerialNumber>\n" +
+				"\t<SerialNumber>c293f5ed577d4c179c3595536260c30c</SerialNumber>\n" +
 				"\t<InvType>12</InvType>\n" +
 				"\t<ServiceType>1</ServiceType>\n" +
 				"\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
-				"\t<TotalAmount>-350.000000</TotalAmount>\n" +
+				"\t<TotalAmount>-102.000000</TotalAmount>\n" +
 				"\t\n" +
 				"\t<CNNoticeNo></CNNoticeNo>\n" +
 				"\t<CNDNCode>150007899501</CNDNCode>\n" +
-				"\t<CNDNNo>21321458</CNDNNo>\n" +
+				"\t<CNDNNo>21321442</CNDNNo>\n" +
 				"</Request>\n";
        String xml07="<?xml version=\"1.0\" encoding=\"gbk\"?>\n" +
                "<Request>\n" +
@@ -646,8 +646,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml04,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"04",xml04);
+       String Secret = getSign(xml11,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"11",xml11);
        //输出调用结果
        System.out.println(objects[0].toString());
     }

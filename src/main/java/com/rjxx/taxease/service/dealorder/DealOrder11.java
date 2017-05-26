@@ -83,7 +83,11 @@ public class DealOrder11 implements IDealOrder {
                 if (kpcxjgVo.getKprq() != null) {
                     item.setInvoiceDate(DateFormatUtils.format(kpcxjgVo.getKprq(), "yyyy-MM-dd"));
                 }
-                item.setInvoiceStatus(kpcxjgVo.getFpztmc());
+                if(kpcxjgVo.getFpztmc().equals("已发送客户端")){
+                    item.setInvoiceStatus("正在开具");
+                }else{
+                    item.setInvoiceStatus(kpcxjgVo.getFpztmc());
+                }
                 item.setPdfUrl(kpcxjgVo.getPdfurl());
                 if (kpcxjgVo.getHjse() != null) {
                     item.setTaxAmount(new BigDecimal(kpcxjgVo.getHjse()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
