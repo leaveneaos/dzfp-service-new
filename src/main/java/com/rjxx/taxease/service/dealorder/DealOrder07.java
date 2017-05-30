@@ -106,25 +106,22 @@ public class DealOrder07 implements IDealOrder{
                 result07.setReturnMessage("该笔发票已作废！不能重复作废！");
                 return XmlJaxbUtils.toXml(result07);
             }
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                InvoiceResponse response = skService.voidInvoice(kpls.getKplsh().intValue());
+                 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                /*InvoiceResponse response = skService.voidInvoice(kpls.getKplsh().intValue());
                 if ("0000".equals(response.getReturnCode())) {
-                    result07.setReturnCode("0000");
-                    result07.setReturnMessage("作废请求已接受！");
-                  /*  result07.setInvDate(sdf.format(kpls.getKprq()));
+
+                    result07.setInvDate(sdf.format(kpls.getKprq()));
                     result07.setCancelDate(sdf.format(new Date()));
                     result07.setInvCode(kpls.getFpdm());
-                    result07.setInvNo(kpls.getFphm());*/
+                    result07.setInvNo(kpls.getFphm());
                     } else {
                         result07.setReturnCode("9999");
                         result07.setReturnMessage(response.getReturnMessage());
-                    }
-            }catch (java.net.SocketException se){
-                se.printStackTrace();
-                result07.setReturnCode("0000");
-                result07.setReturnMessage("作废成功！");
-            }
+                    }*/
+            kpls.setFpczlxdm("14");
+            kpls.setFpztdm("10");
+            result07.setReturnCode("0000");
+            result07.setReturnMessage("作废请求已接受！");
             return XmlJaxbUtils.toXml(result07);
         }catch (Exception e){
             e.printStackTrace();
