@@ -621,14 +621,14 @@ public class WebServiceTestCall {
        String xml07="<?xml version=\"1.0\" encoding=\"gbk\"?>\n" +
                "<Request>\n" +
                "\t<ClientNO>tujia_01</ClientNO>\n" +
-               "\t<SerialNumber>c293f5ed577d4c17883595536260c307</SerialNumber>\n" +
+               "\t<SerialNumber>c293f5ed577d4c17883595536260c309</SerialNumber>\n" +
                "\t<InvType>02</InvType>\n" +
                "\t<CancelInvType></CancelInvType>\n" +
                "\t<VenderTaxNo></VenderTaxNo>\n" +
-               "\t<SumTotalAmount>111.000000</SumTotalAmount>\n" +
+               "\t<SumTotalAmount>100.000000</SumTotalAmount>\n" +
                "\t<CancelUser>tt</CancelUser>\n" +
                "\t<CNDNCode>3330000444</CNDNCode>\n" +
-               "\t<CNDNNo>67683325</CNDNNo>\n" +
+               "\t<CNDNNo>67683331</CNDNNo>\n" +
                "</Request>\n";
 
 

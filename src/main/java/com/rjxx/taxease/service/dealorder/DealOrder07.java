@@ -119,7 +119,8 @@ public class DealOrder07 implements IDealOrder{
                         result07.setReturnMessage(response.getReturnMessage());
                     }*/
             kpls.setFpczlxdm("14");
-            kpls.setFpztdm("10");
+            kpls.setFpztdm("04");
+            kplsService.save(kpls);
             result07.setReturnCode("0000");
             result07.setReturnMessage("作废请求已接受！");
             return XmlJaxbUtils.toXml(result07);
