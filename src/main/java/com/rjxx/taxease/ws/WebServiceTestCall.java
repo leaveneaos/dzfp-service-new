@@ -608,15 +608,15 @@ public class WebServiceTestCall {
 		String xml04="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<Request>\n" +
 				"\t<ClientNO>tujia_01</ClientNO>\n" +
-				"\t<SerialNumber>987b1daf888c4bf7885e4e4228caae27</SerialNumber>\n" +
+				"\t<SerialNumber>987b1daf888c4bf7885e4e4228caae29</SerialNumber>\n" +
 				"\t<InvType>02</InvType>\n" +
 				"\t<ServiceType>1</ServiceType>\n" +
 				"\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
-				"\t<TotalAmount>-1170.000000</TotalAmount>\n" +
+				"\t<TotalAmount>-200.000000</TotalAmount>\n" +
 				"\t\n" +
 				"\t<CNNoticeNo></CNNoticeNo>\n" +
 				"\t<CNDNCode>3330000444</CNDNCode>\n" +
-				"\t<CNDNNo>67683350</CNDNNo>\n" +
+				"\t<CNDNNo>67683355</CNDNNo>\n" +
 				"</Request>\n";
        String xml07="<?xml version=\"1.0\" encoding=\"gbk\"?>\n" +
                "<Request>\n" +
