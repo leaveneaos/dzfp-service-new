@@ -608,15 +608,15 @@ public class WebServiceTestCall {
 		String xml04="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<Request>\n" +
 				"\t<ClientNO>tujia_01</ClientNO>\n" +
-				"\t<SerialNumber>c293f5ed577d4c179c3595536260c30c</SerialNumber>\n" +
-				"\t<InvType>12</InvType>\n" +
+				"\t<SerialNumber>987b1daf888c4bf7885e4e4228caae27</SerialNumber>\n" +
+				"\t<InvType>02</InvType>\n" +
 				"\t<ServiceType>1</ServiceType>\n" +
 				"\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
-				"\t<TotalAmount>-102.000000</TotalAmount>\n" +
+				"\t<TotalAmount>-1170.000000</TotalAmount>\n" +
 				"\t\n" +
 				"\t<CNNoticeNo></CNNoticeNo>\n" +
-				"\t<CNDNCode>150007899501</CNDNCode>\n" +
-				"\t<CNDNNo>21321442</CNDNNo>\n" +
+				"\t<CNDNCode>3330000444</CNDNCode>\n" +
+				"\t<CNDNNo>67683350</CNDNNo>\n" +
 				"</Request>\n";
        String xml07="<?xml version=\"1.0\" encoding=\"gbk\"?>\n" +
                "<Request>\n" +
@@ -625,10 +625,10 @@ public class WebServiceTestCall {
                "\t<InvType>02</InvType>\n" +
                "\t<CancelInvType></CancelInvType>\n" +
                "\t<VenderTaxNo></VenderTaxNo>\n" +
-               "\t<SumTotalAmount>100.000000</SumTotalAmount>\n" +
+               "\t<SumTotalAmount>9.000000</SumTotalAmount>\n" +
                "\t<CancelUser>tt</CancelUser>\n" +
                "\t<CNDNCode>3330000444</CNDNCode>\n" +
-               "\t<CNDNNo>67683331</CNDNNo>\n" +
+               "\t<CNDNNo>67683329</CNDNNo>\n" +
                "</Request>\n";
 
 
@@ -637,8 +637,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml07,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"07",xml07);
+       String Secret = getSign(xml04,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"04",xml04);
        //输出调用结果
        System.out.println(objects[0].toString());
     }

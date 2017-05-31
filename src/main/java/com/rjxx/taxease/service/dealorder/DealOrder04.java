@@ -61,13 +61,14 @@ public class DealOrder04 implements IDealOrder{
     public String execute(String gsdm, String orderData, String Operation) {
 
             Map inputMap = dealOperation04(gsdm, orderData);
-            String clientNO = String.valueOf(inputMap.get("ClientNO"));
+            String clientNO = String.valueOf(inputMap.get("ClientNO"));//开票点编号
             Double TotalAmount = Double.parseDouble(String.valueOf(inputMap.get("TotalAmount")));//价税合计
             String CNDNCode = String.valueOf(inputMap.get("CNDNCode"));//原发票代码
             String CNDNNo = String.valueOf(inputMap.get("CNDNNo"));//原发票号码
-            String InvType = String.valueOf(inputMap.get("InvType"));
-            String ServiceType = String.valueOf(inputMap.get("ServiceType"));
-            String SerialNumber = String.valueOf(inputMap.get("SerialNumber"));
+            String InvType = String.valueOf(inputMap.get("InvType"));//发票种类
+            String ServiceType = String.valueOf(inputMap.get("ServiceType"));//发票业务类型
+            String SerialNumber = String.valueOf(inputMap.get("SerialNumber"));//序列号
+            String CNNoticeNo = String.valueOf(inputMap.get("CNNoticeNo"));//专票红字通知单号
             Result04 result04 = new Result04();
         try {
             Map params = new HashMap();
@@ -93,11 +94,11 @@ public class DealOrder04 implements IDealOrder{
                 result04.setReturnMessage("交易流水号必须唯一！");
                 return XmlJaxbUtils.toXml(result04);
             }
-            if (!InvType.equals("12")) {
+            /*if (!InvType.equals("12")) {
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("该接口目前只支持电子发票红冲！");
                 return XmlJaxbUtils.toXml(result04);
-            }
+            }*/
             if (CNDNCode.equals("") || CNDNNo.equals("")) {
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("原发票代码、发票号码不允许为空！");
@@ -135,7 +136,7 @@ public class DealOrder04 implements IDealOrder{
             param4.put("djh", djh);
             Jyls jyls = jylsService.findJylsByDjh(param4);
             String ddh = jyls.getDdh(); // 查询原交易流水得ddh
-            Kpls kpls2 = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber);
+            Kpls kpls2 = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo);
             if (sftbkp.equals("是")) {   //是否同步开票
                 kpls2.setFpztdm("14");
                 kplsService.save(kpls2);
@@ -162,7 +163,7 @@ public class DealOrder04 implements IDealOrder{
         }
     }
 
-    public Kpls save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber)throws Exception{
+    public Kpls save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber,String CNNoticeNo)throws Exception{
         //保存交易流水
         Jyls jyls1 = new Jyls();
         jyls1.setDdh(ddh);
@@ -190,6 +191,7 @@ public class DealOrder04 implements IDealOrder{
         jyls1.setGfdz(kpls.getGfdz());
         jyls1.setGfyb(kpls.getGfyb());
         jyls1.setGfemail(kpls.getGfemail());
+        jyls1.setHztzdh(CNNoticeNo);
         //jyls1.setClztdm("01");
         jyls1.setBz(kpls.getBz());
         jyls1.setSkr(kpls.getSkr());
