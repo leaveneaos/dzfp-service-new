@@ -261,7 +261,7 @@ public class WebServiceTestCall {
         final String xml011 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
                 "<Request>" +
                 "  <ClientNO>tujia_01</ClientNO>" +
-                "  <SerialNumber>2016062412444500015</SerialNumber>" +
+                "  <SerialNumber>201606241244450001213</SerialNumber>" +
                 "  <InvType>12</InvType>" +
                 "  <ServiceType>0</ServiceType>" +
                 "  <Spbmbbh>12.0</Spbmbbh>" +
@@ -313,8 +313,8 @@ public class WebServiceTestCall {
 
         final String xml01 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 + "<Request>"
-                + "<ClientNO>kp006</ClientNO>"
-                + "<SerialNumber>3922121312221</SerialNumber>"
+                + "<ClientNO>tujia_01</ClientNO>"
+                + "<SerialNumber>392212131222456</SerialNumber>"
                 + "<InvType>02</InvType>"
                 + "<ServiceType>0</ServiceType>"
                 + "<Drawer>qian</Drawer>"
@@ -599,8 +599,8 @@ public class WebServiceTestCall {
 
         String xml11 = "<Request>" +
                 "<ClientNO>tujia_01</ClientNO>" +
-                "<Fplxdm>12</Fplxdm>" +
-                "<SerialNumber>45fc3302eca24fb08286f39b17796233</SerialNumber>" +
+                "<Fplxdm>02</Fplxdm>" +
+                "<SerialNumber>e30c64fc29404db78264a8e12ae66162</SerialNumber>" +
                 "<OrderNumber></OrderNumber>" +
                 "<ExtractCode></ExtractCode>" +
                 "</Request>";
@@ -637,8 +637,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml04,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"04",xml04);
+       String Secret = getSign(xml011,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"01",xml011);
        //输出调用结果
        System.out.println(objects[0].toString());
     }
@@ -651,7 +651,7 @@ public class WebServiceTestCall {
 
    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
+   public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();

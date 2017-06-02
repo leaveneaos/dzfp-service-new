@@ -217,7 +217,7 @@ public class UploadInvoiceService {
             // email
             String Email = (String) rootMap.get("Email");
             if (Email != null && !Email
-                    .matches("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")) {
+                    .matches("^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)$")) {
                 return ResponseUtils.printFailure("9013:请求参数<Email>格式有误;");
             }
             // 是否发送邮件
