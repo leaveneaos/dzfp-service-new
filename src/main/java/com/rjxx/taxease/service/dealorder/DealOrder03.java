@@ -1,11 +1,13 @@
 package com.rjxx.taxease.service.dealorder;
 
+import com.rjxx.taxease.service.result.Result04;
 import com.rjxx.taxease.utils.XmlMapUtils;
 import com.rjxx.taxeasy.bizcomm.utils.SaveOrderData;
 import com.rjxx.taxeasy.domains.Jyxxsq;
 import com.rjxx.taxeasy.domains.Xf;
 import com.rjxx.taxeasy.service.JyxxsqService;
 import com.rjxx.utils.CheckOrderUtil;
+import com.rjxx.utils.XmlJaxbUtils;
 import org.apache.axiom.om.OMElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,19 +34,30 @@ public class DealOrder03 implements IDealOrder {
     public String execute(String gsdm, String orderData, String Operation) {
         String result = "";
         List<Jyxxsq> jyxxsqList = dealOperation03(gsdm, orderData);
+        Result04 result04=new Result04();
         String tmp = checkorderutil.checkBuyer(jyxxsqList, gsdm, Operation);
         if (null == tmp || tmp.equals("")) {
             String tmp1 = saveorderdata.saveBuyerData(jyxxsqList);
             if (null != tmp1 && !tmp1.equals("")) {
-                result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp1
-                        + "</ReturnMessage> \n</Responese>";
+                /*result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp1
+                        + "</ReturnMessage> \n</Responese>";*/
+                result04.setReturnCode("9999");
+                result04.setReturnMessage(tmp1);
+                result = XmlJaxbUtils.toXml(result04);
             } else {
-                result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage>" + "代开票数据上传成功"
-                        + "</ReturnMessage> \n</Responese>";
+                /*result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage>" + "代开票数据上传成功"
+                        + "</ReturnMessage> \n</Responese>";*/
+
+                result04.setReturnCode("0000");
+                result04.setReturnMessage("代开票数据上传成功");
+                result = XmlJaxbUtils.toXml(result04);
             }
         } else {
-            result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp
-                    + "</ReturnMessage> \n</Responese>";
+            /*result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp
+                    + "</ReturnMessage> \n</Responese>";*/
+            result04.setReturnCode("9999");
+            result04.setReturnMessage(tmp);
+            result = XmlJaxbUtils.toXml(result04);
         }
         return result;
     }

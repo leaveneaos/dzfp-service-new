@@ -1,5 +1,6 @@
 package com.rjxx.taxease.service.dealorder;
 
+import com.rjxx.taxease.service.result.Result04;
 import com.rjxx.taxeasy.bizcomm.utils.SaveOrderData;
 import com.rjxx.taxeasy.domains.Jymxsq;
 import com.rjxx.taxeasy.domains.Jyxxsq;
@@ -8,6 +9,7 @@ import com.rjxx.taxeasy.domains.Yh;
 import com.rjxx.taxeasy.service.JyxxsqService;
 import com.rjxx.taxeasy.service.YhService;
 import com.rjxx.utils.CheckOrderUtil;
+import com.rjxx.utils.XmlJaxbUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -42,6 +44,7 @@ public class DealOrder02 implements IDealOrder {
         Map map = (Map) dealOperation02(gsdm, orderData);
         List<Jyxxsq> jyxxsqList = (List) map.get("jyxxsqList");
         List<Jymxsq> jymxsqList = (List) map.get("jymxsqList");
+        Result04 result04=new Result04();
         // List<Jymxsq> tmpList = null;
         Jyxxsq jyxxsq = new Jyxxsq();
         Jymxsq jymxsq = new Jymxsq();
@@ -49,18 +52,25 @@ public class DealOrder02 implements IDealOrder {
         if (null == tmp || tmp.equals("")) {
             String tmp3 = saveorderdata.saveAllData(jyxxsqList, jymxsqList);
             if (null != tmp3 && !tmp3.equals("")) {
-                result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp3
-                        + "</ReturnMessage> \n</Responese>";
-
+                /*result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp3
+                        + "</ReturnMessage> \n</Responese>";*/
+                result04.setReturnCode("9999");
+                result04.setReturnMessage(tmp3);
+                result = XmlJaxbUtils.toXml(result04);
             } else {
-                result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage>" + "代开票数据上传成功"
-                        + "</ReturnMessage> \n</Responese>";
-
+                /*result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage>" + "代开票数据上传成功"
+                        + "</ReturnMessage> \n</Responese>";*/
+                result04.setReturnCode("0000");
+                result04.setReturnMessage("代开票数据上传成功");
+                result = XmlJaxbUtils.toXml(result04);
             }
 
         } else {
-            result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp
-                    + "</ReturnMessage> \n</Responese>";
+            /*  result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp
+                    + "</ReturnMessage> \n</Responese>";*/
+            result04.setReturnCode("9999");
+            result04.setReturnMessage(tmp);
+            result = XmlJaxbUtils.toXml(result04);
         }
         return result;
     }
