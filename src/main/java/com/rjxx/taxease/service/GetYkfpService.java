@@ -21,16 +21,16 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 @Service
 public class GetYkfpService {
-      
+
 	@Autowired
 	private GsxxService gsxxservice;
-	
+
 	@Autowired
 	private KplsService  kplsservice;
-	
+
     public String CallQuery(@WebParam(name = "AppKey") String AppKey,@WebParam(name = "Secret") String Secret,@WebParam(name = "QueryData") String QueryData) {
         String result = "";
-       
+
         Map tempMap = new HashMap();
         tempMap.put("appkey", AppKey);
         Gsxx gsxxBean = gsxxservice.findOneByParams(tempMap);
@@ -68,7 +68,7 @@ public class GetYkfpService {
             map.put("tqm", ExtractCode);
             map.put("gsdm", gsdm);
             List<KplsVO3> kplsList = kplsservice.findList2ByPagination(map);
-            SimpleDateFormat for2 = new SimpleDateFormat ("yyyyMMddHHmmss"); 
+            SimpleDateFormat for2 = new SimpleDateFormat ("yyyyMMddHHmmss");
             if (kplsList != null && kplsList.size() != 0) {
                 result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage>发票查询成功</ReturnMessage>\n  <TotalCount>"+kplsList.size()+"</TotalCount>\n"
                 		+ "  <Invoices count=\""+ kplsList.size() + "\">\n";
@@ -84,27 +84,27 @@ public class GetYkfpService {
 					if(null ==errorReason || errorReason.equals("") || errorReason.equals("null")){
 						errorReason = "";
 					}
-					
+
 					String fpztmc = kplsvo3.getFpztmc();
 					if(null ==fpztmc || fpztmc.equals("") || errorReason.equals("null")){
 						fpztmc = "";
 					}
-					
+
 					String fpdm = kplsvo3.getFpdm();
 					if(null ==fpdm || fpdm.equals("") || fpdm.equals("null")){
 						fpdm = "";
 					}
-					
+
 					String fphm = kplsvo3.getFphm();
 					if(null ==fphm || fphm.equals("") || fphm.equals("null")){
 						fphm = "";
 					}
-					
+
 					String pdfurl = kplsvo3.getPdfurl();
 					if(null ==pdfurl || pdfurl.equals("") || pdfurl.equals("null")){
 						pdfurl = "";
 					}
-					
+
 					String tqm = kplsvo3.getTqm();
 					if(null ==tqm || tqm.equals("") || tqm.equals("null")){
 						tqm = "";

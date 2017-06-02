@@ -637,8 +637,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml011,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"01",xml011);
+       String Secret = getSign(xml08,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"13",xml08);
        //输出调用结果
        System.out.println(objects[0].toString());
     }

@@ -1,9 +1,11 @@
 package com.rjxx.taxease.service;
 
 import com.rjxx.taxease.service.dealorder.*;
+import com.rjxx.taxease.service.result.DefaultResult;
+import com.rjxx.taxease.utils.ResponeseUtils;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.service.GsxxService;
-import com.rjxx.utils.ResponseUtils;
+import com.rjxx.utils.XmlJaxbUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +68,7 @@ public class DealOrderDataService {
             // resultMap.put("result", result);
         } catch (Exception e) {
             e.printStackTrace();
-            String result = ResponseUtils.printFailure("9999:" + e.getMessage());
+            String result = ResponeseUtils.printFailure("9999:" + e.getMessage());
             throw new RuntimeException(result);
         }
     }
@@ -86,14 +88,17 @@ public class DealOrderDataService {
         tempMap.put("appkey", AppId);
         Gsxx gsxxBean = gsxxservice.findOneByParams(tempMap);
         if (gsxxBean == null) {
-            return ResponseUtils.printFailure1("9060:" + AppId + "," + Sign);
+            return ResponeseUtils.printFailure1("9060:" + AppId + "," + Sign);
         }
         // 校验数据是否被篡改过
         String key = gsxxBean.getSecretKey();
         String signSourceData = "data=" + OrderData + "&key=" + key;
         String newSign = DigestUtils.md5Hex(signSourceData);
         if (!Sign.equals(newSign)) {
-            result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>9060:签名不通过</ReturnMessage> \n</Responese>";
+            DefaultResult defaultResult = new DefaultResult();
+            defaultResult.setReturnCode("9999");
+            defaultResult.setReturnMessage("9060:签名不通过");
+            result = XmlJaxbUtils.toXml(defaultResult);
             return result;
         }
         String gsdm = gsxxBean.getGsdm();
@@ -111,9 +116,9 @@ public class DealOrderDataService {
             return dealOrder11.execute(gsdm, OrderData, Operation);
         } else if (Operation.equals("13")) {
             return dealOrder13.execute(gsdm, OrderData, Operation);
-        }else if(Operation.equals("04")){
+        } else if (Operation.equals("04")) {
             return dealOrder04.execute(gsdm, OrderData, Operation);
-        }else if(Operation.equals("07")){
+        } else if (Operation.equals("07")) {
             return dealOrder07.execute(gsdm, OrderData, Operation);
         }
         return result;
