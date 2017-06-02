@@ -206,7 +206,10 @@ public class DealOrder01 implements IDealOrder {
                 }
             }
         } else {
-            result = ResponseUtils.printFailure(tmp);
+            result04.setReturnCode("9999");
+            result04.setReturnMessage(tmp);
+            result = XmlJaxbUtils.toXml(result04);
+            //result = ResponseUtils.printFailure(tmp);
             logger.debug("封装校验不通过信息" + result);
         }
         return result;
