@@ -1,5 +1,6 @@
 package com.rjxx.taxease.service.dealorder;
 
+import com.rjxx.taxease.service.result.Result04;
 import com.rjxx.taxease.utils.CallDllWebServiceUtil;
 import com.rjxx.taxease.utils.ResponseUtil;
 import com.rjxx.taxease.utils.XmlMapUtils;
@@ -14,6 +15,7 @@ import com.rjxx.taxeasy.vo.KplsVO4;
 import com.rjxx.utils.CheckOrderUtil;
 import com.rjxx.utils.ResponseUtils;
 import com.rjxx.utils.TemplateUtils;
+import com.rjxx.utils.XmlJaxbUtils;
 import org.apache.axiom.om.OMElement;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -23,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.transform.Result;
 import java.io.File;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -66,6 +69,7 @@ public class DealOrder01 implements IDealOrder {
         String result = "";
         Map map = dealOperation01(gsdm, OrderData);
         List<Jyxxsq> jyxxsqList = (List) map.get("jyxxsqList");
+        Result04 result04=new Result04();
         // 处理一些必须由平台抽取的数据
         //Map moreDate = new HashMap();
         //moreDate = this.addMoreDate(jyxxsqList, gsdm);
@@ -102,8 +106,9 @@ public class DealOrder01 implements IDealOrder {
             String tmp2 = saveorderdata.saveAllData(jyxxsqList, jymxsqList);
             // 保存操作成功与否
             if (null != tmp2 && !tmp2.equals("")) {
-                result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp2
-                        + "</ReturnMessage> \n</Responese>";
+                result04.setReturnCode("9999");
+                result04.setReturnMessage(tmp2);
+                result = XmlJaxbUtils.toXml(result04);
 
             } else {
                 if (null != cszb && cszb.getCsz().equals("是")) {
@@ -194,7 +199,10 @@ public class DealOrder01 implements IDealOrder {
                     }
                 } else {
                     // 不是直连开票
-                    result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage>开票数据已接收！</ReturnMessage> \n</Responese>";
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("开票数据已接收！");
+                    result = XmlJaxbUtils.toXml(result04);
+                    //result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage></ReturnMessage> \n</Responese>";
                 }
             }
         } else {
