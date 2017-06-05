@@ -76,7 +76,9 @@ public class DealOrder11 implements IDealOrder {
                 if (kpcxjgVo.getHjje() != null) {
                     item.setAmount(new BigDecimal(kpcxjgVo.getHjje()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                 }
-                item.setErrorMessage(kpcxjgVo.getErrorreason());
+                if ("05".equals(kpcxjgVo.getFpztdm())) {
+                    item.setErrorMessage(kpcxjgVo.getErrorreason());
+                }
                 item.setExtractCode(kpcxjgVo.getTqm());
                 item.setInvoiceCode(kpcxjgVo.getFpdm());
                 item.setInvoiceNumber(kpcxjgVo.getFphm());
