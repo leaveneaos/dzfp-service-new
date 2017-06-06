@@ -313,7 +313,7 @@ public class WebServiceTestCall {
 
         final String xml01 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 + "<Request>"
-                + "<ClientNO>tujia_01</ClientNO>"
+                + "<ClientNO>family</ClientNO>"
                 + "<SerialNumber>392212131222456</SerialNumber>"
                 + "<InvType>03</InvType>"
                 + "<ServiceType>0</ServiceType>"
@@ -651,7 +651,7 @@ public class WebServiceTestCall {
 
    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
+   public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();

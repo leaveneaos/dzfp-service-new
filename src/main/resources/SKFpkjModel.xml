@@ -13,13 +13,13 @@
 		<fppy>01</fppy>
 		<fyxm count="${count}">
 		  <#list tmpList as dd>
-			<group xh="1">
+			<group xh="${dd.spmxxh}">
 				<fphxz>${dd.fphxz!}</fphxz>
 				<xm>${dd.spmc!}</xm>
 				<sl>${dd.sps!}</sl>
-				<hsdj></hsdj>
+				<hsdj>${dd.hsspdj?string('0.000')!}</hsdj>
 				<hsje>${dd.hsspje?string('0.00')!}</hsje>
-				<bhsdj></bhsdj>
+				<bhsdj>${dd.spdj?string('0.000')!}</bhsdj>
 				<bhsje>${dd.spje?string('0.00')!}</bhsje>
 				<zsl>${dd.spsl!}</zsl>
 				<se>${dd.spse?string('0.00')!}</se>
