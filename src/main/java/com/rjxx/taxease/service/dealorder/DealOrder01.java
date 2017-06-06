@@ -193,7 +193,14 @@ public class DealOrder01 implements IDealOrder {
                             }
                         }
                         result = responseUtil.response(resultList);
-                    } else {
+                    } else if(cszb2.getCsz().equals("03")){//税控服务器
+                        List resultList = new ArrayList();
+                        try {
+                            result= fpclservice.Skzjkp(jyxxsqList, "03");//税控服务器
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     // 不是直连开票

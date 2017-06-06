@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="gbk"?>
+<business id="10008" comment="发票开具">
+	<body yylxdm="1">
+		<kpzdbs>family</kpzdbs>
+		<fplxdm>${kplsvo5.fpzldm!}</fplxdm>
+		<fpqqlsh>${kplsvo5.jylsh!}</fpqqlsh>
+		<kplx>0</kplx>
+		<xhdwsbh>${kplsvo5.xfsh!}</xhdwsbh>
+		<xhdwmc>${kplsvo5.xfmc}</xhdwmc>
+		<ghdwsbh>${kplsvo5.gfsh!}</ghdwsbh>
+		<ghdwmc>${kplsvo5.gfmc!}</ghdwmc>
+		<zsfs>${kplsvo5.zsfs!}</zsfs>
+		<fppy>01</fppy>
+		<fyxm count="${count}">
+		  <#list tmpList as dd>
+			<group xh="1">
+				<fphxz>${dd.fphxz!}</fphxz>
+				<xm>${dd.spmc!}</xm>
+				<sl>${dd.sps!}</sl>
+				<hsdj></hsdj>
+				<hsje>${dd.hsspje?string('0.00')!}</hsje>
+				<bhsdj></bhsdj>
+				<bhsje>${dd.spje?string('0.00')!}</bhsje>
+				<zsl>${dd.spsl!}</zsl>
+				<se>${dd.spse?string('0.00')!}</se>
+				<spbm>${dd.spdm!}</spbm>
+				<zxbm></zxbm>
+				<yhzcbs>${dd.yhzcbs!}</yhzcbs>
+				<lslbs>${dd.lslbz!}</lslbs>
+				<zzstsgl></zzstsgl>
+			</group>
+		  </#list>
+		</fyxm>
+		<hjje>${hjje?string('0.00')!}</hjje>
+		<hjse>${hjse?string('0.00')!}</hjse>
+		<jshj>${kplsvo5.jshj?string('0.00')!}</jshj>
+		<kce></kce>
+		<bz>${kplsvo5.bz!}</bz>
+		<skr>${kplsvo5.skr!}</skr>
+		<kpr>${kplsvo5.kpr!}</kpr>
+		<yfpdm></yfpdm>
+		<yfphm></yfphm>
+	</body>
+</business>

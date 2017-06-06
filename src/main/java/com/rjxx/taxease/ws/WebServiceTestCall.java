@@ -315,15 +315,15 @@ public class WebServiceTestCall {
                 + "<Request>"
                 + "<ClientNO>tujia_01</ClientNO>"
                 + "<SerialNumber>392212131222456</SerialNumber>"
-                + "<InvType>02</InvType>"
+                + "<InvType>03</InvType>"
                 + "<ServiceType>0</ServiceType>"
-                + "<Drawer>qian</Drawer>"
+                + "<Drawer>李四</Drawer>"
                 + "<Payee/>"
                 + "<Reviewer/>"
                 + "<Seller>"
-                + "<Identifier>500102010003699</Identifier>"
-                + "<Name>升级版测试用户3699</Name>"
-                + "<Address>测试南京湖南路亚朵酒店</Address>"
+                + "<Identifier>50012345671180277</Identifier>"
+                + "<Name>上海百旺测试开票</Name>"
+                + "<Address>测试地址</Address>"
                 + "<TelephoneNo>020-123456768</TelephoneNo>"
                 + "<Bank>中国农业银行</Bank>"
                 + "<BankAcc>03399500040009801</BankAcc>"
@@ -341,7 +341,7 @@ public class WebServiceTestCall {
                 + "<Remark/>"
                 + "<Buyer>"
                 + "<Identifier>123456789013234568</Identifier>"
-                + "<Name>购买方名称</Name>"
+                + "<Name>测试税控服务器卷式发票</Name>"
                 + "<!--Name必须，购买方名称String100，该栏目打印在发票上-->"
                 + "<Address>某某路20号203室</Address>"
                 + "<!--Address可选，购买方地址String100，该栏目打印在发票上，专用发票必须-->"
@@ -637,8 +637,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml08,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"13",xml08);
+       String Secret = getSign(xml01,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"01",xml01);
        //输出调用结果
        System.out.println(objects[0].toString());
     }
