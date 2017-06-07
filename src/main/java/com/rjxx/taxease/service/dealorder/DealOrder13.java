@@ -1,6 +1,7 @@
 package com.rjxx.taxease.service.dealorder;
 
 import com.rjxx.taxease.service.result.Result13;
+import com.rjxx.taxease.utils.CallDllWebServiceUtil;
 import com.rjxx.taxease.utils.ResponseUtil;
 import com.rjxx.taxease.utils.XmlMapUtils;
 import com.rjxx.taxeasy.bizcomm.utils.InvoiceResponse;
@@ -83,7 +84,18 @@ public class DealOrder13 implements IDealOrder {
                 return XmlJaxbUtils.toXml(result13);
             }
         } else if ("02".equals("kpfs")) {
-            //TODO 组件接口开发
+            if (fpzldm.equals("01")) {
+                fpzldm = "0";
+            } else if (fpzldm.equals("02")) {
+                fpzldm = "1";
+            }
+            Map map = new HashMap();
+            map.put("clientNO", clientNO);
+            map.put("fpzldm", fpzldm);
+            map.put("Operation", Operation);
+            CallDllWebServiceUtil utils = new CallDllWebServiceUtil();
+            result = utils.callDllWebSevice(gsdm, map);
+            result = responseUtil.response08(result);
             return result;
         } else {
             result13.setReturnCode("9999");
