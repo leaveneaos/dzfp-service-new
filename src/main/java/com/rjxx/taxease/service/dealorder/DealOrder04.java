@@ -26,36 +26,20 @@ import java.util.*;
 
 @Service
 public class DealOrder04 implements IDealOrder{
-
-
-
     @Autowired
     private SkpService skpservice;
-
-
-
     @Autowired
     private CszbService cszbservice;
-
-
-
     @Autowired
     private KplsService kplsService;
-
     @Autowired
     private KpspmxService kpspmxService;
-
     @Autowired
     private JylsService jylsService;
-
     @Autowired
     private JyspmxService jyspmxService;
-
     @Autowired
     private SkService skService;
-
-
-
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public String execute(String gsdm, String orderData, String Operation) {
@@ -69,6 +53,7 @@ public class DealOrder04 implements IDealOrder{
             String ServiceType = String.valueOf(inputMap.get("ServiceType"));//发票业务类型
             String SerialNumber = String.valueOf(inputMap.get("SerialNumber"));//序列号
             String CNNoticeNo = String.valueOf(inputMap.get("CNNoticeNo"));//专票红字通知单号
+            String OrderNumber=String.valueOf(inputMap.get("OrderNumber"));//订单号
             Result04 result04 = new Result04();
         try {
             Map params = new HashMap();
@@ -136,7 +121,7 @@ public class DealOrder04 implements IDealOrder{
             param4.put("djh", djh);
             Jyls jyls = jylsService.findJylsByDjh(param4);
             String ddh = jyls.getDdh(); // 查询原交易流水得ddh
-            Kpls kpls2 = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo);
+            Kpls kpls2 = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo,OrderNumber);
             if (sftbkp.equals("是")) {   //是否同步开票
                 kpls2.setFpztdm("14");
                 kplsService.save(kpls2);
@@ -163,7 +148,7 @@ public class DealOrder04 implements IDealOrder{
         }
     }
 
-    public Kpls save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber,String CNNoticeNo)throws Exception{
+    public Kpls save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber,String CNNoticeNo,String OrderNumber)throws Exception{
         //保存交易流水
         Jyls jyls1 = new Jyls();
         jyls1.setDdh(ddh);
@@ -256,6 +241,7 @@ public class DealOrder04 implements IDealOrder{
         kpls2.setSkpid(jyls1.getSkpid());
         kpls2.setLrry(jyls1.getLrry());
         kpls2.setXgry(jyls1.getLrry());
+        kpls2.setSerialorder(SerialNumber+OrderNumber);
         kplsService.save(kpls2);
         for(Kpspmx kpspmx:kpspmxList){
             Jyspmx jyspmx = new Jyspmx();
