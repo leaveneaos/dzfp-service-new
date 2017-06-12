@@ -174,7 +174,7 @@ public class DealOrder07 implements IDealOrder{
         jyxxsq.setSkpid(kpls.getSkpid());
         jyxxsq.setKpr(kpls.getKpr());
         jyxxsq.setYfpdm(kpls.getFpdm());
-        jyxxsq.setYfphm(kpls.getHzyfphm());
+        jyxxsq.setYfphm(kpls.getFphm());
         jyxxsq.setLrry(kpls.getLrry());
         jyxxsq.setSfdyqd(kpls.getSfdyqd());
         jyxxsq.setHsbz(jyls.getHsbz());
