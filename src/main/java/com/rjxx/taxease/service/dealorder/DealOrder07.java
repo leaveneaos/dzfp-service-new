@@ -125,7 +125,7 @@ public class DealOrder07 implements IDealOrder{
         }
     }
 
-    private void savejyxxsq(Integer kplsh,String SerialNumber,String OrderNumber) {
+    private void savejyxxsq(Integer kplsh,String SerialNumber,String OrderNumber)throws Exception {
         Kpls kpls=kplsService.findOne(kplsh);
         Integer djh = kpls.getDjh();
         Map param4 = new HashMap<>();
@@ -164,6 +164,7 @@ public class DealOrder07 implements IDealOrder{
         jyxxsq.setXfyhzh(kpls.getXfyhzh());
         jyxxsq.setYxbz("1");
         jyxxsq.setYkpjshj(0d);
+        jyxxsq.setLrsj(new Date());
         jyxxsq.setJshj(kpls.getJshj());
         jyxxsq.setHztzdh(kpls.getHztzdh());
         jyxxsq.setKpddm(kpls.getKpddm());
@@ -176,6 +177,7 @@ public class DealOrder07 implements IDealOrder{
         jyxxsq.setYfphm(kpls.getHzyfphm());
         jyxxsq.setLrry(kpls.getLrry());
         jyxxsq.setSfdyqd(kpls.getSfdyqd());
+        jyxxsq.setHsbz(jyls.getHsbz());
         jyxxsqService.save(jyxxsq);
         Map parms=new HashMap();
         parms.put("kplsh",kpls.getKplsh());
@@ -198,6 +200,7 @@ public class DealOrder07 implements IDealOrder{
            jymxsq.setSpse(kpspmx.getSpse());
            jymxsq.setSpdw(kpspmx.getSpdw());
            jymxsq.setSpje(kpspmx.getSpje());
+           jymxsq.setSpsl(kpspmx.getSpsl());
            jymxsq.setSpggxh(kpspmx.getSpggxh());
            jymxsq.setSpmc(kpspmx.getSpmc());
            jymxsq.setSpmxxh(kpspmx.getSpmxxh());
@@ -206,6 +209,8 @@ public class DealOrder07 implements IDealOrder{
            jymxsq.setYhzcmc(kpspmx.getYhzcmc());
            jymxsq.setSqlsh(jyxxsq.getSqlsh());
            jymxsq.setJshj(kpspmx.getSpje()+kpspmx.getSpse());
+           jymxsq.setXgsj(new Date());
+           jymxsq.setLrsj(new Date());
            jymxsqList.add(jymxsq);
         }
         jymxsqService.save(jymxsqList);

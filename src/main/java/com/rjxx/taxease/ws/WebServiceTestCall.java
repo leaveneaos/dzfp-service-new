@@ -621,14 +621,14 @@ public class WebServiceTestCall {
        String xml07="<?xml version=\"1.0\" encoding=\"gbk\"?>\n" +
                "<Request>\n" +
                "\t<ClientNO>tujia_01</ClientNO>\n" +
-               "\t<SerialNumber>c293f5ed577d4c17883595536260c309</SerialNumber>\n" +
+               "\t<SerialNumber>JY20170612104626727</SerialNumber>\n" +
                "\t<InvType>02</InvType>\n" +
                "\t<CancelInvType></CancelInvType>\n" +
                "\t<VenderTaxNo></VenderTaxNo>\n" +
-               "\t<SumTotalAmount>9.000000</SumTotalAmount>\n" +
+               "\t<SumTotalAmount>7600.040000</SumTotalAmount>\n" +
                "\t<CancelUser>tt</CancelUser>\n" +
                "\t<CNDNCode>3330000444</CNDNCode>\n" +
-               "\t<CNDNNo>67683329</CNDNNo>\n" +
+               "\t<CNDNNo>36432283</CNDNNo>\n" +
                "</Request>\n";
 
 
@@ -637,8 +637,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml01,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"01",xml01);
+       String Secret = getSign(xml07,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"07",xml07);
        //输出调用结果
        System.out.println(objects[0].toString());
     }
@@ -650,8 +650,8 @@ public class WebServiceTestCall {
     }
 
    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   //public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
+   //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
+   public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();
