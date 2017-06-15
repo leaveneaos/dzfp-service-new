@@ -18,7 +18,7 @@ public class ResponeseUtils {
         DefaultResult defaultResult = new DefaultResult();
         defaultResult.setReturnCode("9999");
         defaultResult.setReturnMessage(message);
-        return XmlJaxbUtils.toXml(message);
+        return XmlJaxbUtils.toXml(defaultResult);
     }
 
     public static String printFailure1(String errorMessage) {
