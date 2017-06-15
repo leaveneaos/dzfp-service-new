@@ -84,7 +84,7 @@ public class DealOrder08 implements IDealOrder {
                 result08.setReturnmsg(e.getMessage());
                 return XmlJaxbUtils.toXml(result08);
             }
-        } else if ("02".equals("kpfs")) {
+        } else if ("02".equals(kpfs)) {
             if (fpzldm.equals("01")) {
                 fpzldm = "0";
             } else if (fpzldm.equals("02")) {

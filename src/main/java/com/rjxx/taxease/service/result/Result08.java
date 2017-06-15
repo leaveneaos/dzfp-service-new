@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Responese")
 public class Result08 {
 
-    @XmlElement
+    @XmlElement(name = "CLIENTNO")
     private String ClientNO;
 
     @XmlElement
