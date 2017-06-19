@@ -4,13 +4,12 @@ import com.rjxx.taxease.service.result.DefaultResult;
 import com.rjxx.taxease.utils.CallDllWebServiceUtil;
 import com.rjxx.taxease.utils.ResponseUtil;
 import com.rjxx.taxease.utils.XmlMapUtils;
+import com.rjxx.taxeasy.bizcomm.utils.DiscountDealUtil;
 import com.rjxx.taxeasy.bizcomm.utils.FpclService;
+import com.rjxx.taxeasy.bizcomm.utils.InvoiceSplitUtils;
 import com.rjxx.taxeasy.bizcomm.utils.SaveOrderData;
 import com.rjxx.taxeasy.domains.*;
-import com.rjxx.taxeasy.service.CszbService;
-import com.rjxx.taxeasy.service.KpspmxService;
-import com.rjxx.taxeasy.service.SkpService;
-import com.rjxx.taxeasy.service.YhService;
+import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.KplsVO4;
 import com.rjxx.utils.CheckOrderUtil;
 import com.rjxx.utils.TemplateUtils;
@@ -61,6 +60,15 @@ public class DealOrder01 implements IDealOrder {
     @Autowired
     private ResponseUtil responseUtil;
 
+    @Autowired
+    private DiscountDealUtil discountDealUtil;
+
+    @Autowired
+    private JymxsqClService jymxsqClService;
+
+    @Autowired
+    private InvoiceSplitUtils invoiceSplitUtils;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public String execute(String gsdm, String OrderData, String Operation) {
@@ -93,15 +101,25 @@ public class DealOrder01 implements IDealOrder {
         }
         // jyxxsqList = reList;
 
-        List<Jymxsq> jymxsqList = (List) map.get("jymxsqList");
+        //List<Jymxsq> jymxsqList = (List) map.get("jymxsqList");
+        //解决后续操作对list对象值改变造成原始数据的丢失
+        List<Jymxsq> tmp1List = new ArrayList<Jymxsq>((List) map.get("jymxsqList"));
+        List<Jymxsq> jymxsqList = new ArrayList<Jymxsq>(tmp1List);
+        List<Jyzfmx> jyzfmxList = (List) map.get("jyzfmxList");
+        List<Jymxsq> jymxsq2List = new ArrayList<Jymxsq>(tmp1List);
+
         // List<Jymxsq> tmpList = null;
         Jyxxsq jyxxsq = new Jyxxsq();
         Jymxsq jymxsq = new Jymxsq();
+        List<JymxsqCl> jymxsqClList = new ArrayList<JymxsqCl>();
 
-        String tmp = checkorderutil.checkAll(jyxxsqList, jymxsqList, gsdm, Operation);
+        String tmp = checkorderutil.checkAll(jyxxsqList, jymxsqList, jyzfmxList,gsdm, Operation);
         // 校验通过，进行后续保存，以及开票功能
         if (null == tmp || tmp.equals("")) {
-            String tmp2 = saveorderdata.saveAllData(jyxxsqList, jymxsqList);
+            //处理折扣行数据
+            jymxsqClList = discountDealUtil.dealDiscount(jyxxsqList, jymxsq2List, jyzfmxList, gsdm);
+
+            String tmp2 = saveorderdata.saveAllData(jyxxsqList, jymxsqList,jyzfmxList,jymxsqClList);
             // 保存操作成功与否
             if (null != tmp2 && !tmp2.equals("")) {
                 defaultResult.setReturnCode("9999");
@@ -235,6 +253,7 @@ public class DealOrder01 implements IDealOrder {
         OMElement root = null;
         List<Jyxxsq> jyxxsqList = new ArrayList();
         List<Jymxsq> jymxsqList = new ArrayList();
+        List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();
         Map rsMap = new HashMap();
         Document xmlDoc = null;
         try {
@@ -351,12 +370,25 @@ public class DealOrder01 implements IDealOrder {
                     remark = orderMainMap.selectSingleNode("Remark").getText();
                 }
 
+                String ExtractedCode = "";
+                if (null != orderMainMap.selectSingleNode("ExtractedCode")
+                        && !orderMainMap.selectSingleNode("ExtractedCode").equals("")) {
+                    ExtractedCode = orderMainMap.selectSingleNode("ExtractedCode").getText();
+                }
+
                 Element buyerMap = (Element) orderMainMap.selectSingleNode("Buyer");
 
                 String buyerIdentifier = "";
                 if (null != buyerMap.selectSingleNode("Identifier")
                         && !buyerMap.selectSingleNode("Identifier").equals("")) {
                     buyerIdentifier = buyerMap.selectSingleNode("Identifier").getText();
+                }
+
+                //购方客户类型0不报销、1报销
+                String CustomerType = "";
+                if (null != buyerMap.selectSingleNode("CustomerType")
+                        && !buyerMap.selectSingleNode("CustomerType").equals("")) {
+                    CustomerType = buyerMap.selectSingleNode("CustomerType").getText();
                 }
 
                 String buyerName = "";
@@ -446,6 +478,7 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setJshj(Double.valueOf(totalAmount));
                 jyxxsq.setHsbz(taxMark);
                 jyxxsq.setBz(remark);
+                jyxxsq.setGflx(CustomerType);
                 jyxxsq.setGfsh(buyerIdentifier);
                 jyxxsq.setGfmc(buyerName);
                 jyxxsq.setGfdz(buyerAddress);
@@ -454,7 +487,12 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setGfyhzh(buyerBankAcc);
                 jyxxsq.setGfemail(buyerEmail);
                 jyxxsq.setSffsyj(buyerIsSend);
-                jyxxsq.setTqm(buyerExtractedCode);
+                //为了照顾亚朵，途家两家老版本的发票开具xml样例
+                if(null != ExtractedCode && !ExtractedCode.equals("")){
+                    jyxxsq.setTqm(ExtractedCode);
+                }else if(null != buyerExtractedCode && !buyerExtractedCode.equals("")){
+                    jyxxsq.setTqm(buyerExtractedCode);
+                }
                 jyxxsq.setGfsjr(buyerRecipient);
                 jyxxsq.setGfsjrdz(buyerReciAddress);
                 jyxxsq.setGfyb(buyerZip);
@@ -617,12 +655,44 @@ public class DealOrder01 implements IDealOrder {
                     }
 
                 }
+                // 获取参数中对应的支付信息
+                Element payments = (Element) xn.selectSingleNode("Payments");
+                if (null != payments && !payments.equals("")) {
+                    List<Element> paymentItemList = (List<Element>) payments.elements("PaymentItem");
+
+                    if (null != paymentItemList && paymentItemList.size() > 0) {
+                        for (Element PaymentItem : paymentItemList) {
+                            Jyzfmx jyzfmx = new Jyzfmx();
+                            String zffsDm = "";
+                            if (null != PaymentItem.selectSingleNode("PayCode")
+                                    && !PaymentItem.selectSingleNode("PayCode").equals("")) {
+                                zffsDm = PaymentItem.selectSingleNode("PayCode").getText();
+                                jyzfmx.setZffsDm(zffsDm);
+                            }
+                            String zfje = "";
+                            if (null != PaymentItem.selectSingleNode("PayPrice")
+                                    && !PaymentItem.selectSingleNode("PayPrice").equals("")) {
+                                zfje = PaymentItem.selectSingleNode("PayPrice").getText();
+                                jyzfmx.setZfje(Double.valueOf(zfje));
+                            }
+                            jyzfmx.setGsdm(gsdm);
+                            jyzfmx.setDdh(jyxxsq.getDdh());
+                            jyzfmx.setLrry(lrry);
+                            jyzfmx.setLrsj(new Date());
+                            jyzfmx.setXgry(lrry);
+                            jyzfmx.setXgsj(new Date());
+                            jyzfmxList.add(jyzfmx);
+                        }
+
+                    }
+                }
 
             }
         }
 
         rsMap.put("jyxxsqList", jyxxsqList);
         rsMap.put("jymxsqList", jymxsqList);
+        rsMap.put("jyzfmxList", jyzfmxList);
         return rsMap;
     }
 
