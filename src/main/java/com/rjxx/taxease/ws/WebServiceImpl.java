@@ -100,7 +100,7 @@ public class WebServiceImpl implements WebService {
 	@Override
 	public String UploadOrderData(@WebParam(name = "AppId") String AppId,@WebParam(name = "Sign") String Sign,@WebParam(name = "Operation") String Operation,@WebParam(name = "InvoiceData") String InvoiceData) {
 		// TODO Auto-generated method stub
-		logger.debug(AppId + "," + Sign + "," + InvoiceData);
+		logger.debug(AppId + "," + Sign + ","+Operation +","+ InvoiceData);
 		String result = "";
 		try {
 			result = dealorderdataservice.uploadOrderData(AppId, Sign, Operation, InvoiceData);
