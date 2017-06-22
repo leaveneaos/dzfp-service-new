@@ -134,8 +134,9 @@ public class DealOrder04 implements IDealOrder{
                     result04.setReturnMessage(response.getReturnMessage());
                 }
             } else {
-                kpls2.setFpztdm("04");
+                kpls2.setFpztdm("14");
                 kplsService.save(kpls2);
+                skService.callService(kpls2.getKplsh());
                 result04.setReturnCode("0000");
                 result04.setReturnMessage("红冲请求已接受！");
             }

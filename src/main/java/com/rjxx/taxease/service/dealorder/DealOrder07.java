@@ -38,13 +38,13 @@ public class DealOrder07 implements IDealOrder{
 
     @Autowired
     private JyspmxService jyspmxService;
-
-    @Autowired
-    private SkService skService;
     @Autowired
     private JyxxsqService jyxxsqService;
     @Autowired
     private JymxsqService jymxsqService;
+    @Autowired
+    private SkService skService;
+
 
     @Override
     public String execute(String gsdm, String orderData, String Operation) {
@@ -112,8 +112,9 @@ public class DealOrder07 implements IDealOrder{
             savejyxxsq(kpls.getKplsh(),SerialNumber,OrderNumber);
             kpls.setSerialorder(SerialNumber+OrderNumber);
             kpls.setFpczlxdm("14");
-            kpls.setFpztdm("04");
+            kpls.setFpztdm("14");
             kplsService.save(kpls);
+            skService.voidInvoice(kpls.getKplsh());
             result07.setReturnCode("0000");
             result07.setReturnMessage("作废请求已接受！");
             return XmlJaxbUtils.toXml(result07);
