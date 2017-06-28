@@ -113,7 +113,6 @@ public class InvoiceService {
         final int Xgry = Integer.parseInt(this.readFile("Xgry"));
         final int Lrry = Integer.parseInt(this.readFile("Lrry"));
         final String productCode = this.readFile("Product_Code");
-        final String kpddm = this.readFile("kpddm");
         final String fsyj = this.readFile("FSYJ");
         final String ewm = this.readFile("ewm");
         final String tqlj = this.readFile("tqlj");
@@ -224,6 +223,7 @@ public class InvoiceService {
             		Skp skp = skpservice.findOneByParams(params2);
             		int xfid = skp.getXfid();
             		int skpid = skp.getId();
+            		String kpddm = skp.getKpddm();
                     Jyspmx iurdb = new Jyspmx();//明细表
                     // 保存 发票表
                     Double total = 0.00;
@@ -242,11 +242,11 @@ public class InvoiceService {
                     iurb.setJylssj(OrderDate);//交易流水时间
                     iurb.setXfmc(Seller_Name); /*"爱芙趣商贸（上海）有限公司"*///销方名称
                     iurb.setXfsh(Seller_Identifier);/*"310106550096887"*///销方税号  非空
-                    iurb.setXfyh("dafd");//销方银行
-                    iurb.setXfyhzh(Seller_BankAcc);//销方银行账号
+                    iurb.setXfyh("-");//销方银行
+                    iurb.setXfyhzh("-");//销方银行账号
                             //.set("xflxr", "")//销方联系人
-                    iurb.setXfdz(Seller_Address);//销方地址
-                    iurb.setXfdh(Seller_TelephoneNumber);
+                    iurb.setXfdz("-");//销方地址
+                    iurb.setXfdh("-");
                     iurb.setSffsyj(IsSend);//0纸质开具 仅作存库 1发送邮件
                     iurb.setGfmc(Buyer_Name);//购方名称
                     iurb.setGfsh(Buyer_Identifier);//购方税号
