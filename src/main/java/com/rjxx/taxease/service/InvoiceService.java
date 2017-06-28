@@ -10,19 +10,27 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPEncodingStreamWriter;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rjxx.taxeasy.bizcomm.utils.DataOperte;
+import com.rjxx.taxeasy.bizcomm.utils.GetYjnr;
+import com.rjxx.taxeasy.bizcomm.utils.SendalEmail;
+import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Skp;
+import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.service.JyspmxService;
 import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.utils.CheckUtil;
 import com.rjxx.utils.GlobsAttributes;
+import com.rjxx.utils.TemplateUtils;
 import com.rjxx.utils.TimeUtil;
 
 import javax.xml.namespace.QName;
@@ -39,6 +47,7 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -64,6 +73,17 @@ public class InvoiceService {
 	 
 	 @Autowired
 	 private DataOperte dataoperte;
+	 
+	 @Autowired
+	 private GsxxService gsxxService;
+	 
+	 @Autowired
+	 private DealOrderDataService dealOrderDataService;
+	 
+	 @Autowired
+     private SendalEmail sendalEmail;
+	 
+	 private Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
      * 单张电子发票开具接口
      *
@@ -93,6 +113,10 @@ public class InvoiceService {
         final int Xgry = Integer.parseInt(this.readFile("Xgry"));
         final int Lrry = Integer.parseInt(this.readFile("Lrry"));
         final String productCode = this.readFile("Product_Code");
+        final String kpddm = this.readFile("kpddm");
+        final String fsyj = this.readFile("FSYJ");
+        final String ewm = this.readFile("ewm");
+        final String tqlj = this.readFile("tqlj");
         /**************************************/
         OMElement root;
         final Map rootMap;
@@ -218,7 +242,7 @@ public class InvoiceService {
                     iurb.setJylssj(OrderDate);//交易流水时间
                     iurb.setXfmc(Seller_Name); /*"爱芙趣商贸（上海）有限公司"*///销方名称
                     iurb.setXfsh(Seller_Identifier);/*"310106550096887"*///销方税号  非空
-                    iurb.setXfyh("");//销方银行
+                    iurb.setXfyh("dafd");//销方银行
                     iurb.setXfyhzh(Seller_BankAcc);//销方银行账号
                             //.set("xflxr", "")//销方联系人
                     iurb.setXfdz(Seller_Address);//销方地址
@@ -249,13 +273,14 @@ public class InvoiceService {
                     iurb.setGsdm("af");
                     iurb.setXfid(xfid);
                     iurb.setSkpid(skpid);
-                    jylsservice.save(iurb);
+                    //jylsservice.save(iurb);
                  /*   List<Jyls> iurbs = iurb.find("select * from t_jyls where jylsh ='" + SerialNumber + "'");
                     iurb = iurbs.get(iurbs.size() - 1);*/
                     // 保存发票明细信息表
                   
                     Map detail;
                     String unitPriceStr;
+                    List<Jyspmx> iurdbList = new ArrayList<Jyspmx>();
                     for (int i = 0, l = Details.size(); i < l; i++) {
                         detail = (Map) Details.get(i);
                         unitPriceStr = (String) detail.get("UNITPRICE");
@@ -283,17 +308,26 @@ public class InvoiceService {
                         iurdb.setXfid(xfid);
                         iurdb.setSkpid(skpid);
                         
-                        jyspmxservice.save(iurdb);
+                        iurdbList.add(iurdb);
+                        //jyspmxservice.save(iurdb);
                         
                         //total += Double.valueOf(amountStr);
                     }
                     //iurb.set("jshj", total).update();
                     //保存报文数据结束
+                    callDealOrderDataService(iurb,iurdbList,kpddm);
+                    //如果fsyj为1表示发送邮件
+                    if(fsyj.equals("1")){
+                    	GetYjnr yjnrF = new GetYjnr();
+                    	String yjnr = yjnrF.getAfEmail(ewm, tqlj);
+                    	sendalEmail.sendEmail("999999", iurb.getGsdm(), iurb.getGfemail(), "爱芙趣发票提取",
+                    			"999999", yjnr, "电子发票","0");
+                    }
                     /*************************************************/
                     //向爱芙趣返回存库情况
                     //String resXml = invoiceRtnXml(iurb);
                     //保存处理状态至日志里
-                    dataoperte.saveLog(iurb.getDjh(), clzt, "0", "invoiceUpload 接收电子发票待开票数据完成", null, Lrry, Seller_Identifier, SerialNumber);
+                    //dataoperte.saveLog(iurb.getDjh(), clzt, "0", "invoiceUpload 接收电子发票待开票数据完成", null, Lrry, Seller_Identifier, SerialNumber);
                    /* resultMap.put("result", "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Responese>\n  <ReturnCode>0000</ReturnCode>\n" +
                             "  <Djh>" + iurb.getDjh() + "</Djh>\n  <ReturnMessage>待开票数据保存成功</ReturnMessage>\n</Responese>");*/
                     //return true;
@@ -311,7 +345,49 @@ public class InvoiceService {
         //String result = (String) resultMap.get("result");
         //return result;
     }
-
+	 
+	private static String getSign(String QueryData,String key){
+			String signSourceData = "data=" + QueryData + "&key=" + key;
+			String newSign =  DigestUtils.md5Hex(signSourceData);
+			return newSign;
+	}
+	 
+	 public void callDealOrderDataService(Jyls iurb,List<Jyspmx> mxList,String kpddm) {
+         String path = this.getClass().getClassLoader().getResource("AFToFpkj.xml")
+                 .getPath();
+         try {
+			path = URLDecoder.decode(path, "UTF-8");
+			File templateFile = new File(path);
+	         String jylssj = TimeUtil.formatDate(null == iurb.getJylssj()? new Date():iurb.getJylssj(), "yyyy-MM-dd HH:mm:ss");
+	         Map params2 = new HashMap();
+	         params2.put("iurb", iurb);
+	         params2.put("kpddm", kpddm);
+	         params2.put("jylssj", jylssj);
+	         params2.put("mxList", mxList);
+	         params2.put("count", mxList.size());
+	         String result2 = TemplateUtils.generateContent(templateFile, params2, "utf-8");
+	         //System.out.println(result2);
+	         logger.debug("爱芙趣InvoiceService调用DealOrderDataService传入报文：" + result2);
+	         Map params = new HashMap();
+	 		 params.put("gsdm", "af");
+	 		 Gsxx gsxx = gsxxService.findOneByGsdm(params);
+	 		 String AppId = gsxx.getAppKey();
+	 		 String key = gsxx.getSecretKey();
+	 		 String Sign = getSign(result2,key);
+	         String result = dealOrderDataService.dealOrder(AppId, Sign, "01", result2);
+	         
+	         //输出调用结果
+	         //System.out.println("爱芙趣InvoiceService调用DealOrderDataService返回结果：" + result);
+	         logger.debug("爱芙趣InvoiceService调用DealOrderDataService返回结果：" + result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         
+         
+       
+	 }
+	 
     /**
      * 构造对接收到的爱芙趣待开票数据存库情况的返回报文
      *
