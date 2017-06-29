@@ -216,8 +216,8 @@ public class InvoiceService {
                     //yi下为报文保存数据
                     Jyls iurb = new Jyls(); //主表
                     String clzt = "01";
-                    String fpzl = "12";
-                    if ("0".equals(IsSend) || IsSend == "0") {
+                    String fpzl = "12";//全部改为电子票
+                    /*if ("0".equals(IsSend) || IsSend == "0") {
                         clzt = "99";//纸质开具
                         fpzl = "02";//增普
                     } else if ("2".equals(IsSend) || IsSend == "2") {
@@ -226,7 +226,7 @@ public class InvoiceService {
                     } else if ("3".equals(IsSend) || IsSend == "3") {
                         clzt = "98";//纸质开具
                         fpzl = "02";//增普
-                    }
+                    }*/
                     //20161114 kzx  接口接入数据加入xfid和skpid的维护
                     Map params2 = new HashMap();
             		params2.put("gsdm", "af");
