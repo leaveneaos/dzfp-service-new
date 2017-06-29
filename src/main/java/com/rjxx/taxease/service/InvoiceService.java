@@ -24,10 +24,14 @@ import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.taxeasy.domains.Jyls;
 import com.rjxx.taxeasy.domains.Jyspmx;
 import com.rjxx.taxeasy.domains.Skp;
+import com.rjxx.taxeasy.domains.Xf;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.service.JyspmxService;
 import com.rjxx.taxeasy.service.SkpService;
+import com.rjxx.taxeasy.service.SpvoService;
+import com.rjxx.taxeasy.service.XfService;
+import com.rjxx.taxeasy.vo.Spvo;
 import com.rjxx.utils.CheckUtil;
 import com.rjxx.utils.GlobsAttributes;
 import com.rjxx.utils.TemplateUtils;
@@ -66,12 +70,6 @@ public class InvoiceService {
 	 private SkpService skpservice;
 	 
 	 @Autowired
-	 private JylsService jylsservice;
-	 
-	 @Autowired
-	 private JyspmxService jyspmxservice;
-	 
-	 @Autowired
 	 private DataOperte dataoperte;
 	 
 	 @Autowired
@@ -82,6 +80,12 @@ public class InvoiceService {
 	 
 	 @Autowired
      private SendalEmail sendalEmail;
+	 
+	 @Autowired
+     private XfService xfService;
+	 
+	 @Autowired
+     private SpvoService spvoService;
 	 
 	 private Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
@@ -96,23 +100,29 @@ public class InvoiceService {
 
         //ActiveRecordHelper.start();
         /**************************************/
-        // A&F 配置的默认信息                     
+        // A&F 配置的默认信息 (获取销方信息，商品信息)    
+		Xf param = new Xf();
+		param.setGsdm("af");
+		Xf xf = xfService.findOneByParams(param);
+		
+		Spvo spvo = (Spvo) ((List)spvoService.findAllByGsdm("af")).get(0);
+		
         //PropKit.use("attr.properties");
-        final String Seller_Identifier =this.readFile("Seller_Identifier");
-        final String Seller_Name = this.readFile("Seller_Name");
-        final String TelephoneNumberDEfault = this.readFile("TelephoneNumber");
-        final String Drawer = this.readFile("Drawer");
-        final String Seller_BankAcc = this.readFile("Seller_BankAcc");
-        final String Payee = this.readFile("Payee");
-        final String Reviewer = this.readFile("Reviewer");
-        final String TaxRate = this.readFile("TaxRate");
-        final String description = this.readFile("Description");
-        final String unit = this.readFile("Unit");
-        final String quantityStr = this.readFile("Quantity");
-        final String hsbz = this.readFile("Hsbz");
-        final int Xgry = Integer.parseInt(this.readFile("Xgry"));
-        final int Lrry = Integer.parseInt(this.readFile("Lrry"));
-        final String productCode = this.readFile("Product_Code");
+        final String Seller_Identifier = xf.getXfsh();
+        final String Seller_Name = xf.getXfmc();
+        final String TelephoneNumberDEfault = xf.getXfdh();
+        final String Drawer = xf.getKpr();
+        final String Seller_BankAcc = xf.getXfyh();
+        final String Payee = xf.getSkr();
+        final String Reviewer = xf.getFhr();
+        final String TaxRate = String.valueOf(spvo.getSl());
+        final String description = spvo.getSpmc();
+        final String unit = spvo.getSpdw();
+        final String quantityStr = "1";
+        final String hsbz = "1";
+        final int Xgry = xf.getXgry();
+        final int Lrry = xf.getLrry();
+        final String productCode = spvo.getSpbm();
         final String fsyj = this.readFile("FSYJ");
         final String ewm = this.readFile("ewm");
         final String tqlj = this.readFile("tqlj");
@@ -291,10 +301,10 @@ public class InvoiceService {
                         iurdb.setSpmxxh(i + 1); 
                         iurdb.setFphxz("0");
                         iurdb.setSpdm(productCode);
-                        iurdb.setSpmc("服饰"); //商品名称
+                        iurdb.setSpmc(description); //商品名称
                         iurdb.setSpdw(unit);//商品单位
-                        iurdb.setSps(Double.valueOf(quantityStr));//商品数量
-                        iurdb.setSpdj(Double.valueOf(unitPriceStr));//商品单价
+                        iurdb.setSps(null);//商品数量
+                        iurdb.setSpdj(null);//商品单价
                         iurdb.setSpje(Double.valueOf(amountStr));//商品
                         iurdb.setSpsl(Double.valueOf(TaxRate));//商品税率
                         iurdb.setSpse(0.00);//商品税额
@@ -478,7 +488,7 @@ public class InvoiceService {
     //读取af的默认配置
     private String readFile(String str){
     	    Properties properties = new Properties();  
-	        InputStream inputStream = this.getClass().getResourceAsStream("/attr.properties");  
+	        InputStream inputStream = this.getClass().getResourceAsStream("/application.properties");  
 	        BufferedReader bf = new BufferedReader(new  InputStreamReader(inputStream));  
 	        try {
 				properties.load(bf);

@@ -81,9 +81,9 @@
 					<!--Spec可选，商品规格型号String20，该栏目打印在发票上-->
 					<Unit>${iurdb.spdw!}</Unit>
 					<!--Unit可选，商品单位String20，该栏目打印在发票上-->
-					<Quantity>${iurdb.sps?c!}</Quantity>
+					<!--<Quantity></Quantity>-->
 					<!--Quantity可选，商品数量，该栏目打印在发票上-->
-					<UnitPrice>${iurdb.spdj?c!}</UnitPrice>
+					<!--<UnitPrice></UnitPrice>-->
 					<!--UnitPrice可选，商品单价，如果TaxMark='1'，此单价为含税单价，否则不含税单价，该栏目打印在发票上-->
 					<Amount>${iurdb.spje?c!}</Amount>
 					<!--Amount必须，商品金额，如果TaxMark='1'，此金额为含税金额，否则不含税金额，该栏目打印在发票上-->
