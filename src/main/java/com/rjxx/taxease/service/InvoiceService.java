@@ -363,6 +363,7 @@ public class InvoiceService {
 	}
 	 
 	 public void callDealOrderDataService(Jyls iurb,List<Jyspmx> mxList,String kpddm) {
+		 logger.debug("爱芙趣kpddm:" + kpddm);
          String path = this.getClass().getClassLoader().getResource("AFToFpkj.xml")
                  .getPath();
          try {
