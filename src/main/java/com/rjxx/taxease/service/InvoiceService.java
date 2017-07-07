@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rjxx.taxease.service.result.DefaultResult;
 import com.rjxx.taxeasy.bizcomm.utils.DataOperte;
 import com.rjxx.taxeasy.bizcomm.utils.GetYjnr;
 import com.rjxx.taxeasy.bizcomm.utils.SendalEmail;
@@ -36,6 +37,7 @@ import com.rjxx.utils.CheckUtil;
 import com.rjxx.utils.GlobsAttributes;
 import com.rjxx.utils.TemplateUtils;
 import com.rjxx.utils.TimeUtil;
+import com.rjxx.utils.XmlJaxbUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -325,9 +327,11 @@ public class InvoiceService {
                     }
                     //iurb.set("jshj", total).update();
                     //保存报文数据结束
-                    callDealOrderDataService(iurb,iurdbList,kpddm);
+                   String result = callDealOrderDataService(iurb,iurdbList,kpddm);
+       			   DefaultResult defaultResult = new DefaultResult();
+       			   defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, result);
                     //如果fsyj为1表示发送邮件
-                    if(fsyj.equals("1")){
+                    if(fsyj.equals("1") && defaultResult.getReturnCode().equals("0000")){
                     	GetYjnr yjnrF = new GetYjnr();
                     	String yjnr = yjnrF.getAfEmail(ewm, tqlj);
                     	sendalEmail.sendEmail("999999", iurb.getGsdm(), iurb.getGfemail(), "爱芙趣发票提取",
@@ -362,10 +366,11 @@ public class InvoiceService {
 			return newSign;
 	}
 	 
-	 public void callDealOrderDataService(Jyls iurb,List<Jyspmx> mxList,String kpddm) {
+	 public String callDealOrderDataService(Jyls iurb,List<Jyspmx> mxList,String kpddm) {
 		 logger.debug("爱芙趣kpddm:" + kpddm);
          String path = this.getClass().getClassLoader().getResource("AFToFpkj.xml")
                  .getPath();
+         String result = "";
          try {
 			path = URLDecoder.decode(path, "UTF-8");
 			File templateFile = new File(path);
@@ -385,17 +390,20 @@ public class InvoiceService {
 	 		 String AppId = gsxx.getAppKey();
 	 		 String key = gsxx.getSecretKey();
 	 		 String Sign = getSign(result2,key);
-	         String result = dealOrderDataService.dealOrder(AppId, Sign, "01", result2);
-	         
+	 		 result = dealOrderDataService.dealOrder(AppId, Sign, "01", result2);
+	        
 	         //输出调用结果
 	         //System.out.println("爱芙趣InvoiceService调用DealOrderDataService返回结果：" + result);
 	         logger.debug("爱芙趣InvoiceService调用DealOrderDataService返回结果：" + result);
+	         return result;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DefaultResult defaultResult = new DefaultResult();
+		    defaultResult.setReturnCode("9999");
+		    defaultResult.setReturnMessage("调用接口异常");
+		    return XmlJaxbUtils.toXml(defaultResult);	
 		}
-         
-         
        
 	 }
 	 
