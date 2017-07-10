@@ -365,8 +365,8 @@ public class WebServiceTestCall {
                 + "<RowType>0</RowType>"
                 + "<Spec/>"
                 + "<Unit>次</Unit>"
-                + "<Quantity>1</Quantity>"
-                + "<UnitPrice>0.94</UnitPrice>"
+                + "<Quantity>0</Quantity>"
+                + "<UnitPrice>0</UnitPrice>"
                 + "<Amount>0.94</Amount>"
                 + "<DeductAmount>0</DeductAmount>"
                 + "<TaxRate>0.06</TaxRate>"
@@ -637,8 +637,8 @@ public class WebServiceTestCall {
        String methodName = "UploadOrderData";
        String AppKey = "RJ874afd58e67b";
        String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml07,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"07",xml07);
+       String Secret = getSign(xml01,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"01",xml01);
        //输出调用结果
        System.out.println(objects[0].toString());
     }

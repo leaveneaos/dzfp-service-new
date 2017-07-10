@@ -564,7 +564,8 @@ public class DealOrder01 implements IDealOrder {
                         if (null != orderDetails.selectSingleNode("Quantity")
                                 && !orderDetails.selectSingleNode("Quantity").equals("")) {
                             Quantity = orderDetails.selectSingleNode("Quantity").getText();
-                            jymxsq.setSps(Double.valueOf(Quantity));
+                            try{jymxsq.setSps(Double.valueOf(Quantity));}catch (Exception e){jymxsq.setSps(null);}
+
                         }
 
                         // 商品单价
@@ -572,7 +573,7 @@ public class DealOrder01 implements IDealOrder {
                         if (null != orderDetails.selectSingleNode("UnitPrice")
                                 && !orderDetails.selectSingleNode("UnitPrice").equals("")) {
                             UnitPrice = orderDetails.selectSingleNode("UnitPrice").getText();
-                            jymxsq.setSpdj(Double.valueOf(UnitPrice));
+                            try{jymxsq.setSpdj(Double.valueOf(UnitPrice));}catch (Exception e){jymxsq.setSpdj(null);}
                         }
 
                         // 商品金额
