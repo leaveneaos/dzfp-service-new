@@ -140,7 +140,7 @@ public class DealOrder01 implements IDealOrder {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-                        result = responseUtil.lpResponse(resultList);
+                        result = responseUtil.lpResponse(null);
                     } else if (cszb2.getCsz().equals("02")) {
                         // 组件方式
                         List fpclList = new ArrayList();
