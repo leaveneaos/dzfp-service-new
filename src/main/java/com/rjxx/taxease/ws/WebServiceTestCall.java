@@ -651,7 +651,7 @@ public class WebServiceTestCall {
 
    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
+   public static String WS_URL = "http://localhost:8080/dzfp_service_new/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();

@@ -25,16 +25,16 @@ public class HttpUtils {
 		ObjectMapper mapper = new ObjectMapper();
 		String InvoiceData="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
 				+ "<Request>"
-				+ "<ClientNO>kp011</ClientNO>"
-				+ "<SerialNumber>19223214</SerialNumber>"
-				+ "<InvType>02</InvType>"
+				+ "<ClientNO>ldyx_01</ClientNO>"
+				+ "<SerialNumber>ddRDdndBgmbdkd</SerialNumber>"
+				+ "<InvType>12</InvType>"
 				+ "<ServiceType>0</ServiceType>"
 				+ "<Drawer>qian</Drawer>"
 				+ "<Payee/>"
 				+ "<Reviewer/>"
 				+ "<Seller>"
-				+ "<Identifier>500102010003697</Identifier>"
-				+ "<Name>升级版测试用户3697</Name>"
+				+ "<Identifier>500102010003643</Identifier>"
+				+ "<Name>上海百旺测试3643</Name>"
 				+ "<Address>测试南京湖南路亚朵酒店</Address>"
 				+ "<TelephoneNo>020-123456768</TelephoneNo>"
 				+ "<Bank>中国农业银行</Bank>"
@@ -43,7 +43,7 @@ public class HttpUtils {
 				+ "<OrderSize count=\"1\">"
 				+ "<Order>"
 				+ "<OrderMain>"
-				+ "<OrderNo>128_932393</OrderNo>"
+				+ "<OrderNo>d_dldkBgRdmCd</OrderNo>"
 				+ "<InvoiceList>0</InvoiceList>"
 				+ "<InvoiceSplit>0</InvoiceSplit>"
 				+ "<OrderDate>2017-03-09 15:33:00</OrderDate>"
@@ -64,7 +64,7 @@ public class HttpUtils {
 				+ "<Bank>中国建设银行打浦桥支行</Bank>"
 				+ "<!--Bank可选，购买方银行String100，该栏目打印在发票上，专用发票必须-->"
 				+ "<BankAcc>123456789-0</BankAcc>"
-				+ "<Email/>"
+				+ "<Email>4444444@qq.com</Email>"
 				+ "<IsSend>0</IsSend>"
 				+ "<Recipient>0</Recipient>"
 				+ "<ReciAddress/>"
@@ -78,8 +78,8 @@ public class HttpUtils {
 				+ "<RowType>0</RowType>"
 				+ "<Spec/>"
 				+ "<Unit>次</Unit>"
-				+ "<Quantity>1</Quantity>"
-				+ "<UnitPrice>10000</UnitPrice>"
+				+ "<Quantity></Quantity>"
+				+ "<UnitPrice></UnitPrice>"
 				+ "<Amount>10000</Amount>"
 				+ "<DeductAmount>0</DeductAmount>"
 				+ "<TaxRate>0.06</TaxRate>"
@@ -145,20 +145,20 @@ public class HttpUtils {
 				+ "<PolicyName/>"
 				+ "</ProductItem>"
 				+ "</OrderDetails>"
-   			/*+ "<Payments>"
+   			+ "<Payments>"
    			    + "<PaymentItem>"
  			       + "<PayPrice>29800.08</PayPrice>"
  			        + "<!--支付金额-->"
- 			       + "<PayCode>01</PayCode>"
+ 			       + "<PayCode>A</PayCode>"
  			       + "<!--支付方式，01现金支付、02支付宝支付、03积分支付、04储蓄卡支付、05银联卡支付-->"
  			   + "</PaymentItem>"
  			   + "<PaymentItem>"
  			       + "<PayPrice>980.00</PayPrice>"
  			        + "<!--支付金额-->"
- 			       + "<PayCode>03</PayCode>"
+ 			       + "<PayCode>B</PayCode>"
  			       + "<!--支付方式，01现金支付、02支付宝支付、03积分支付、04储蓄卡支付、05银联卡支付-->"
  			   + "</PaymentItem>"
- 			+ "</Payments>"*/
+ 			+ "</Payments>"
 				+ "</Order>"
 				+ "</OrderSize>"
 				+ "</Request>";
@@ -252,13 +252,13 @@ public class HttpUtils {
 				+ "</Order>"
 				+ "</OrderSize>"
 				+ "</Request>";
-		String Secret = getSign(xml01,"8e37be80cd6dcd8051d589d32f4d0ff2");
+		String Secret = getSign(InvoiceData,"73e235a15ee5cb022691625a50edae3b");
 		Map param = new HashMap();
 		param.put("methodName", "UploadOrderData");
-		param.put("AppKey","RJ874afd58e67b");
+		param.put("AppKey","RJcb0cb4d18ce7");
 		param.put("Secret", Secret);
 		param.put("Operation","01");
-		param.put("InvoiceData",xml01);
+		param.put("InvoiceData",InvoiceData);
 		String jsonString = mapper.writeValueAsString(param);
 
 		BufferedReader reader = null;
@@ -270,7 +270,8 @@ public class HttpUtils {
 			// 接报文的地址
 			URL uploadServlet = new URL(
 					"http://localhost:8080/dzfp-service-new/service");
-
+			/*URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/service");*/
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数

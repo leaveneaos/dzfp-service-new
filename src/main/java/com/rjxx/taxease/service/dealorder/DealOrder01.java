@@ -7,6 +7,7 @@ import com.rjxx.taxease.utils.XmlMapUtils;
 import com.rjxx.taxeasy.bizcomm.utils.DiscountDealUtil;
 import com.rjxx.taxeasy.bizcomm.utils.FpclService;
 import com.rjxx.taxeasy.bizcomm.utils.InvoiceSplitUtils;
+import com.rjxx.taxeasy.bizcomm.utils.RemarkProcessingUtil;
 import com.rjxx.taxeasy.bizcomm.utils.SaveOrderData;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
@@ -68,6 +69,8 @@ public class DealOrder01 implements IDealOrder {
 
     @Autowired
     private InvoiceSplitUtils invoiceSplitUtils;
+    @Autowired
+    private RemarkProcessingUtil remarkUtil;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -118,7 +121,9 @@ public class DealOrder01 implements IDealOrder {
         if (null == tmp || tmp.equals("")) {
             //处理折扣行数据
             jymxsqClList = discountDealUtil.dealDiscount(jyxxsqList, jymxsq2List, jyzfmxList, gsdm);
-
+	    //备注处理方式
+            jyxxsqList = remarkUtil.dealRemark(jyxxsqList, jyzfmxList, gsdm);
+            //保存申请及明细数据
             String tmp2 = saveorderdata.saveAllData(jyxxsqList, jymxsqList,jyzfmxList,jymxsqClList);
             // 保存操作成功与否
             if (null != tmp2 && !tmp2.equals("")) {
@@ -512,11 +517,11 @@ public class DealOrder01 implements IDealOrder {
                 Element OrderDetails = (Element) xn.selectSingleNode("OrderDetails");
                 List<Element> orderDetailsList = (List<Element>) OrderDetails.elements("ProductItem");
                 if (null != orderDetailsList && orderDetailsList.size() > 0) {
-                    int spmxxh = 0;
+                    int spmxxh = 1;
                     for (Element orderDetails : orderDetailsList) {
                         Jymxsq jymxsq = new Jymxsq();
                         // Map ProductItem = (Map) orderDetailsList.get(j);
-                        spmxxh++;
+                        //spmxxh++;
                         // 商品代码
                         String ProductCode = "";
                         if (null != orderDetails.selectSingleNode("ProductCode")
@@ -615,6 +620,11 @@ public class DealOrder01 implements IDealOrder {
                         }
 
                         jymxsq.setSpmxxh(spmxxh);
+			if(RowType.equals("2")){//如果为被折扣行，则明细序号不变，反之明细序号加1
+                        	
+                        }else{
+                        	spmxxh++;
+                        }
                         jymxsq.setKkjje(Double.valueOf(MxTotalAmount));
                         jymxsq.setYkjje(0d);
                         String VenderOwnCode = "";
