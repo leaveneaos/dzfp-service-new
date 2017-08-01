@@ -300,6 +300,17 @@ public class DealOrder01 implements IDealOrder {
         if (null == reviewer) {
             reviewer = "";
         }
+        
+        String sjly = String.valueOf(rootMap.get("DataSource"));
+        if (null == sjly || sjly.equals("") ||  sjly.equals("null")) {
+        	sjly = "";
+        }
+        
+        String openid =  String.valueOf(rootMap.get("OpenId"));
+        if (null == openid || openid.equals("") || openid.equals("null")) {
+        	openid = "";
+        }
+        
         // 销方信息
         Map sellerMap = (Map) rootMap.get("Seller");
         String identifier = (String) sellerMap.get("Identifier");
@@ -462,6 +473,7 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setKpr(drawer);
                 jyxxsq.setSkr(payee);
                 jyxxsq.setFhr(reviewer);
+                jyxxsq.setOpenid(openid);
                 jyxxsq.setXfsh(identifier);
                 jyxxsq.setXfmc(name);
                 jyxxsq.setXfdz(address);
@@ -509,7 +521,12 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setFpczlxdm("11");
                 jyxxsq.setXgsj(new Date());
                 jyxxsq.setGsdm(gsdm);
-                jyxxsq.setSjly("1");
+                if(sjly.equals("") || null == sjly){
+                	jyxxsq.setSjly("1");
+                }else{
+                	jyxxsq.setSjly(sjly);
+                }
+                
                 jyxxsq.setClztdm("00");
                 jyxxsqList.add(jyxxsq);
                 // List orderDetailsList = (List)
