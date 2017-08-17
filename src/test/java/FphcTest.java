@@ -126,7 +126,7 @@ public class FphcTest {
                 result = fpclService.DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
                         kplsVO5.getJylsh());
                 String  serialorder=fpclService.updateKpls(result);
-               String  resultxml=serialorder;
+                String  resultxml=serialorder;
                 logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(result));
             } catch (Exception e) {
                 e.printStackTrace();

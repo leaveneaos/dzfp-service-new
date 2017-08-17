@@ -1,16 +1,20 @@
 package com.rjxx.taxease.service.dealorder;
 
+import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxease.service.result.Result04;
 
 import com.rjxx.taxease.utils.XmlMapUtils;
 
+import com.rjxx.taxeasy.bizcomm.utils.FpclService;
 import com.rjxx.taxeasy.bizcomm.utils.InvoiceResponse;
 
 import com.rjxx.taxeasy.bizcomm.utils.SkService;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.vo.KplsVO5;
 import com.rjxx.time.TimeUtil;
 
+import com.rjxx.utils.TemplateUtils;
 import com.rjxx.utils.XmlJaxbUtils;
 import org.apache.axiom.om.OMElement;
 import org.slf4j.Logger;
@@ -40,6 +44,15 @@ public class DealOrder04 implements IDealOrder{
     private JyspmxService jyspmxService;
     @Autowired
     private SkService skService;
+    @Autowired
+    private JyxxsqService jyxxsqService;
+    @Autowired
+    private JymxsqService jymxsqService;
+    @Autowired
+    private FpclService fpclService;
+    @Autowired
+    private GsxxService gsxxService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public String execute(String gsdm, String orderData, String Operation) {
@@ -121,17 +134,53 @@ public class DealOrder04 implements IDealOrder{
             param4.put("djh", djh);
             Jyls jyls = jylsService.findJylsByDjh(param4);
             String ddh = jyls.getDdh(); // 查询原交易流水得ddh
-            Kpls kpls2 = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo,OrderNumber);
+            Map kplsMap = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo,OrderNumber);
+            Kpls kpls2=(Kpls)kplsMap.get("kpls2");
+            List<Kpspmx> kpspmxList2=(List)kplsMap.get("kpspmxList2");
+
+            Cszb cszb2 = cszbservice.getSpbmbbh(gsdm, Integer.valueOf(xfid), kpdid, "kpfs");
+            String kpfs=cszb2.getCsz();
             if (sftbkp.equals("是")) {   //是否同步开票
-                kpls2.setFpztdm("14");
-                kplsService.save(kpls2);
-                InvoiceResponse response = skService.callService( kpls2.getKplsh().intValue());
-                if ("0000".equals(response.getReturnCode())) {
-                    result04.setReturnCode("0000");
-                    result04.setReturnMessage("红冲成功！");
-                } else {
-                    result04.setReturnCode("9999");
-                    result04.setReturnMessage(response.getReturnMessage());
+                if(kpfs.equals("3")){
+                    Map resultMap=this.Savejyxxsq(kpls.getKplsh());
+                    Jyxxsq jyxxsq=(Jyxxsq)resultMap.get("jyxxsq");
+                    KplsVO5 kplsVO5 = new KplsVO5(kpls2, jyxxsq);
+                    kplsVO5.setZsfs("0");
+                    Map params2 = new HashMap();
+                    params2.put("kplx", "1");
+                    Cszb cszb3 = cszbservice.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), null, "spbmbbh");
+                    String spbmbbh = cszb3.getCsz();
+                    params.put("spbmbbh",spbmbbh);
+                    params2.put("kpls", kplsVO5);
+                    params2.put("kpspmxList", kpspmxList);
+                    params2.put("mxCount", kpspmxList.size());
+                    /**
+                     * 模板名称，电子票税控服务器报文
+                     */
+                    Map result= new HashMap();
+                    String templateName = "dzfp-xml.ftl";
+                    String result2 = TemplateUtils.generateContent(templateName, params2);
+                    System.out.println(result2);
+                    Map parms2=new HashMap();
+                    parms2.put("gsdm",kplsVO5.getGsdm());
+                    Gsxx gsxx=gsxxService.findOneByParams(parms2);
+                    String url = gsxx.getWsUrl();
+                    result = fpclService.DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
+                            kplsVO5.getJylsh());
+                    String  serialorder=fpclService.updateKpls(result);
+                    String  resultxml=serialorder;
+                    logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(result));
+                }else if(kpfs.equals("1")){
+                    kpls2.setFpztdm("14");
+                    kplsService.save(kpls2);
+                    InvoiceResponse response = skService.callService( kpls2.getKplsh().intValue());
+                    if ("0000".equals(response.getReturnCode())) {
+                        result04.setReturnCode("0000");
+                        result04.setReturnMessage("红冲成功！");
+                    } else {
+                        result04.setReturnCode("9999");
+                        result04.setReturnMessage(response.getReturnMessage());
+                    }
                 }
             } else {
                 kpls2.setFpztdm("14");
@@ -148,8 +197,97 @@ public class DealOrder04 implements IDealOrder{
             return XmlJaxbUtils.toXml(result04);
         }
     }
-
-    public Kpls save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber,String CNNoticeNo,String OrderNumber)throws Exception{
+    private Map Savejyxxsq(Integer kplsh) throws Exception {
+        Map result = new HashMap();
+        Kpls kpls = kplsService.findOne(kplsh);
+        Jyxxsq jyxxsq = new Jyxxsq();
+        String jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
+        jyxxsq.setJylsh(jylsh);
+        jyxxsq.setDdh(jylsh);
+        jyxxsq.setGflxr(kpls.getGflxr());
+        jyxxsq.setGfyb(kpls.getGfyb());
+        jyxxsq.setBz(kpls.getBz());
+        jyxxsq.setClztdm("00");
+        jyxxsq.setDdrq(new Date());
+        jyxxsq.setFpczlxdm("14");
+        jyxxsq.setFpzldm(kpls.getFpzldm());
+        jyxxsq.setFhr(kpls.getFhr());
+        jyxxsq.setGfdh(kpls.getGfdh());
+        jyxxsq.setGfdz(kpls.getGfdz());
+        jyxxsq.setGfemail(kpls.getGfemail());
+        jyxxsq.setGfid(kpls.getGfid());
+        jyxxsq.setGfmc(kpls.getGfmc());
+        jyxxsq.setGfsh(kpls.getGfsh());
+        jyxxsq.setGsdm(kpls.getGsdm());
+        jyxxsq.setGfyh(kpls.getGfyh());
+        jyxxsq.setGfyhzh(kpls.getGfyhzh());
+        jyxxsq.setXfdh(kpls.getXfdh());
+        jyxxsq.setXfdz(kpls.getXfdz());
+        jyxxsq.setXfid(kpls.getXfid());
+        jyxxsq.setXflxr(kpls.getXflxr());
+        jyxxsq.setXgsj(new Date());
+        jyxxsq.setXfmc(kpls.getXfmc());
+        jyxxsq.setXfsh(kpls.getXfsh());
+        jyxxsq.setXfyb(kpls.getXfyb());
+        jyxxsq.setXfyh(kpls.getXfyh());
+        jyxxsq.setXfyhzh(kpls.getXfyhzh());
+        jyxxsq.setYxbz("1");
+        jyxxsq.setYkpjshj(0d);
+        jyxxsq.setLrsj(new Date());
+        jyxxsq.setJshj(-kpls.getJshj());
+        jyxxsq.setHztzdh(kpls.getHztzdh());
+        jyxxsq.setKpddm(kpls.getKpddm());
+        jyxxsq.setZtbz("3");
+        jyxxsq.setXgsj(kpls.getXgsj());
+        jyxxsq.setSkr(kpls.getSkr());
+        jyxxsq.setSkpid(kpls.getSkpid());
+        jyxxsq.setKpr(kpls.getKpr());
+        jyxxsq.setYfpdm(kpls.getFpdm());
+        jyxxsq.setYfphm(kpls.getFphm());
+        jyxxsq.setLrry(kpls.getLrry());
+        jyxxsq.setSfdyqd(kpls.getSfdyqd());
+        jyxxsq.setHsbz("1");
+        jyxxsqService.save(jyxxsq);
+        result.put("jyxxsq", jyxxsq);
+        Map parms = new HashMap();
+        parms.put("kplsh", kpls.getKplsh());
+        List<Kpspmx> kpspmxList = kpspmxService.findMxList(parms);
+        List<Jymxsq> jymxsqList = new ArrayList<>();
+        for (int i = 0; i < kpspmxList.size(); i++) {
+            Kpspmx kpspmx = kpspmxList.get(i);
+            Jymxsq jymxsq = new Jymxsq();
+            jymxsq.setLrry(kpspmx.getLrry());
+            jymxsq.setFphxz(kpspmx.getFphxz());
+            jymxsq.setGsdm(kpspmx.getGsdm());
+            jymxsq.setJshj(-(kpspmx.getSpje() + kpspmx.getSpse()));
+            jymxsq.setKkjje(-(kpspmx.getSpje() + kpspmx.getSpse()));
+            jymxsq.setKce(kpspmx.getKce());
+            jymxsq.setKpddm(kpspmx.getKpddm());
+            jymxsq.setLslbz(kpspmx.getLslbz());
+            jymxsq.setSps(-kpspmx.getSps());
+            jymxsq.setSpdj(kpspmx.getSpdj());
+            jymxsq.setSpdm(kpspmx.getSpdm());
+            jymxsq.setSpse(-kpspmx.getSpse());
+            jymxsq.setSpdw(kpspmx.getSpdw());
+            jymxsq.setSpje(-kpspmx.getSpje());
+            jymxsq.setSpsl(kpspmx.getSpsl());
+            jymxsq.setSpggxh(kpspmx.getSpggxh());
+            jymxsq.setSpmc(kpspmx.getSpmc());
+            jymxsq.setSpmxxh(kpspmx.getSpmxxh());
+            jymxsq.setYxbz("1");
+            jymxsq.setYhzcbs(kpspmx.getYhzcbs());
+            jymxsq.setYhzcmc(kpspmx.getYhzcmc());
+            jymxsq.setSqlsh(jyxxsq.getSqlsh());
+            jymxsq.setJshj(-(kpspmx.getSpje() + kpspmx.getSpse()));
+            jymxsq.setXgsj(new Date());
+            jymxsq.setLrsj(new Date());
+            jymxsqList.add(jymxsq);
+        }
+        jymxsqService.save(jymxsqList);
+        result.put("jymxsqList",jymxsqList);
+        return result;
+    }
+    public Map save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber,String CNNoticeNo,String OrderNumber)throws Exception{
         //保存交易流水
         Jyls jyls1 = new Jyls();
         jyls1.setDdh(ddh);
@@ -244,6 +382,7 @@ public class DealOrder04 implements IDealOrder{
         kpls2.setXgry(jyls1.getLrry());
         kpls2.setSerialorder(SerialNumber+OrderNumber);
         kplsService.save(kpls2);
+        List<Kpspmx> kpspmxList2=new ArrayList<>();
         for(Kpspmx kpspmx:kpspmxList){
             Jyspmx jyspmx = new Jyspmx();
             jyspmx.setDjh(jyls1.getDjh());
@@ -299,11 +438,15 @@ public class DealOrder04 implements IDealOrder{
             kpspmx1.setKhcje(0d);
             kpspmx1.setYhcje(-jyspmx.getJshj().doubleValue());
             kpspmxService.save(kpspmx1);
+            kpspmxList2.add(kpspmx1);
             kpspmx.setKhcje(0d);
             kpspmx.setYhcje(kpspmx.getSpje()+kpspmx.getSpse());
             kpspmxService.save(kpspmx);
         }
-        return kpls2;
+        Map resultMap=new HashMap();
+        resultMap.put("kpls2",kpls2);
+        resultMap.put("kpspmxList2",kpspmxList2);
+        return resultMap;
     }
     /**
      *
