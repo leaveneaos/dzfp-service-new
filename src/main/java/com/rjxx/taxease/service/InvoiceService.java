@@ -38,6 +38,7 @@ import com.rjxx.utils.GlobsAttributes;
 import com.rjxx.utils.TemplateUtils;
 import com.rjxx.utils.TimeUtil;
 import com.rjxx.utils.XmlJaxbUtils;
+import sun.misc.BASE64Encoder;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -126,7 +127,7 @@ public class InvoiceService {
         final int Lrry = xf.getLrry();
         final String productCode = spvo.getSpbm();
         final String fsyj = this.readFile("FSYJ");
-        final String ewm = this.readFile("ewm");
+        //final String ewm = this.readFile("ewm");
         final String tqlj = this.readFile("tqlj");
         /**************************************/
         OMElement root;
@@ -333,6 +334,10 @@ public class InvoiceService {
                     //如果fsyj为1表示发送邮件
                     if(fsyj.equals("1") && defaultResult.getReturnCode().equals("0000")){
                     	GetYjnr yjnrF = new GetYjnr();
+                        /*String path = this.getClass().getClassLoader().getResource("/af.jpg")
+                                .getPath();*/
+                        String path =  InvoiceService.class.getClassLoader().getResource("/template/af.jpg").getPath();
+                        String ewm ="data:image/jpeg;base64,"+getImageStr(URLDecoder.decode(path, "UTF-8"));
                     	String yjnr = yjnrF.getAfEmail(ewm, tqlj);
                     	sendalEmail.sendEmail("999999", iurb.getGsdm(), iurb.getGfemail(), "爱芙趣发票提取",
                     			"999999", yjnr, "电子发票","0");
@@ -410,7 +415,6 @@ public class InvoiceService {
     /**
      * 构造对接收到的爱芙趣待开票数据存库情况的返回报文
      *
-     * @param iurb
      * @return
      * @throws XMLStreamException
      */
@@ -493,7 +497,37 @@ public class InvoiceService {
     	InvoiceService t  = new InvoiceService();
     	System.out.println(t.readFile("Reviewer"));
     }*/
-    
+
+
+    /**
+     * @Description: 根据图片地址转换为base64编码字符串
+     * @Author:
+     * @CreateTime:
+     * @return
+     */
+    public static String getImageStr(String imgFile) {
+        InputStream inputStream = null;
+        byte[] data = null;
+        try {
+            inputStream = new FileInputStream(imgFile);
+            data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 加密
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
+    }
+
+   /* public  static void main(String args[]){
+        InvoiceService t = new InvoiceService();
+        //t.getImageStr(this.getClass().getClassLoader());
+        System.out.println(InvoiceService.class.getResource("/").getPath()+"kzx");
+
+    }*/
+
     //读取af的默认配置
     private String readFile(String str){
     	    Properties properties = new Properties();  

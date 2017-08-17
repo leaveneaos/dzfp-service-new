@@ -210,14 +210,14 @@ public class WebServiceTestCall {
     public static void testinvoiceUpload() throws Exception {
         final String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Request>" +
                 "    <TotalAmount>1</TotalAmount>" +
-                "    <SerialNumber>7000138809059495305</SerialNumber>" +
+                "    <SerialNumber>d00090d5949505</SerialNumber>" +
                 "    <Main>" +
-                "        <OrderNumber>70001388990</OrderNumber>" +
+                "        <OrderNumber>700dd8899</OrderNumber>" +
                 "        <OrderDate>2016-07-11</OrderDate>" +
                 "        <OrderTime>06:08:41</OrderTime>" +
                 "        <Seller>" +
-                "            <Identifier>91310101MA1FW0008P</Identifier>" +
-                "            <Name>上海百旺测试盘</Name>" +
+                "            <Identifier>500102010003643</Identifier>" +
+                "            <Name>上海百旺测试3643</Name>" +
                 "            <Address>Shanghai JingAn District West Nanjing Road No.15, JingAn JiaLi Center Room 607</Address>" +
                 "            <TelephoneNumber>021-xxxxxxxx</TelephoneNumber>" +
                 "        </Seller>" +
@@ -228,7 +228,7 @@ public class WebServiceTestCall {
                 "            <Payment>ALIPAY-FASTPAY</Payment>" +
                 "            <Address>&#x6c5f;&#x82cf;&#x7701;,&#x5357;&#x4eac;&#x5e02; CN &#x8f6f;&#x4ef6;&#x5927;&#x9053;108&#x53f7;&#x84dd;&#x7b79;&#x8c37;2&#x680b;1&#x5355;&#x5143;401 ;;;;210012;;;; &#x9648;&#x4e16;&#x6770;</Address>" +
                 "            <TelephoneNumber>18811049101</TelephoneNumber>" +
-                "            <Email>zhangbing@datarj.com</Email>" +
+                "            <Email>kangzhongxu@datarj.com</Email>" +
                 "        </Buyer>" +
                 "    </Main>" +
                 "    <Details size=\"2\">" +
@@ -657,8 +657,8 @@ public class WebServiceTestCall {
         //testCallQuery();
         //testUploadOrder();
         //testCallService();
-        //testinvoiceUpload();
-        testuploadOrderData();
+        testinvoiceUpload();
+        //testuploadOrderData();
     }
 
 }

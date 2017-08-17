@@ -24,243 +24,377 @@ public class HttpUtils {
 		System.out.println("调用servlet开始=================");
 		ObjectMapper mapper = new ObjectMapper();
 		String InvoiceData="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-				+ "<Request>"
-				+ "<ClientNO>ldyx_01</ClientNO>"
-				+ "<SerialNumber>RDdWndBgmbdk</SerialNumber>"
-				+ "<InvType>12</InvType>"
-				+ "<ServiceType>0</ServiceType>"
-				+ "<Drawer>qian</Drawer>"
-				+ "<Payee/>"
-				+"<OpenId>fdasfasffaf-fdaa3faf-dhdj</OpenId>"
-				+"<DataSource>4</DataSource>"
-				+ "<Reviewer/>"
-				+ "<Seller>"
-				+ "<Identifier>500102010003643</Identifier>"
-				+ "<Name>上海百旺测试3643</Name>"
-				+ "<Address>测试南京湖南路亚朵酒店</Address>"
-				+ "<TelephoneNo>020-123456768</TelephoneNo>"
-				+ "<Bank>中国农业银行</Bank>"
-				+ "<BankAcc>03399500040009801</BankAcc>"
-				+ "</Seller>"
-				+ "<OrderSize count=\"1\">"
-				+ "<Order>"
-				+ "<OrderMain>"
-				+ "<OrderNo>d_dlkBegRdmCd</OrderNo>"
-				+ "<InvoiceList>0</InvoiceList>"
-				+ "<InvoiceSplit>0</InvoiceSplit>"
-				+ "<OrderDate>2017-03-09 15:33:00</OrderDate>"
-				+ "<ChargeTaxWay>0</ChargeTaxWay>"
-				+ "<TotalAmount>30780.08</TotalAmount>"
-				+ "<TaxMark>0</TaxMark>"
-				+ "<Remark/>"
-				+ "<ExtractedCode></ExtractedCode>"
-				+ "<Buyer>"
-				+ "<Identifier>123456789013234568</Identifier>"
-				+ "<CustomerType>0</CustomerType>"
-				+ "<Name>商超功能测试用户</Name>"
-				+ "<!--Name必须，购买方名称String100，该栏目打印在发票上-->"
-				+ "<Address>某某路20号203室</Address>"
-				+ "<!--Address可选，购买方地址String100，该栏目打印在发票上，专用发票必须-->"
-				+ "<TelephoneNo>13912345678</TelephoneNo>"
-				+ "<!--TelephoneNo可选，购买方电话String20，该栏目打印在发票上，专用发票必须-->"
-				+ "<Bank>中国建设银行打浦桥支行</Bank>"
-				+ "<!--Bank可选，购买方银行String100，该栏目打印在发票上，专用发票必须-->"
-				+ "<BankAcc>123456789-0</BankAcc>"
-				+ "<Email>4444444@qq.com</Email>"
-				+ "<IsSend>0</IsSend>"
-				+ "<Recipient>0</Recipient>"
-				+ "<ReciAddress/>"
-				+ "<Zip/>"
-				+ "</Buyer>"
-				+ "</OrderMain>"
-				+ "<OrderDetails count=\"4\">"
-				+ "<ProductItem>"
-				+ "<ProductCode>3070402000000000000</ProductCode>"
-				+ "<ProductName>住宿服务费</ProductName>"
-				+ "<RowType>0</RowType>"
-				+ "<Spec/>"
-				+ "<Unit>次</Unit>"
-				+ "<Quantity></Quantity>"
-				+ "<UnitPrice></UnitPrice>"
-				+ "<Amount>10000</Amount>"
-				+ "<DeductAmount>0</DeductAmount>"
-				+ "<TaxRate>0.06</TaxRate>"
-				+ "<TaxAmount>600</TaxAmount>"
-				+ "<MxTotalAmount>10600</MxTotalAmount>"
-				+ "<VenderOwnCode/>"
-				+ "<PolicyMark>0</PolicyMark>"
-				+ "<TaxRateMark/>"
-				+ "<PolicyName/>"
-				+ "</ProductItem>"
-				+ "<ProductItem>"
-				+ "<ProductCode>3070401000000000000</ProductCode>"
-				+ "<ProductName>餐饮住宿服务费</ProductName>"
-				+ "<RowType>0</RowType>"
-				+ "<Spec/>"
-				+ "<Unit>次</Unit>"
-				+ "<Quantity>1</Quantity>"
-				+ "<UnitPrice>188.68</UnitPrice>"
-				+ "<Amount>188.68</Amount>"
-				+ "<DeductAmount>0</DeductAmount>"
-				+ "<TaxRate>0.06</TaxRate>"
-				+ "<TaxAmount>11.32</TaxAmount>"
-				+ "<MxTotalAmount>200.00</MxTotalAmount>"
-				+ "<VenderOwnCode/>"
-				+ "<PolicyMark>0</PolicyMark>"
-				+ "<TaxRateMark/>"
-				+ "<PolicyName/>"
-				+ "</ProductItem>"
-				+ "<ProductItem>"
-				+ "<ProductCode>3070401000000000000</ProductCode>"
-				+ "<ProductName>餐饮住宿服务费</ProductName>"
-				+ "<RowType>2</RowType>"
-				+ "<Spec/>"
-				+ "<Unit>次</Unit>"
-				+ "<Quantity>1</Quantity>"
-				+ "<UnitPrice>18868</UnitPrice>"
-				+ "<Amount>18868</Amount>"
-				+ "<DeductAmount>0</DeductAmount>"
-				+ "<TaxRate>0.06</TaxRate>"
-				+ "<TaxAmount>1132.08</TaxAmount>"
-				+ "<MxTotalAmount>20000.08</MxTotalAmount>"
-				+ "<VenderOwnCode/>"
-				+ "<PolicyMark>0</PolicyMark>"
-				+ "<TaxRateMark/>"
-				+ "<PolicyName/>"
-				+ "</ProductItem>"
-				+ "<ProductItem>"
-				+ "<ProductCode>3070401000000000000</ProductCode>"
-				+ "<ProductName>餐饮住宿服务费</ProductName>"
-				+ "<RowType>1</RowType>"
-				+ "<Spec/>"
-				+ "<Unit>次</Unit>"
-				+ "<Quantity>-1</Quantity>"
-				+ "<UnitPrice>18.87</UnitPrice>"
-				+ "<Amount>-18.87</Amount>"
-				+ "<DeductAmount>0</DeductAmount>"
-				+ "<TaxRate>0.06</TaxRate>"
-				+ "<TaxAmount>-1.13</TaxAmount>"
-				+ "<MxTotalAmount>-20.00</MxTotalAmount>"
-				+ "<VenderOwnCode/>"
-				+ "<PolicyMark>0</PolicyMark>"
-				+ "<TaxRateMark/>"
-				+ "<PolicyName/>"
-				+ "</ProductItem>"
-				+ "</OrderDetails>"
-   			+ "<Payments>"
-   			    + "<PaymentItem>"
- 			       + "<PayPrice>29800.08</PayPrice>"
- 			        + "<!--支付金额-->"
- 			       + "<PayCode>A</PayCode>"
- 			       + "<!--支付方式，01现金支付、02支付宝支付、03积分支付、04储蓄卡支付、05银联卡支付-->"
- 			   + "</PaymentItem>"
- 			   + "<PaymentItem>"
- 			       + "<PayPrice>980.00</PayPrice>"
- 			        + "<!--支付金额-->"
- 			       + "<PayCode>B</PayCode>"
- 			       + "<!--支付方式，01现金支付、02支付宝支付、03积分支付、04储蓄卡支付、05银联卡支付-->"
- 			   + "</PaymentItem>"
- 			+ "</Payments>"
-				+ "</Order>"
-				+ "</OrderSize>"
-				+ "</Request>";
+				+ "<Request>\n" +
+				"\t<ClientNO>001</ClientNO>\n" +
+				"\t<SerialNumber>JYdd08d93152ddfaf</SerialNumber>\n" +
+				"\t<InvType>12</InvType>\n" +
+				"\t<Spbmbbh>13.0</Spbmbbh>\n" +
+				"\t<Drawer>测试</Drawer>\n" +
+				"\t<Payee></Payee>\n" +
+				"\t<Reviewer></Reviewer>\n" +
+				"    <DataSource>1</DataSource>\n" +
+				"    <OpenId></OpenId>\n" +
+				"\t<Seller>\n" +
+				"\t\t<Identifier>500102010003643</Identifier>\n" +
+				"\t\t<Name>上海百旺测试3643</Name>\n" +
+				"\t\t<Address>德意志</Address>\n" +
+				"\t\t<TelephoneNo>021-59895352</TelephoneNo>\n" +
+				"\t\t<Bank>美利坚大银行</Bank>\n" +
+				"\t\t<BankAcc>128906323710203</BankAcc>\n" +
+				"\t</Seller>\n" +
+				"\t<OrderSize count=\"1\">\n" +
+				"\t\t<Order>\n" +
+				"\t\t\t<OrderMain>\n" +
+				"\t\t\t\t<OrderNo>115d3ddadf3</OrderNo>\n" +
+				"\t\t\t\t<InvoiceList>0</InvoiceList>\n" +
+				"\t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
+				"\t\t\t\t<InvoiceSfdy>0</InvoiceSfdy>\n" +
+				"\t\t\t\t<OrderDate>2017-08-09 15:26:23</OrderDate>\n" +
+				"\t\t\t\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
+				"\t\t\t\t<TotalAmount>27.9</TotalAmount>\n" +
+				"\t\t\t\t<TaxMark>1</TaxMark>\n" +
+				"\t\t\t\t<Remark></Remark>\n" +
+				"\t\t\t\t<ExtractedCode></ExtractedCode>\n" +
+				"\t\t\t\t<Buyer>\n" +
+				"\t\t\t\t\t<CustomerType>0</CustomerType>\n" +
+				"\t\t\t\t\t<Identifier>91370600050948561K</Identifier>\n" +
+				"\t\t\t\t\t<Name>张松强测试33第2次</Name>\n" +
+				"\t\t\t\t\t<Address>漕宝路</Address>\n" +
+				"\t\t\t\t\t<TelephoneNo>123456</TelephoneNo>\n" +
+				"\t\t\t\t\t<Bank>中国银行</Bank>\n" +
+				"\t\t\t\t\t<BankAcc>123456778</BankAcc>\n" +
+				"\t\t\t\t\t<Email>913015635@qq.com</Email>\n" +
+				"\t\t\t\t\t<IsSend>1</IsSend>\n" +
+				"\t\t\t\t\t<Recipient></Recipient>\n" +
+				"\t\t\t\t\t<ReciAddress></ReciAddress>\n" +
+				"\t\t\t\t\t<Zip></Zip>\n" +
+				"\t\t\t\t</Buyer>\n" +
+				"\t\t\t</OrderMain>\n" +
+				"\t\t\t<OrderDetails count=\"2\">\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>打折出清码(YD)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t5\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t1\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>5</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>0.49549555</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>5</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1010115000000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>新西兰姬娜果(YD)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t1.158\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t19.77547496\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>22.9</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>2.26936941</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>22.9</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t</OrderDetails>\n" +
+				"            <Payments>\n" +
+				"                <PaymentItem>\n" +
+				"                    <PayCode>T</PayCode>\n" +
+				"                    <PayPrice>27.9</PayPrice>\n" +
+				"                </PaymentItem>\n" +
+				"<PaymentItem>"+
+		"                    <PayCode>h</PayCode>\n" +
+				"                    <PayPrice>0</PayPrice>\n" +
+				"                </PaymentItem>\n" +
+				"            </Payments>\n" +
+
+				"\t\t</Order>\n" +
+				"\t</OrderSize>\n" +
+				"</Request>\n";
 
 
 		String xml01 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-				+ "<Request>"
-				+ "<ClientNO>tujia_01</ClientNO>"
-				+ "<SerialNumber>310</SerialNumber>"
-				+ "<InvType>02</InvType>"
-				+ "<ServiceType>0</ServiceType>"
-				+ "<Drawer>qian</Drawer>"
-				+ "<Payee/>"
-				+ "<Reviewer/>"
-				+ "<Seller>"
-				+ "<Identifier>500102010003643</Identifier>"
-				+ "<Name>上海百旺测试3643</Name>"
-				+ "<Address>测试南京湖南路亚朵酒店</Address>"
-				+ "<TelephoneNo>020-123456768</TelephoneNo>"
-				+ "<Bank>中国农业银行</Bank>"
-				+ "<BankAcc>03399500040009801</BankAcc>"
-				+ "</Seller>"
-				+ "<OrderSize count=\"1\">"
-				+ "<Order>"
-				+ "<OrderMain>"
-				+ "<OrderNo>14_2082</OrderNo>"
-				+ "<InvoiceList>0</InvoiceList>"
-				+ "<InvoiceSplit>0</InvoiceSplit>"
-				+ "<OrderDate>2017-01-10 15:33:00</OrderDate>"
-				+ "<ChargeTaxWay>0</ChargeTaxWay>"
-				+ "<TotalAmount>21.00</TotalAmount>"
-				+ "<TaxMark>0</TaxMark>"
-				+ "<Remark/>"
-				+ "<Buyer>"
-				+ "<Identifier>123456789013234568</Identifier>"
-				+ "<Name>购买方名称</Name>"
-				+ "<!--Name必须，购买方名称String100，该栏目打印在发票上-->"
-				+ "<Address>某某路20号203室</Address>"
-				+ "<!--Address可选，购买方地址String100，该栏目打印在发票上，专用发票必须-->"
-				+ "<TelephoneNo>13912345678</TelephoneNo>"
-				+ "<!--TelephoneNo可选，购买方电话String20，该栏目打印在发票上，专用发票必须-->"
-				+ "<Bank>中国建设银行打浦桥支行</Bank>"
-				+ "<!--Bank可选，购买方银行String100，该栏目打印在发票上，专用发票必须-->"
-				+ "<BankAcc>123456789-0</BankAcc>"
-				+ "<Email/>"
-				+ "<IsSend>0</IsSend>"
-
-				+ "<Recipient>0</Recipient>"
-				+ "<ReciAddress/>"
-				+ "<Zip/>"
-				+ "</Buyer>"
-				+ "</OrderMain>"
-				+ "<OrderDetails count=\"2\">"
-				+ "<ProductItem>"
-				+ "<ProductCode>3070402000000000000</ProductCode>"
-				+ "<ProductName>住宿服务费</ProductName>"
-				+ "<RowType>0</RowType>"
-				+ "<Spec/>"
-				+ "<Unit>次</Unit>"
-				+ "<Quantity>1</Quantity>"
-				+ "<UnitPrice>0.94</UnitPrice>"
-				+ "<Amount>0.94</Amount>"
-				+ "<DeductAmount>0</DeductAmount>"
-				+ "<TaxRate>0.06</TaxRate>"
-				+ "<TaxAmount>0.06</TaxAmount>"
-				+ "<MxTotalAmount>1.00</MxTotalAmount>"
-				+ "<VenderOwnCode/>"
-				+ "<PolicyMark>0</PolicyMark>"
-				+ "<TaxRateMark/>"
-				+ "<PolicyName/>"
-				+ "</ProductItem>"
-				+ "<ProductItem>"
-				+ "<ProductCode>3070401000000000000</ProductCode>"
-				+ "<ProductName>餐饮住宿服务费</ProductName>"
-				+ "<RowType>0</RowType>"
-				+ "<Spec/>"
-				+ "<Unit>次</Unit>"
-				+ "<Quantity>1</Quantity>"
-				+ "<UnitPrice>18.87</UnitPrice>"
-				+ "<Amount>18.87</Amount>"
-				+ "<DeductAmount>0</DeductAmount>"
-				+ "<TaxRate>0.06</TaxRate>"
-				+ "<TaxAmount>1.13</TaxAmount>"
-				+ "<MxTotalAmount>20.00</MxTotalAmount>"
-				+ "<VenderOwnCode/>"
-				+ "<PolicyMark>0</PolicyMark>"
-				+ "<TaxRateMark/>"
-				+ "<PolicyName/>"
-				+ "</ProductItem>"
-				+ "</OrderDetails>"
-				+ "</Order>"
-				+ "</OrderSize>"
-				+ "</Request>";
-		String Secret = getSign(InvoiceData,"73e235a15ee5cb022691625a50edae3b");
+				+ "<Request>\n" +
+				"\t<ClientNO>AF001</ClientNO>\n" +
+				"\t<SerialNumber>JY21d7d081516d8219</SerialNumber>\n" +
+				"\t<InvType>12</InvType>\n" +
+				"\t<Spbmbbh>13.0</Spbmbbh>\n" +
+				"\t<Drawer>刘先生</Drawer>\n" +
+				"\t<Payee>王五</Payee>\n" +
+				"\t<Reviewer>李四</Reviewer>\n" +
+				"    <DataSource>1</DataSource>\n" +
+				"    <OpenId></OpenId>\n" +
+				"\t<Seller>\n" +
+				"\t\t<Identifier>500102010003643</Identifier>\n" +
+				"\t\t<Name>升级版测试用户3643</Name>\n" +
+				"\t\t<Address>漕宝路</Address>\n" +
+				"\t\t<TelephoneNo>021-23443453</TelephoneNo>\n" +
+				"\t\t<Bank>建设银行</Bank>\n" +
+				"\t\t<BankAcc>34567865435</BankAcc>\n" +
+				"\t</Seller>\n" +
+				"\t<OrderSize count=\"1\">\n" +
+				"\t\t<Order>\n" +
+				"\t\t\t<OrderMain>\n" +
+				"\t\t\t\t<OrderNo>A001724293</OrderNo>\n" +
+				"\t\t\t\t<InvoiceList>0</InvoiceList>\n" +
+				"\t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
+				"\t\t\t\t<InvoiceSfdy>0</InvoiceSfdy>\n" +
+				"\t\t\t\t<OrderDate>2017-08-15 16:58:21</OrderDate>\n" +
+				"\t\t\t\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
+				"\t\t\t\t<TotalAmount>201.9</TotalAmount>\n" +
+				"\t\t\t\t<TaxMark>1</TaxMark>\n" +
+				"\t\t\t\t<Remark></Remark>\n" +
+				"\t\t\t\t<ExtractedCode>00117d140d0d04068</ExtractedCode>\n" +
+				"\t\t\t\t<Buyer>\n" +
+				"\t\t\t\t\t<CustomerType>0</CustomerType>\n" +
+				"\t\t\t\t\t<Identifier>91370600050948561M</Identifier>\n" +
+				"\t\t\t\t\t<Name>个人</Name>\n" +
+				"\t\t\t\t\t<Address>徐家汇</Address>\n" +
+				"\t\t\t\t\t<TelephoneNo>200123455</TelephoneNo>\n" +
+				"\t\t\t\t\t<Bank>中国银行</Bank>\n" +
+				"\t\t\t\t\t<BankAcc>40023154555</BankAcc>\n" +
+				"\t\t\t\t\t<Email>1362561661@qq.com</Email>\n" +
+				"\t\t\t\t\t<IsSend>1</IsSend>\n" +
+				"\t\t\t\t\t<Recipient></Recipient>\n" +
+				"\t\t\t\t\t<ReciAddress></ReciAddress>\n" +
+				"\t\t\t\t\t<Zip></Zip>\n" +
+				"\t\t\t\t</Buyer>\n" +
+				"\t\t\t</OrderMain>\n" +
+				"\t\t\t<OrderDetails count=\"9\">\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1030303000000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>白熊啤酒330ml</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t2\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t16.9\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>33.8</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.17</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>4.91111113</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>33.8</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1010303020100000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>兰妃鸡蛋10枚</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t1\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t20.8\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>20.8</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>0</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>20.8</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1030307990000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>可尔必思原味乳酸饮料335ml</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t2\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t10.9\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>21.8</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.17</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>3.16752143</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>21.8</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1040107020000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>G-Super大号袋</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t1\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t0.5\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>0.5</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.17</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>0.0726495</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>0.5</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1070223010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>惠润柔净洗发露（绿野芳香）600ml</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t1\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t62\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>62</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.17</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>9.00854701</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>62</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>菲律宾香蕉（YD)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t1.06\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t13.58490566\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>14.4</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>1.42702703</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>14.4</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1030306000000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>Creamel凯利草莓味甜酒200ml</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t1\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t15.8\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>15.8</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.17</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>2.29572658</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>15.8</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1030306000000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>Creamel凯利太妃味甜酒200ml</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t1\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t15.8\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>15.8</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.17</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>2.29572658</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>15.8</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>201飞机盒包装（YD)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec></Spec>\n" +
+				"\t\t\t\t\t<Unit></Unit>\n" +
+				"\t\t\t\t\t<Quantity>\n" +
+				"\t\t\t\t\t\t17\n" +
+				"\t\t\t\t\t</Quantity>\n" +
+				"                    <UnitPrice>\n" +
+				"\t\t\t\t\t\t1\n" +
+				"\t\t\t\t\t</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>17</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>1.68468465</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>17</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
+				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
+				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t</OrderDetails>\n" +
+				"            <Payments>\n" +
+				"                <PaymentItem>\n" +
+				"                    <PayCode>X</PayCode>\n" +
+				"                    <PayPrice>201.9</PayPrice>\n" +
+				"                </PaymentItem>\n" +
+				"            </Payments>\n" +
+				"\t\t</Order>\n" +
+				"\t</OrderSize>\n" +
+				"</Request>";
+		String Secret = getSign(xml01,"afbcd23beefaf229438007d04308fb61");
 		Map param = new HashMap();
 		param.put("methodName", "UploadOrderData");
-		param.put("AppKey","RJcb0cb4d18ce7");
+		param.put("AppKey","RJ46662ec70379");
 		param.put("Secret", Secret);
 		param.put("Operation","01");
-		param.put("InvoiceData",InvoiceData);
+		param.put("InvoiceData",xml01);
 		String jsonString = mapper.writeValueAsString(param);
 
 		BufferedReader reader = null;
@@ -271,7 +405,7 @@ public class HttpUtils {
 
 			// 接报文的地址
 			URL uploadServlet = new URL(
-					"http://localhost:8080/dzfp-service-new/service");
+					"http://localhost:8080/dzfp_service_new/service");
 			/*URL uploadServlet = new URL(
 					"http://test.datarj.com/webService/service");*/
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
