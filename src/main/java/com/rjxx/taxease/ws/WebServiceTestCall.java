@@ -597,13 +597,12 @@ public class WebServiceTestCall {
                 "<PrintType>0</PrintType>" +
                 "</Request>";
 
-        String xml11 = "<Request>" +
-                "<ClientNO>tujia_01</ClientNO>" +
-                "<Fplxdm>02</Fplxdm>" +
-                "<SerialNumber>e30c64fc29404db78264a8e12ae66162</SerialNumber>" +
-                "<OrderNumber></OrderNumber>" +
-                "<ExtractCode></ExtractCode>" +
-                "</Request>";
+        String xml11 = "<?xml version=\"1.0\" encoding=\"gbk\"?>\n" +
+                "<Request>\n" +
+                "\t<ClientNO>yhdz_01</ClientNO>\n" +
+                "\t<Fplxdm>12</Fplxdm>\n" +
+                "\t<SerialNumber>ywieshg000009</SerialNumber>\n" +
+                "</Request>\n";
 
 		String xml04="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<Request>\n" +
@@ -635,10 +634,10 @@ public class WebServiceTestCall {
        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
        Client client = dcf.createClient(WS_URL);
        String methodName = "UploadOrderData";
-       String AppKey = "RJ874afd58e67b";
-       String key ="8e37be80cd6dcd8051d589d32f4d0ff2";
-       String Secret = getSign(xml01,key);
-       Object[] objects = client.invoke(methodName, AppKey, Secret,"01",xml01);
+       String AppKey = "RJ4016258ddd9f";
+       String key ="bb3b9b3a5afbd378e46ffbf6e8ed00a6";
+       String Secret = getSign(xml11,key);
+       Object[] objects = client.invoke(methodName, AppKey, Secret,"11",xml11);
        //输出调用结果
        System.out.println(objects[0].toString());
     }
@@ -651,14 +650,14 @@ public class WebServiceTestCall {
 
    //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://localhost:8080/dzfp_service_new/services/invoiceService?wsdl";
+   public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();
         //testUploadOrder();
         //testCallService();
-        testinvoiceUpload();
-        //testuploadOrderData();
+        //testinvoiceUpload();
+        testuploadOrderData();
     }
 
 }
