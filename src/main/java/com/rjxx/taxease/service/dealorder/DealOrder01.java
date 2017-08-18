@@ -626,7 +626,9 @@ public class DealOrder01 implements IDealOrder {
                         if (null != orderDetails.selectSingleNode("TaxAmount")
                                 && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
                             TaxAmount = orderDetails.selectSingleNode("TaxAmount").getText();
-                            jymxsq.setSpse(Double.valueOf(TaxAmount));
+                            if(TaxAmount!=null&&!"".equals(TaxAmount)){
+                                jymxsq.setSpse(Double.valueOf(TaxAmount));
+                            }
                         }
 
                         String MxTotalAmount = "";
