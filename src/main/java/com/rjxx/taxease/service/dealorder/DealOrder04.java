@@ -434,22 +434,22 @@ public class DealOrder04 implements IDealOrder{
             kpspmx1.setSpggxh(jyspmx.getSpggxh());
             kpspmx1.setSpdw(jyspmx.getSpdw());
             if (jyspmx.getSpdj() != null) {
-                kpspmx1.setSpdj(jyspmx.getSpdj().doubleValue());
+                kpspmx1.setSpdj(jyspmx.getSpdj());
             }
             kpspmx1.setSpdw(jyspmx.getSpdw());
             if (jyspmx.getSps() != null) {
-                kpspmx1.setSps(jyspmx.getSps().doubleValue());
+                kpspmx1.setSps(jyspmx.getSps());
             }
-            kpspmx1.setSpje(jyspmx.getSpje().doubleValue());
-            kpspmx1.setSpsl(jyspmx.getSpsl().doubleValue());
-            kpspmx1.setSpse(jyspmx.getSpse().doubleValue());
+            kpspmx1.setSpje(jyspmx.getSpje());
+            kpspmx1.setSpsl(jyspmx.getSpsl());
+            kpspmx1.setSpse(jyspmx.getSpse());
             kpspmx1.setHcrq(TimeUtil.getNowDate());
             kpspmx1.setLrsj(jyspmx.getLrsj());
             kpspmx1.setLrry(jyspmx.getLrry());
             kpspmx1.setXgsj(jyspmx.getXgsj());
             kpspmx1.setXgry(jyspmx.getXgry());
             kpspmx1.setKhcje(0d);
-            kpspmx1.setYhcje(-jyspmx.getJshj().doubleValue());
+            kpspmx1.setYhcje(-jyspmx.getJshj());
             kpspmxService.save(kpspmx1);
             kpspmxList2.add(kpspmx1);
             kpspmx.setKhcje(0d);
