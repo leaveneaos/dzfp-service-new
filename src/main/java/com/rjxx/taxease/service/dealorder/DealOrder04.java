@@ -360,7 +360,11 @@ public class DealOrder04 implements IDealOrder{
         jyls1.setXgry(kpls.getLrry());
         jyls1.setXgsj(TimeUtil.getNowDate());
         jyls1.setSkpid(kpls.getSkpid());
-
+        if(jyls1.getGsdm().equals("Family")){
+            jyls1.setTqm(jyls1.getJylsh());
+        }else{
+            //jyls1.setTqm(ddh);
+        }
         jylsService.save(jyls1);
         //保存开票流水
         Kpls kpls2 = new Kpls();
