@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.rjxx.taxeasy.service.GsxxService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,9 @@ public class WebServiceController {
 	
 	@Autowired
 	protected DealOrderDataService dealorderdataservice;
+
+	@Autowired
+	protected GsxxService   gsxxService ;
 	@RequestMapping
 	@ResponseBody
 	public String index() {

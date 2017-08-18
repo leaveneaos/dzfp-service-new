@@ -58,19 +58,35 @@ public class DealOrder04 implements IDealOrder{
     public String execute(String gsdm, String orderData, String Operation) {
 
             Map inputMap = dealOperation04(gsdm, orderData);
-            String clientNO = String.valueOf(inputMap.get("ClientNO"));//开票点编号
+
             Double TotalAmount = Double.parseDouble(String.valueOf(inputMap.get("TotalAmount")));//价税合计
             String CNDNCode = String.valueOf(inputMap.get("CNDNCode"));//原发票代码
             String CNDNNo = String.valueOf(inputMap.get("CNDNNo"));//原发票号码
             String InvType = String.valueOf(inputMap.get("InvType"));//发票种类
-            String ServiceType = String.valueOf(inputMap.get("ServiceType"));//发票业务类型
-            String SerialNumber = String.valueOf(inputMap.get("SerialNumber"));//序列号
-            String CNNoticeNo = String.valueOf(inputMap.get("CNNoticeNo"));//专票红字通知单号
-            String OrderNumber=String.valueOf(inputMap.get("OrderNumber"));//订单号
+            String SerialNumber=null;
+            String ServiceType=null;
+            String OrderNumber=null;
+            String CNNoticeNo=null;
+            if(gsdm.equals("Family")){
+                String ExtractCode = String.valueOf(inputMap.get("ExtractCode"));//发票种类
+                ServiceType="1";//全家写死是1
+                SerialNumber = ExtractCode;//全家tqm作为交易流水号
+            }else{
+                String clientNO = String.valueOf(inputMap.get("ClientNO"));//开票点编号
+                ServiceType = String.valueOf(inputMap.get("ServiceType"));//发票业务类型
+                SerialNumber = String.valueOf(inputMap.get("SerialNumber"));//序列号
+                OrderNumber=String.valueOf(inputMap.get("OrderNumber"));//订单号
+                CNNoticeNo = String.valueOf(inputMap.get("CNNoticeNo"));//专票红字通知单号
+            }
             Result04 result04 = new Result04();
         try {
+            Kpls parms = new Kpls();
+            parms.setFpdm(CNDNCode);
+            parms.setFphm(CNDNNo);
+            parms.setGsdm(gsdm);
+            Kpls kpls = kplsService.findByfphm(parms);//查询原开票流水
             Map params = new HashMap();
-            params.put("kpddm", clientNO);
+            params.put("kpdid", kpls.getSkpid());
             params.put("gsdm", gsdm);
             Skp skp = skpservice.findOneByParams(params);
             int xfid = skp.getXfid();
@@ -107,11 +123,7 @@ public class DealOrder04 implements IDealOrder{
                 result04.setReturnMessage("该接口的发票业务类型ServiceType必须为红子发票1");
                 return XmlJaxbUtils.toXml(result04);
             }
-            Kpls parms = new Kpls();
-            parms.setFpdm(CNDNCode);
-            parms.setFphm(CNDNNo);
-            parms.setGsdm(gsdm);
-            Kpls kpls = kplsService.findByfphm(parms);//查询原开票流水
+
             if(kpls==null){
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("没有该笔数据！");
