@@ -154,7 +154,7 @@ public class DealOrder04 implements IDealOrder{
             Cszb cszb2 = cszbservice.getSpbmbbh(gsdm, Integer.valueOf(xfid), kpdid, "kpfs");
             String kpfs=cszb2.getCsz();
             if (sftbkp.equals("是")) {   //是否同步开票
-                if(kpfs.equals("3")){
+                if(kpfs.equals("03")){
                     Map resultMap=this.Savejyxxsq(kpls.getKplsh());
                     Jyxxsq jyxxsq=(Jyxxsq)resultMap.get("jyxxsq");
                     KplsVO5 kplsVO5 = new KplsVO5(kpls2, jyxxsq);
@@ -165,8 +165,8 @@ public class DealOrder04 implements IDealOrder{
                     String spbmbbh = cszb3.getCsz();
                     params.put("spbmbbh",spbmbbh);
                     params2.put("kpls", kplsVO5);
-                    params2.put("kpspmxList", kpspmxList);
-                    params2.put("mxCount", kpspmxList.size());
+                    params2.put("kpspmxList", kpspmxList2);
+                    params2.put("mxCount", kpspmxList2.size());
                     /**
                      * 模板名称，电子票税控服务器报文
                      */
@@ -183,6 +183,8 @@ public class DealOrder04 implements IDealOrder{
                     String  serialorder=fpclService.updateKpls(result);
                     String  resultxml=serialorder;
                     logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(result));
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲成功！");
                 }else if(kpfs.equals("1")){
                     kpls2.setFpztdm("14");
                     kplsService.save(kpls2);
