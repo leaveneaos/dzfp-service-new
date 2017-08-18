@@ -12,6 +12,7 @@ import com.rjxx.taxeasy.bizcomm.utils.SkService;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.KplsVO5;
+import com.rjxx.taxeasy.vo.Kpspmxvo;
 import com.rjxx.time.TimeUtil;
 
 import com.rjxx.utils.TemplateUtils;
@@ -21,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -161,6 +164,13 @@ public class DealOrder04 implements IDealOrder{
                     kplsVO5.setZsfs("0");
                     Map params2 = new HashMap();
                     params2.put("kplx", "1");
+                    Kpspmx kpspmx=new Kpspmx();
+                    for (int j = 0; j < kpspmxList2.size(); j++) {
+                        kpspmx = kpspmxList2.get(j);
+                        BigDecimal b   =   new   BigDecimal(kpspmx.getSpdj());
+                        double   f1   =   b.setScale(6,BigDecimal.ROUND_HALF_UP).doubleValue();
+                        kpspmx.setSpdj(f1);
+                    }
                     Cszb cszb3 = cszbservice.getSpbmbbh(kplsVO5.getGsdm(), kplsVO5.getXfid(), null, "spbmbbh");
                     String spbmbbh = cszb3.getCsz();
                     params.put("spbmbbh",spbmbbh);
