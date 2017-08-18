@@ -106,13 +106,12 @@ public class DealOrder04 implements IDealOrder{
             kplsstr.setGsdm(gsdm);
             kplsstr.setJylsh(SerialNumber);
             Kpls kpls3=kplsService.findByhzfphm(kplsstr);
-            if(!gsdm.equals("Family")){
                 if(kpls3!=null){
                     result04.setReturnCode("9999");
                     result04.setReturnMessage("交易流水号必须唯一！");
                     return XmlJaxbUtils.toXml(result04);
                 }
-            }
+
             /*if (!InvType.equals("12")) {
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("该接口目前只支持电子发票红冲！");
