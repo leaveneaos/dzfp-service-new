@@ -74,6 +74,7 @@ public class DealOrder04 implements IDealOrder{
                 String ExtractCode = String.valueOf(inputMap.get("ExtractCode"));//发票种类
                 ServiceType="1";//全家写死是1
                 SerialNumber = ExtractCode;//全家tqm作为交易流水号
+                OrderNumber=ExtractCode;
             }else{
                 String clientNO = String.valueOf(inputMap.get("ClientNO"));//开票点编号
                 ServiceType = String.valueOf(inputMap.get("ServiceType"));//发票业务类型
@@ -364,7 +365,7 @@ public class DealOrder04 implements IDealOrder{
         //保存开票流水
         Kpls kpls2 = new Kpls();
         kpls2.setDjh(jyls1.getDjh());
-        kpls2.setJylsh(jylsh);
+        kpls2.setJylsh(jyls1.getJylsh());
         kpls2.setJylssj(jyls1.getJylssj());
         kpls2.setFpzldm(jyls1.getFpzldm());
         kpls2.setFpczlxdm(jyls1.getFpczlxdm());
