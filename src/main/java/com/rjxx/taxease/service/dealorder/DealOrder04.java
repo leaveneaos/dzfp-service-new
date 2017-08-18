@@ -58,7 +58,7 @@ public class DealOrder04 implements IDealOrder{
     public String execute(String gsdm, String orderData, String Operation) {
 
             Map inputMap = dealOperation04(gsdm, orderData);
-
+            logger.info("++++++++数据++++++++++"+orderData);
             Double TotalAmount = Double.parseDouble(String.valueOf(inputMap.get("TotalAmount")));//价税合计
             String CNDNCode = String.valueOf(inputMap.get("CNDNCode"));//原发票代码
             String CNDNNo = String.valueOf(inputMap.get("CNDNNo"));//原发票号码
