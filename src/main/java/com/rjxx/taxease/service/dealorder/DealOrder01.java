@@ -219,7 +219,8 @@ public class DealOrder01 implements IDealOrder {
                     } else if(cszb2.getCsz().equals("03")){//税控服务器
                         List resultList = new ArrayList();
                         try {
-                            result= fpclservice.skdzfp(jyxxsqList, "03");//税控服务器，电子发票处理
+                            resultList= fpclservice.zjkp(jyxxsqList, "03");//税控服务器，电子发票处理
+                            result = responseUtil.lpResponse(null);
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
