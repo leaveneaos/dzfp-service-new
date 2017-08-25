@@ -278,7 +278,7 @@ public class DealOrder04 implements IDealOrder{
             jymxsq.setSpsl(kpspmx.getSpsl());
             jymxsq.setSpggxh(kpspmx.getSpggxh());
             jymxsq.setSpmc(kpspmx.getSpmc());
-            jymxsq.setSpmxxh(i);
+            jymxsq.setSpmxxh(i+1);
             jymxsq.setYxbz("1");
             jymxsq.setHsbz(jyls.getHsbz());
             jymxsq.setYhzcbs(kpspmx.getYhzcbs());
