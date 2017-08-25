@@ -5,6 +5,7 @@ import com.rjxx.taxease.service.result.Result04;
 
 import com.rjxx.taxease.utils.XmlMapUtils;
 
+import com.rjxx.taxeasy.bizcomm.utils.DiscountDealUtil;
 import com.rjxx.taxeasy.bizcomm.utils.FpclService;
 import com.rjxx.taxeasy.bizcomm.utils.InvoiceResponse;
 
@@ -442,12 +443,14 @@ public class DealOrder04 implements IDealOrder{
             kpspmx1.setXgry(jyspmx.getXgry());
             kpspmx1.setKhcje(0d);
             kpspmx1.setYhcje(-jyspmx.getJshj());
-            kpspmxService.save(kpspmx1);
+            //kpspmxService.save(kpspmx1);
             kpspmxList2.add(kpspmx1);
             kpspmx.setKhcje(0d);
             kpspmx.setYhcje(kpspmx.getSpje()+kpspmx.getSpse());
             kpspmxService.save(kpspmx);
         }
+        kpspmxList2= DiscountDealUtil.discountMergeLinesKpspmx(kpspmxList2);
+        kpspmxService.save(kpspmxList2);
         Map resultMap=new HashMap();
         resultMap.put("kpls2",kpls2);
         resultMap.put("kpspmxList2",kpspmxList2);
