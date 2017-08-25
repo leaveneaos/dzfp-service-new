@@ -106,12 +106,13 @@ public class DealOrder04 implements IDealOrder{
             kplsstr.setGsdm(gsdm);
             kplsstr.setJylsh(SerialNumber);
             Kpls kpls3=kplsService.findByhzfphm(kplsstr);
+            if(!kpls3.getGsdm().equals("Family")){
                 if(kpls3!=null){
                     result04.setReturnCode("9999");
                     result04.setReturnMessage("交易流水号必须唯一！");
                     return XmlJaxbUtils.toXml(result04);
                 }
-
+            }
             /*if (!InvType.equals("12")) {
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("该接口目前只支持电子发票红冲！");
@@ -127,7 +128,6 @@ public class DealOrder04 implements IDealOrder{
                 result04.setReturnMessage("该接口的发票业务类型ServiceType必须为红子发票1");
                 return XmlJaxbUtils.toXml(result04);
             }
-
             if(kpls==null){
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("没有该笔数据！");
