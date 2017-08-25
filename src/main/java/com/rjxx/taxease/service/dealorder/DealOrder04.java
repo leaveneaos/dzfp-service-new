@@ -203,7 +203,7 @@ public class DealOrder04 implements IDealOrder{
         jyxxsq.setBz(kpls.getBz());
         jyxxsq.setClztdm("00");
         jyxxsq.setDdrq(new Date());
-        jyxxsq.setFpczlxdm("14");
+        jyxxsq.setFpczlxdm("12");
         jyxxsq.setFpzldm(kpls.getFpzldm());
         jyxxsq.setFhr(kpls.getFhr());
         jyxxsq.setGfdh(kpls.getGfdh());
@@ -451,7 +451,7 @@ public class DealOrder04 implements IDealOrder{
             kpspmxService.save(kpspmx);
         }
         kpspmxList2= DiscountDealUtil.discountMergeLinesKpspmx(kpspmxList2);
-        logger.info("------------"+ JSON.toJSONString(kpspmxList));
+        logger.info("------------"+ JSON.toJSONString(kpspmxList2));
         kpspmxService.save(kpspmxList2);
         Map resultMap=new HashMap();
         resultMap.put("kpls2",kpls2);
