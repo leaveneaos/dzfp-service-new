@@ -255,8 +255,16 @@ public class DealOrder04 implements IDealOrder{
             jymxsq.setKce(kpspmx.getKce());
             jymxsq.setKpddm(kpspmx.getKpddm());
             jymxsq.setLslbz(kpspmx.getLslbz());
-            jymxsq.setSps(-kpspmx.getSps());
-            jymxsq.setSpdj(kpspmx.getSpdj());
+            try {
+                jymxsq.setSps(-kpspmx.getSps());
+            }catch (Exception e){
+                jymxsq.setSps(null);
+            }
+            try {
+                jymxsq.setSpdj(kpspmx.getSpdj());
+            }catch (Exception e){
+                jymxsq.setSpdj(null);
+            }
             jymxsq.setSpdm(kpspmx.getSpdm());
             jymxsq.setSpse(-kpspmx.getSpse());
             jymxsq.setSpdw(kpspmx.getSpdw());
