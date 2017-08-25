@@ -151,7 +151,7 @@ public class DealOrder04 implements IDealOrder{
             Map param4 = new HashMap<>();
             param4.put("djh", djh);
             Jyls jyls = jylsService.findJylsByDjh(param4);
-            Map resultMap=this.Savejyxxsq(kpls.getKplsh());
+            Map resultMap=this.Savejyxxsq(kpls.getKplsh(),SerialNumber,jyls);
             Jyxxsq jyxxsq=(Jyxxsq) resultMap.get("jyxxsq");
             String ddh = jyls.getDdh(); // 查询原交易流水得ddh
             Map kplsMap = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo,OrderNumber,jyxxsq);
@@ -191,7 +191,7 @@ public class DealOrder04 implements IDealOrder{
             return XmlJaxbUtils.toXml(result04);
         }
     }
-    private Map Savejyxxsq(Integer kplsh) throws Exception {
+    private Map Savejyxxsq(Integer kplsh,String tqm,Jyls jyls) throws Exception {
         Map result = new HashMap();
         Kpls kpls = kplsService.findOne(kplsh);
         Jyxxsq jyxxsq = new Jyxxsq();
@@ -202,6 +202,7 @@ public class DealOrder04 implements IDealOrder{
         jyxxsq.setGfyb(kpls.getGfyb());
         jyxxsq.setBz(kpls.getBz());
         jyxxsq.setClztdm("00");
+        jyxxsq.setHsbz(jyls.getHsbz());
         jyxxsq.setDdrq(new Date());
         jyxxsq.setFpczlxdm("12");
         jyxxsq.setFpzldm(kpls.getFpzldm());
@@ -241,6 +242,7 @@ public class DealOrder04 implements IDealOrder{
         jyxxsq.setLrry(kpls.getLrry());
         jyxxsq.setSfdyqd(kpls.getSfdyqd());
         jyxxsq.setHsbz("1");
+        jyxxsq.setTqm(tqm);
         jyxxsqService.save(jyxxsq);
         result.put("jyxxsq", jyxxsq);
         Map parms = new HashMap();
@@ -250,6 +252,7 @@ public class DealOrder04 implements IDealOrder{
         for (int i = 0; i < kpspmxList.size(); i++) {
             Kpspmx kpspmx = kpspmxList.get(i);
             Jymxsq jymxsq = new Jymxsq();
+            jymxsq.setDdh(jyls.getDdh());
             jymxsq.setLrry(kpspmx.getLrry());
             jymxsq.setFphxz(kpspmx.getFphxz());
             jymxsq.setGsdm(kpspmx.getGsdm());
@@ -326,7 +329,7 @@ public class DealOrder04 implements IDealOrder{
         jyls1.setSsyf(kpls.getSsyf());
         jyls1.setYfpdm(kpls.getFpdm());
         jyls1.setYfphm(kpls.getFphm());
-        jyls1.setHsbz("0");
+        jyls1.setHsbz(jyxxsq.getHsbz());
         jyls1.setJshj(-kpls.getJshj());
         jyls1.setYkpjshj(-kpls.getJshj());
         jyls1.setYxbz("1");
@@ -345,6 +348,7 @@ public class DealOrder04 implements IDealOrder{
         jylsService.save(jyls1);
         //保存开票流水
         Kpls kpls2 = new Kpls();
+        kpls2.setKpddm(kpls.getKpddm());
         kpls2.setDjh(jyls1.getDjh());
         kpls2.setJylsh(jyls1.getJylsh());
         kpls2.setJylssj(jyls1.getJylssj());
@@ -444,6 +448,11 @@ public class DealOrder04 implements IDealOrder{
             kpspmx1.setXgry(jyspmx.getXgry());
             kpspmx1.setKhcje(0d);
             kpspmx1.setYhcje(-jyspmx.getJshj());
+            kpspmx1.setGsdm(kpls.getGsdm());
+            kpspmx1.setYhzcbs(kpspmx.getYhzcbs());
+            kpspmx1.setYhzcmc(kpspmx.getYhzcmc());
+            kpspmx1.setLslbz(kpspmx.getLslbz());
+            kpspmx1.setKpddm(kpls.getKpddm());
             //kpspmxService.save(kpspmx1);
             kpspmxList2.add(kpspmx1);
             kpspmx.setKhcje(0d);
