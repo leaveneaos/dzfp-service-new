@@ -389,6 +389,7 @@ public class DealOrder04 implements IDealOrder{
         kpls2.setSerialorder(SerialNumber+OrderNumber);
         kplsService.save(kpls2);
         List<Kpspmx> kpspmxList2=new ArrayList<>();
+        kpspmxList= DiscountDealUtil.discountMergeLinesKpspmx(kpspmxList);
         for(Kpspmx kpspmx:kpspmxList){
             Jyspmx jyspmx = new Jyspmx();
             jyspmx.setDjh(jyls1.getDjh());
@@ -449,7 +450,6 @@ public class DealOrder04 implements IDealOrder{
             kpspmx.setYhcje(kpspmx.getSpje()+kpspmx.getSpse());
             kpspmxService.save(kpspmx);
         }
-        kpspmxList2= DiscountDealUtil.discountMergeLinesKpspmx(kpspmxList2);
         kpspmxService.save(kpspmxList2);
         Map resultMap=new HashMap();
         resultMap.put("kpls2",kpls2);
