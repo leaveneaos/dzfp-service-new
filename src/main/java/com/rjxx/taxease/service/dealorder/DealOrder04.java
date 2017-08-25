@@ -105,13 +105,13 @@ public class DealOrder04 implements IDealOrder{
             Kpls kplsstr=new Kpls();
             kplsstr.setGsdm(gsdm);
             kplsstr.setJylsh(SerialNumber);
+            kplsstr.setHzyfpdm(CNDNCode);
+            kplsstr.setHzyfphm(CNDNNo);
             Kpls kpls3=kplsService.findByhzfphm(kplsstr);
-            if(!kpls3.getGsdm().equals("Family")){
-                if(kpls3!=null){
+            if(kpls3!=null){
                     result04.setReturnCode("9999");
-                    result04.setReturnMessage("交易流水号必须唯一！");
+                    result04.setReturnMessage("交易流水号、发票代码、发票号码必须唯一！");
                     return XmlJaxbUtils.toXml(result04);
-                }
             }
             /*if (!InvType.equals("12")) {
                 result04.setReturnCode("9999");
@@ -361,8 +361,8 @@ public class DealOrder04 implements IDealOrder{
         kpls2.setKpr(jyls1.getKpr());
         kpls2.setFhr(jyls1.getFhr());
         kpls2.setHztzdh(jyls1.getHztzdh());
-        kpls2.setHkFpdm(jyls1.getYfpdm());
-        kpls2.setHkFphm(jyls1.getYfphm());
+        /*kpls2.setHkFpdm(jyls1.getYfpdm());
+        kpls2.setHkFphm(jyls1.getYfphm());*/
         kpls2.setHzyfpdm(jyls1.getYfpdm());
         kpls2.setHzyfphm(jyls1.getYfphm());
         kpls2.setJshj(jyls1.getJshj());
