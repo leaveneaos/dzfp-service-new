@@ -149,11 +149,12 @@ public class DealOrder04 implements IDealOrder{
             Map param4 = new HashMap<>();
             param4.put("djh", djh);
             Jyls jyls = jylsService.findJylsByDjh(param4);
+            Map resultMap=this.Savejyxxsq(kpls.getKplsh());
+            Jyxxsq jyxxsq=(Jyxxsq) resultMap.get("jyxxsq");
             String ddh = jyls.getDdh(); // 查询原交易流水得ddh
-            Map kplsMap = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo,OrderNumber);
+            Map kplsMap = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo,OrderNumber,jyxxsq);
             Kpls kpls2=(Kpls)kplsMap.get("kpls2");
             List<Kpspmx> kpspmxList2=(List)kplsMap.get("kpspmxList2");
-            Map resultMap=this.Savejyxxsq(kpls.getKplsh());
             Cszb cszb2 = cszbservice.getSpbmbbh(gsdm, Integer.valueOf(xfid), kpdid, "kpfs");
             String kpfs=cszb2.getCsz();
             if (sftbkp.equals("是")) {   //是否同步开票
@@ -286,7 +287,7 @@ public class DealOrder04 implements IDealOrder{
         result.put("jymxsqList",jymxsqList);
         return result;
     }
-    public Map save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber,String CNNoticeNo,String OrderNumber)throws Exception{
+    public Map save(String ddh,Kpls kpls,List<Kpspmx> kpspmxList,String sftbkp,String SerialNumber,String CNNoticeNo,String OrderNumber,Jyxxsq jyxxsq)throws Exception{
         //保存交易流水
         Jyls jyls1 = new Jyls();
         jyls1.setDdh(ddh);
@@ -333,6 +334,7 @@ public class DealOrder04 implements IDealOrder{
         jyls1.setXgry(kpls.getLrry());
         jyls1.setXgsj(TimeUtil.getNowDate());
         jyls1.setSkpid(kpls.getSkpid());
+        jyls1.setSqlsh(jyxxsq.getSqlsh());
         if(jyls1.getGsdm().equals("Family")){
             jyls1.setTqm(jyls1.getJylsh());
         }else{
