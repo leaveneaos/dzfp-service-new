@@ -1,5 +1,6 @@
 package com.rjxx.taxease.service.dealorder;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rjxx.taxease.service.result.Result04;
 
@@ -390,6 +391,7 @@ public class DealOrder04 implements IDealOrder{
         kplsService.save(kpls2);
         List<Kpspmx> kpspmxList2=new ArrayList<>();
         kpspmxList= DiscountDealUtil.discountMergeLinesKpspmx(kpspmxList);
+        logger.info("------------"+ JSON.toJSONString(kpspmxList));
         for(Kpspmx kpspmx:kpspmxList){
             Jyspmx jyspmx = new Jyspmx();
             jyspmx.setDjh(jyls1.getDjh());
