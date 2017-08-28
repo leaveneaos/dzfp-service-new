@@ -153,7 +153,12 @@ public class DealOrder04 implements IDealOrder{
             Jyls jyls = jylsService.findJylsByDjh(param4);
             Map resultMap=this.Savejyxxsq(kpls.getKplsh(),SerialNumber,jyls);
             Jyxxsq jyxxsq=(Jyxxsq) resultMap.get("jyxxsq");
-            String ddh = jyls.getDdh(); // 查询原交易流水得ddh
+            String ddh=null;
+            if(jyls.getGsdm().equals("Family")){
+                ddh=SerialNumber;
+            }else{
+                ddh = jyls.getDdh(); // 查询原交易流水得ddh
+            }
             Map kplsMap = save(ddh,kpls, kpspmxList, sftbkp,SerialNumber,CNNoticeNo,OrderNumber,jyxxsq);
             Kpls kpls2=(Kpls)kplsMap.get("kpls2");
             List<Kpspmx> kpspmxList2=(List)kplsMap.get("kpspmxList2");
