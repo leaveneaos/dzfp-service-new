@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -628,19 +627,15 @@ public class DealOrder01 implements IDealOrder {
                             TaxRate = orderDetails.selectSingleNode("TaxRate").getText();
                             jymxsq.setSpsl(Double.valueOf(TaxRate));
                         }
-                        if(taxMark.equals("1")){
-                            BigDecimal big = new BigDecimal("1");
-                            BigDecimal bhsamount = InvoiceSplitUtils.div(new BigDecimal(Amount), big.add(new BigDecimal(TaxRate)), 6);
-                            BigDecimal spseAmount = bhsamount.multiply(new BigDecimal(TaxRate));
-                            jymxsq.setSpse(spseAmount.doubleValue());
-                        }else{
-                            String TaxAmount = "";
-                            if (null != orderDetails.selectSingleNode("TaxAmount")
-                                    && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
-                                TaxAmount = orderDetails.selectSingleNode("TaxAmount").getText();
-                                try{jymxsq.setSpse(Double.valueOf(TaxAmount));}catch (Exception e){jymxsq.setSpse(null);}
-                            }
+
+                        String TaxAmount = "";
+                        if (null != orderDetails.selectSingleNode("TaxAmount")
+                                && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
+                            TaxAmount = orderDetails.selectSingleNode("TaxAmount").getText();
+                            try{jymxsq.setSpse(Double.valueOf(TaxAmount));}catch (Exception e){jymxsq.setSpse(null);}
+
                         }
+
                         String MxTotalAmount = "";
                         if (null != orderDetails.selectSingleNode("MxTotalAmount")
                                 && !orderDetails.selectSingleNode("MxTotalAmount").equals("")) {
