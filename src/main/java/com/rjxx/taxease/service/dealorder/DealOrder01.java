@@ -501,8 +501,8 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setHsbz(taxMark);
                 jyxxsq.setBz(remark);
                 jyxxsq.setGflx(CustomerType);
-                jyxxsq.setGfsh(buyerIdentifier);
-                jyxxsq.setGfmc(buyerName);
+                jyxxsq.setGfsh(buyerIdentifier.replaceAll(" ",""));
+                jyxxsq.setGfmc(buyerName.replaceAll(" ",""));
                 jyxxsq.setGfdz(buyerAddress);
                 jyxxsq.setGfdh(buyerTelephoneNo);
                 jyxxsq.setGfyh(buyerBank);
