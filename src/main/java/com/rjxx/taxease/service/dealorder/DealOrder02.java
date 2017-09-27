@@ -79,6 +79,7 @@ public class DealOrder02 implements IDealOrder {
         //交易明细
         List<Jymxsq> jymxsqList = (List) map.get("jymxsqList");
         DefaultResult defaultResult = new DefaultResult();
+        jyxxsqList = (List<Jyxxsq>) this.addMoreDate(jyxxsqList, gsdm);
         // 取出xfid、skpid等用来插叙该开票点是否直连开票
         int xfid = jyxxsqList.get(0).getXfid();
         int skpid = jyxxsqList.get(0).getSkpid();
