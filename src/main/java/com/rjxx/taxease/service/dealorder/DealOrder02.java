@@ -121,7 +121,7 @@ public class DealOrder02 implements IDealOrder {
 
             } else {
                 defaultResult.setReturnCode("0000");
-                defaultResult.setReturnMessage(tmp2);
+                defaultResult.setReturnMessage("交易信息保存成功");
                 result = XmlJaxbUtils.toXml(defaultResult);
             }
         } else {
