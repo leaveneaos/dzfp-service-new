@@ -120,140 +120,16 @@ public class DealOrder02 implements IDealOrder {
                 result = XmlJaxbUtils.toXml(defaultResult);
 
             } else {
-                if (null != cszb && cszb.getCsz().equals("是")) {
-                    // 需考虑是否直连开票，若不是直连，不需要实时接口，考虑用参数配置,分为组件接口，录屏方式01录屏，02组件，03其他
-                    Cszb cszb2 = cszbservice.getSpbmbbh(gsdm, Integer.valueOf(xfid), Integer.valueOf(skpid), "kpfs");
-                    // 录屏方式
-                    if (cszb2.getCsz().equals("01")) {
-                        List resultList = new ArrayList();
-                        try {
-                            resultList = (List) fpclservice.zjkp(jyxxsqList, "01");//录屏
-
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        result = responseUtil.lpResponse(null);
-                    } else if (cszb2.getCsz().equals("02")) {
-                        // 组件方式
-                        List fpclList = new ArrayList();
-                        try {
-                            fpclList = (List) fpclservice.zjkp(jyxxsqList, "02");//组件
-                        } catch (Exception e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-                        List resultList = new ArrayList();
-                        if (null != fpclList) {
-                            KplsVO4 zjKplsvo4 = new KplsVO4();
-                            for (int i = 0; i < fpclList.size(); i++) {
-                                double hjje = 0.00;
-                                double hjse = 0.00;
-                                List<Kpspmx> tmpList = new ArrayList<Kpspmx>();
-
-                                zjKplsvo4 = (KplsVO4) fpclList.get(i);
-                                //获取对应开票商品明细信息
-                                Map params = new HashMap();
-                                params.put("kplsh", zjKplsvo4.getKplsh());
-                                tmpList = kpspmxService.findMxList(params);
-
-                                //只为获取zsfs,hsbz
-                                //Integer sqlsh = zjKplsvo4.getSqlsh();
-                                //jyxxsq = jyxxsqService.findOne(sqlsh);
-
-                                Kpspmx kpspmx = new Kpspmx();
-                                for (int j = 0; j < tmpList.size(); j++) {
-                                    kpspmx = tmpList.get(j);
-                                    hjje = hjje + kpspmx.getSpje();
-                                    hjse = hjse + kpspmx.getSpse();
-
-                                }
-                                String path = this.getClass().getClassLoader().getResource("DllFpkjModel.xml")
-                                        .getPath();
-                                try {
-                                    Map params2 = new HashMap();
-                                    String fpzldm = zjKplsvo4.getFpzldm();
-                                    if (fpzldm.equals("01")) {
-                                        zjKplsvo4.setFpzldm("0");
-                                    } else if (fpzldm.equals("02")) {
-                                        zjKplsvo4.setFpzldm("1");
-                                    } else {
-                                        zjKplsvo4.setFpzldm("12");
-                                    }
-                                    params2.put("kplsvo4", zjKplsvo4);
-                                    params2.put("tmpList", tmpList);
-                                    params2.put("count", tmpList.size());
-                                    params2.put("hjje", hjje);
-                                    params2.put("hjse", hjse);
-                                    params2.put("Operation", Operation);
-                                    path = URLDecoder.decode(path, "UTF-8");
-                                    File templateFile = new File(path);
-                                    String result2 = TemplateUtils.generateContent(templateFile, params2, "gbk");
-                                    System.out.println(result2);
-                                    logger.debug("封装传开票通的报文" + result2);
-                                    CallDllWebServiceUtil utils = new CallDllWebServiceUtil();
-                                    result = utils.callDllWebSevice(result2, params2);
-                                    resultList.add(result);
-                                    System.out.println(result);
-                                } catch (Exception e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        result = responseUtil.response(resultList);
-                    } else if (cszb2.getCsz().equals("03")) {//税控服务器
-                        List resultList = new ArrayList();
-                        try {
-                            resultList = fpclservice.zjkp(jyxxsqList, "03");//税控服务器，电子发票处理
-                            result = responseUtil.lpResponse(null);
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    // 不是直连开票
-                    defaultResult.setReturnCode("0000");
-                    defaultResult.setReturnMessage("开票数据已接收！");
-                    result = XmlJaxbUtils.toXml(defaultResult);
-                    //result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage></ReturnMessage> \n</Responese>";
-                }
+                defaultResult.setReturnCode("0000");
+                defaultResult.setReturnMessage(tmp2);
+                result = XmlJaxbUtils.toXml(defaultResult);
             }
         } else {
             defaultResult.setReturnCode("9999");
             defaultResult.setReturnMessage(tmp);
             result = XmlJaxbUtils.toXml(defaultResult);
-            //result = ResponseUtils.printFailure(tmp);
             logger.debug("封装校验不通过信息" + result);
         }
-//        // List<Jymxsq> tmpList = null;
-//        Jyxxsq jyxxsq = new Jyxxsq();
-//        Jymxsq jymxsq = new Jymxsq();
-//        String tmp = checkorderutil.checkAll(jyxxsqList, jymxsqList, gsdm, Operation);
-//        if (null == tmp || tmp.equals("")) {
-//            String tmp3 = saveorderdata.saveAllData(jyxxsqList, jymxsqList);
-//            if (null != tmp3 && !tmp3.equals("")) {
-//                /*result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp3
-//                        + "</ReturnMessage> \n</Responese>";*/
-//                result04.setReturnCode("9999");
-//                result04.setReturnMessage(tmp3);
-//                result = XmlJaxbUtils.toXml(result04);
-//            } else {
-//                /*result = "<Responese>\n  <ReturnCode>0000</ReturnCode>\n  <ReturnMessage>" + "代开票数据上传成功"
-//                        + "</ReturnMessage> \n</Responese>";*/
-//                result04.setReturnCode("0000");
-//                result04.setReturnMessage("代开票数据上传成功");
-//                result = XmlJaxbUtils.toXml(result04);
-//            }
-//
-//        } else {
-//            /*  result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>" + tmp
-//                    + "</ReturnMessage> \n</Responese>";*/
-//            result04.setReturnCode("9999");
-//            result04.setReturnMessage(tmp);
-//            result = XmlJaxbUtils.toXml(result04);
-//        }
         return result;
     }
 
