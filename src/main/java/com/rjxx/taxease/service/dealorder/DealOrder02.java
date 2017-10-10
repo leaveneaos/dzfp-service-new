@@ -328,6 +328,9 @@ public class DealOrder02 implements IDealOrder {
                 }
 
                 jyxxsq.setClztdm("00");
+                if(null != ExtractedCode && !ExtractedCode.equals("")){
+                    jyxxsq.setTqm(ExtractedCode);
+                }
                 jyxxsqList.add(jyxxsq);
                 // List orderDetailsList = (List)
                 // orderMainMap.get("OrderDetails");
