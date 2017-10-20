@@ -325,7 +325,7 @@ public class HanderJysjxxService {
                     "  <StoreNo>yidu</StoreNo>\n" +
                     "  </Row>\n" +
                     "</Request>\n";
-            String wsdlurl = "http://localhost:8081/services/invoiceService?wsdl";
+            String wsdlurl = "http://test.datarj.com/webService/services/invoiceService?wsdl";
             String key = "0f2aa080911da0adcfc5f630e9d20e1a";
             String methodname = "UploadOrder";
             String appid = "RJ5689ea2d0482";
