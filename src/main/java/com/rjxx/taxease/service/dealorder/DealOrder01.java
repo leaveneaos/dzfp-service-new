@@ -219,7 +219,8 @@ public class DealOrder01 implements IDealOrder {
                     } else if(cszb2.getCsz().equals("03")){//税控服务器
                         List resultList = new ArrayList();
                         try {
-                            result= fpclservice.skdzfp(jyxxsqList, "03");//税控服务器，电子发票处理
+                            resultList= fpclservice.zjkp(jyxxsqList, "03");//税控服务器，电子发票处理
+                            result = responseUtil.lpResponse(null);
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -466,6 +467,10 @@ public class DealOrder01 implements IDealOrder {
                     buyerZip = buyerMap.selectSingleNode("Zip").getText();
                 }
 
+                String khh = "";
+                if (null != buyerMap.selectSingleNode("Khh") && !buyerMap.selectSingleNode("Khh").equals("")) {
+                    khh = buyerMap.selectSingleNode("Khh").getText();
+                }
                 // 保存主表信息
                 jyxxsq.setKpddm(clientNO);
                 jyxxsq.setJylsh(serialNumber);
@@ -496,13 +501,14 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setHsbz(taxMark);
                 jyxxsq.setBz(remark);
                 jyxxsq.setGflx(CustomerType);
-                jyxxsq.setGfsh(buyerIdentifier);
-                jyxxsq.setGfmc(buyerName);
+                jyxxsq.setGfsh(buyerIdentifier.replaceAll(" ",""));
+                jyxxsq.setGfmc(buyerName.replaceAll(" ",""));
                 jyxxsq.setGfdz(buyerAddress);
                 jyxxsq.setGfdh(buyerTelephoneNo);
                 jyxxsq.setGfyh(buyerBank);
                 jyxxsq.setGfyhzh(buyerBankAcc);
                 jyxxsq.setGfemail(buyerEmail);
+                jyxxsq.setKhh(khh);
                 jyxxsq.setSffsyj(buyerIsSend);
                 //为了照顾亚朵，途家两家老版本的发票开具xml样例
                 if(null != ExtractedCode && !ExtractedCode.equals("")){
@@ -626,7 +632,8 @@ public class DealOrder01 implements IDealOrder {
                         if (null != orderDetails.selectSingleNode("TaxAmount")
                                 && !orderDetails.selectSingleNode("TaxAmount").equals("")) {
                             TaxAmount = orderDetails.selectSingleNode("TaxAmount").getText();
-                            jymxsq.setSpse(Double.valueOf(TaxAmount));
+                            try{jymxsq.setSpse(Double.valueOf(TaxAmount));}catch (Exception e){jymxsq.setSpse(null);}
+
                         }
 
                         String MxTotalAmount = "";

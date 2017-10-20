@@ -192,7 +192,7 @@ public class ResponseUtil {
         // 规范格式
         OutputFormat format = OutputFormat.createPrettyPrint();
         // 设置输出编码
-        format.setEncoding("gbk");
+        format.setEncoding("UTF-8");
         xw = new XMLWriter(sendXml, format);
         try {
             xw.write(doc);
