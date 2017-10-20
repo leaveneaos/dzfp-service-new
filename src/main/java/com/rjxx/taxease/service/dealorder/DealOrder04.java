@@ -169,7 +169,7 @@ public class DealOrder04 implements IDealOrder{
                     skService.SkServerKP(kpls2.getKplsh().intValue());
                     result04.setReturnCode("0000");
                     result04.setReturnMessage("红冲成功！");
-                }else if(kpfs.equals("1")){
+                }else if(kpfs.equals("01")){
                     kpls2.setFpztdm("14");
                     kplsService.save(kpls2);
                     InvoiceResponse response = skService.callService(kpls2.getKplsh().intValue());
