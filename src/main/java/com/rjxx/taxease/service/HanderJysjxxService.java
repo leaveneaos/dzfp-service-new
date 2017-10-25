@@ -5,6 +5,7 @@ import com.rjxx.taxeasy.domains.Jyxx;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JyxxService;
 import com.rjxx.utils.ResponseUtils;
+import com.rjxx.utils.weixin.HttpClientUtil;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -65,10 +66,10 @@ public class HanderJysjxxService {
 			String key = gsxxBean.getSecretKey();
 			String signSourceData = "data=" + OrderData + "&key=" + key;
 			String newSign = DigestUtils.md5Hex(signSourceData);
-			if (!Sign.equals(newSign)) {
-				result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>9060:签名不通过</ReturnMessage> \n</Responese>";
-				return result;
-			}
+//			if (!Sign.equals(newSign)) {
+//				result = "<Responese>\n  <ReturnCode>9999</ReturnCode>\n  <ReturnMessage>9060:签名不通过</ReturnMessage> \n</Responese>";
+//				return result;
+//			}
 			String gsdm = gsxxBean.getGsdm();
 			OMElement root = null;
 			try {
@@ -236,37 +237,42 @@ public class HanderJysjxxService {
 				+ "</ReturnMessage>\n</Responese>";
 	}
 
-//	public static void main(String[] args) {
-//		String OrderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-//				"<Request>\n" +
-//				"<Row> \n"+
-//				"  <OrderNo>20171025yidu"+new Random().nextInt(999)+"</OrderNo>\n" +
-//				"  <!--OrderNo必选，订单号，String20-->\n" +
-//				"  <OrderTime>20161110093912</OrderTime>\n" +
-//				"  <!--OrderTime必选，订单时间，String14-->\n" +
-//				"  <Price>"+new Random().nextInt(800)+"</Price>\n" +
-//				"  <!--Price必选，金额，Double(10,2) -->\n" +
-//				"  <Sign>b0c87cce86a4dfebedc05d83e7f76790</Sign>\n" +
-//				"  <!--Sign必选，签名串String32-->\n" +
-//				"  <StoreNo>yidu</StoreNo>\n" +
-//				"  <!--StoreNo可选，门店编号String20-->\n" +
-//				"  </Row>\n" +
-//				"<Row> \n"+
-//				"  <OrderNo>20171025baxi"+new Random().nextInt(999)+"</OrderNo>\n" +
-//				"  <!--OrderNo必选，订单号，String20-->\n" +
-//				"  <OrderTime>20161110093916</OrderTime>\n" +
-//				"  <!--OrderTime必选，订单时间，String14-->\n" +
-//				"  <Price>"+new Random().nextInt(800)+"</Price>\n" +
-//				"  <!--Price必选，金额，Double(10,2) -->\n" +
-//				"  <Sign>b0c87cce86a4dfebedc05d83e7aaaaaa</Sign>\n" +
-//				"  <!--Sign必选，签名串String32-->\n" +
-//				"  <StoreNo>baxi</StoreNo>\n" +
-//				"  <!--StoreNo可选，门店编号String20-->\n" +
-//				"  </Row>\n" +
-//				"</Request>\n";
+	public static void main(String[] args) {
+		String OrderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+				"<Request>\n" +
+				"<Row> \n"+
+				"  <OrderNo>20171025yidu"+new Random().nextInt(999)+"</OrderNo>\n" +
+				"  <!--OrderNo必选，订单号，String20-->\n" +
+				"  <OrderTime>20161110093912</OrderTime>\n" +
+				"  <!--OrderTime必选，订单时间，String14-->\n" +
+				"  <Price>"+new Random().nextInt(800)+"</Price>\n" +
+				"  <!--Price必选，金额，Double(10,2) -->\n" +
+				"  <Sign>b0c87cce86a4dfebedc05d83e7f76790</Sign>\n" +
+				"  <!--Sign必选，签名串String32-->\n" +
+				"  <StoreNo>yidu</StoreNo>\n" +
+				"  <!--StoreNo可选，门店编号String20-->\n" +
+				"  </Row>\n" +
+				"<Row> \n"+
+				"  <OrderNo>20171025baxi"+new Random().nextInt(999)+"</OrderNo>\n" +
+				"  <!--OrderNo必选，订单号，String20-->\n" +
+				"  <OrderTime>20161110093916</OrderTime>\n" +
+				"  <!--OrderTime必选，订单时间，String14-->\n" +
+				"  <Price>"+new Random().nextInt(800)+"</Price>\n" +
+				"  <!--Price必选，金额，Double(10,2) -->\n" +
+				"  <Sign>b0c87cce86a4dfebedc05d83e7aaaaaa</Sign>\n" +
+				"  <!--Sign必选，签名串String32-->\n" +
+				"  <StoreNo>baxi</StoreNo>\n" +
+				"  <!--StoreNo可选，门店编号String20-->\n" +
+				"  </Row>\n" +
+				"</Request>\n";
+		//测试
 //		String appId = "RJ5689ea2d0482";
 //		String key = "0f2aa080911da0adcfc5f630e9d20e1a";
-//		System.out.println(HttpClientUtil.wsUploadOrder("http://test.datarj.com/webService/services/invoiceService?wsdl",OrderData,appId,key ));
-//	}
+
+		//正式
+		String appId = "RJ7dc91c19acd6";
+		String key = "3a0fcda27307672fe09033b2690f32b3";
+		System.out.println(HttpClientUtil.wsUploadOrder("http://invoice.datarj.com/webService/services/invoiceService?wsdl",OrderData,appId,key ));
+	}
 
 }
