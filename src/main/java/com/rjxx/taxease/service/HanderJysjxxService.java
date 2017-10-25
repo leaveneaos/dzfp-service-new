@@ -5,7 +5,6 @@ import com.rjxx.taxeasy.domains.Jyxx;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasy.service.JyxxService;
 import com.rjxx.utils.ResponseUtils;
-import com.rjxx.utils.weixin.HttpClientUtil;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -237,37 +236,37 @@ public class HanderJysjxxService {
 				+ "</ReturnMessage>\n</Responese>";
 	}
 
-	public static void main(String[] args) {
-		String OrderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-				"<Request>\n" +
-				"<Row> \n"+
-				"  <OrderNo>ME24156084</OrderNo>\n" +
-				"  <!--OrderNo必选，订单号，String20-->\n" +
-				"  <OrderTime>20161110093912</OrderTime>\n" +
-				"  <!--OrderTime必选，订单时间，String14-->\n" +
-				"  <Price>26</Price>\n" +
-				"  <!--Price必选，金额，Double(10,2) -->\n" +
-				"  <Sign>b0c87cce86a4dfebedc05d83e7f76790</Sign>\n" +
-				"  <!--Sign必选，签名串String32-->\n" +
-				"  <StoreNo>SH001</StoreNo>\n" +
-				"  <!--StoreNo可选，门店编号String20-->\n" +
-				"  </Row>\n" +
-				"<Row> \n"+
-				"  <OrderNo>ME24156083</OrderNo>\n" +
-				"  <!--OrderNo必选，订单号，String20-->\n" +
-				"  <OrderTime>20161110093916</OrderTime>\n" +
-				"  <!--OrderTime必选，订单时间，String14-->\n" +
-				"  <Price>28</Price>\n" +
-				"  <!--Price必选，金额，Double(10,2) -->\n" +
-				"  <Sign>b0c87cce86a4dfebedc05d83e7aaaaaa</Sign>\n" +
-				"  <!--Sign必选，签名串String32-->\n" +
-				"  <StoreNo>SH002</StoreNo>\n" +
-				"  <!--StoreNo可选，门店编号String20-->\n" +
-				"  </Row>\n" +
-				"</Request>\n";
-		String appId = "RJ5689ea2d0482";
-		String key = "0f2aa080911da0adcfc5f630e9d20e1a";
-		System.out.println(HttpClientUtil.wsUploadOrder("http://test.datarj.com/webService/services/invoiceService?wsdl",OrderData,appId,key ));
-	}
+//	public static void main(String[] args) {
+//		String OrderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+//				"<Request>\n" +
+//				"<Row> \n"+
+//				"  <OrderNo>20171025yidu"+new Random().nextInt(999)+"</OrderNo>\n" +
+//				"  <!--OrderNo必选，订单号，String20-->\n" +
+//				"  <OrderTime>20161110093912</OrderTime>\n" +
+//				"  <!--OrderTime必选，订单时间，String14-->\n" +
+//				"  <Price>"+new Random().nextInt(800)+"</Price>\n" +
+//				"  <!--Price必选，金额，Double(10,2) -->\n" +
+//				"  <Sign>b0c87cce86a4dfebedc05d83e7f76790</Sign>\n" +
+//				"  <!--Sign必选，签名串String32-->\n" +
+//				"  <StoreNo>yidu</StoreNo>\n" +
+//				"  <!--StoreNo可选，门店编号String20-->\n" +
+//				"  </Row>\n" +
+//				"<Row> \n"+
+//				"  <OrderNo>20171025baxi"+new Random().nextInt(999)+"</OrderNo>\n" +
+//				"  <!--OrderNo必选，订单号，String20-->\n" +
+//				"  <OrderTime>20161110093916</OrderTime>\n" +
+//				"  <!--OrderTime必选，订单时间，String14-->\n" +
+//				"  <Price>"+new Random().nextInt(800)+"</Price>\n" +
+//				"  <!--Price必选，金额，Double(10,2) -->\n" +
+//				"  <Sign>b0c87cce86a4dfebedc05d83e7aaaaaa</Sign>\n" +
+//				"  <!--Sign必选，签名串String32-->\n" +
+//				"  <StoreNo>baxi</StoreNo>\n" +
+//				"  <!--StoreNo可选，门店编号String20-->\n" +
+//				"  </Row>\n" +
+//				"</Request>\n";
+//		String appId = "RJ5689ea2d0482";
+//		String key = "0f2aa080911da0adcfc5f630e9d20e1a";
+//		System.out.println(HttpClientUtil.wsUploadOrder("http://test.datarj.com/webService/services/invoiceService?wsdl",OrderData,appId,key ));
+//	}
 
 }
