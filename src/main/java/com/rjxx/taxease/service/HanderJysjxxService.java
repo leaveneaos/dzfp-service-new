@@ -10,6 +10,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import java.util.*;
 
 @Service
 public class HanderJysjxxService {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private  GsxxService gsxxservice;
@@ -33,6 +36,9 @@ public class HanderJysjxxService {
 	 */
 	@Transactional
 	public  String uploadOrder(final String AppId, final String Sign, final String OrderData){
+		logger.debug("appid={}",AppId);
+		logger.debug("sign={}",Sign);
+		logger.debug("orderdata={}",OrderData);
 		final Map resultMap = new HashMap();
 		try {
 			String result = handerMessage(AppId, Sign, OrderData);
