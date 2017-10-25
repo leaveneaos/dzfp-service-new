@@ -267,7 +267,7 @@ public class HanderJysjxxService {
 				"</Request>\n";
 		String appId = "RJ5689ea2d0482";
 		String key = "0f2aa080911da0adcfc5f630e9d20e1a";
-		System.out.println(HttpClientUtil.wsUploadOrder("http://192.168.1.96:8081/services/invoiceService?wsdl",OrderData,appId,key ));
+		System.out.println(HttpClientUtil.wsUploadOrder("http://test.datarj.com/webService/services/invoiceService?wsdl",OrderData,appId,key ));
 	}
 
 }
