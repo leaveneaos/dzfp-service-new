@@ -471,6 +471,10 @@ public class DealOrder01 implements IDealOrder {
                 if (null != buyerMap.selectSingleNode("Khh") && !buyerMap.selectSingleNode("Khh").equals("")) {
                     khh = buyerMap.selectSingleNode("Khh").getText();
                 }
+                String MobilephoneNo = "";
+                if (null != buyerMap.selectSingleNode("MobilephoneNo") && !buyerMap.selectSingleNode("MobilephoneNo").equals("")) {
+                    MobilephoneNo = buyerMap.selectSingleNode("MobilephoneNo").getText();
+                }
                 // 保存主表信息
                 jyxxsq.setKpddm(clientNO);
                 jyxxsq.setJylsh(serialNumber);
@@ -508,6 +512,7 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setGfyh(buyerBank);
                 jyxxsq.setGfyhzh(buyerBankAcc);
                 jyxxsq.setGfemail(buyerEmail);
+                jyxxsq.setGfsjh(MobilephoneNo);
                 jyxxsq.setKhh(khh);
                 jyxxsq.setSffsyj(buyerIsSend);
                 //为了照顾亚朵，途家两家老版本的发票开具xml样例
