@@ -23,17 +23,17 @@ public class HttpUtils {
 	public void sendMessage() throws Exception {
 		System.out.println("调用servlet开始=================");
 		ObjectMapper mapper = new ObjectMapper();
-		String InvoiceData="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-				+ "<Request>\n" +
-				"\t<ClientNO>001</ClientNO>\n" +
-				"\t<SerialNumber>JYdd08d93152ddfaf</SerialNumber>\n" +
+		String InvoiceData="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+				"<Request>\n" +
+				"\t<ClientNO>gvc_01</ClientNO>\n" +
+				"\t<SerialNumber>JY32B2d24drfaf</SerialNumber>\n" +
 				"\t<InvType>12</InvType>\n" +
 				"\t<Spbmbbh>13.0</Spbmbbh>\n" +
 				"\t<Drawer>测试</Drawer>\n" +
-				"\t<Payee></Payee>\n" +
-				"\t<Reviewer></Reviewer>\n" +
-				"    <DataSource>1</DataSource>\n" +
-				"    <OpenId></OpenId>\n" +
+				"\t<Payee/>\n" +
+				"\t<Reviewer/>\n" +
+				"\t<DataSource>1</DataSource>\n" +
+				"\t<OpenId/>\n" +
 				"\t<Seller>\n" +
 				"\t\t<Identifier>500102010003643</Identifier>\n" +
 				"\t\t<Name>上海百旺测试3643</Name>\n" +
@@ -45,88 +45,153 @@ public class HttpUtils {
 				"\t<OrderSize count=\"1\">\n" +
 				"\t\t<Order>\n" +
 				"\t\t\t<OrderMain>\n" +
-				"\t\t\t\t<OrderNo>115d3ddadf3</OrderNo>\n" +
+				"\t\t\t\t<OrderNo>5d33ddadf3</OrderNo>\n" +
 				"\t\t\t\t<InvoiceList>0</InvoiceList>\n" +
 				"\t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
 				"\t\t\t\t<InvoiceSfdy>0</InvoiceSfdy>\n" +
 				"\t\t\t\t<OrderDate>2017-08-09 15:26:23</OrderDate>\n" +
 				"\t\t\t\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
-				"\t\t\t\t<TotalAmount>27.9</TotalAmount>\n" +
+				"\t\t\t\t<TotalAmount>1590</TotalAmount>\n" +
+				"\t\t\t\t<TotalDiscount>300</TotalDiscount>\n" +
 				"\t\t\t\t<TaxMark>1</TaxMark>\n" +
-				"\t\t\t\t<Remark></Remark>\n" +
-				"\t\t\t\t<ExtractedCode></ExtractedCode>\n" +
+				"\t\t\t\t<Remark/>\n" +
+				"\t\t\t\t<ExtractedCode/>\n" +
 				"\t\t\t\t<Buyer>\n" +
 				"\t\t\t\t\t<CustomerType>0</CustomerType>\n" +
 				"\t\t\t\t\t<Identifier>91370600050948561K</Identifier>\n" +
-				"\t\t\t\t\t<Name>张松强测试33第2次</Name>\n" +
+				"\t\t\t\t\t<Name>康中徐</Name>\n" +
 				"\t\t\t\t\t<Address>漕宝路</Address>\n" +
 				"\t\t\t\t\t<TelephoneNo>123456</TelephoneNo>\n" +
 				"\t\t\t\t\t<Bank>中国银行</Bank>\n" +
 				"\t\t\t\t\t<BankAcc>123456778</BankAcc>\n" +
-				"\t\t\t\t\t<Email>913015635@qq.com</Email>\n" +
+				"\t\t\t\t\t<Email>kangzhongxu@datarj.com</Email>\n" +
 				"\t\t\t\t\t<IsSend>1</IsSend>\n" +
-				"\t\t\t\t\t<Recipient></Recipient>\n" +
-				"\t\t\t\t\t<ReciAddress></ReciAddress>\n" +
-				"\t\t\t\t\t<Zip></Zip>\n" +
+				"\t\t\t\t\t<Recipient/>\n" +
+				"\t\t\t\t\t<ReciAddress/>\n" +
+				"\t\t\t\t\t<Zip/>\n" +
 				"\t\t\t\t</Buyer>\n" +
 				"\t\t\t</OrderMain>\n" +
 				"\t\t\t<OrderDetails count=\"2\">\n" +
 				"\t\t\t\t<ProductItem>\n" +
-				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<VenderOwnCode/>\n" +
 				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
-				"\t\t\t\t\t<ProductName>打折出清码(YD)</ProductName>\n" +
+				"\t\t\t\t\t<ProductName>法拉利(YD)</ProductName>\n" +
 				"\t\t\t\t\t<RowType>0</RowType>\n" +
-				"\t\t\t\t\t<Spec></Spec>\n" +
-				"\t\t\t\t\t<Unit></Unit>\n" +
-				"\t\t\t\t\t<Quantity>\n" +
-				"\t\t\t\t\t\t5\n" +
-				"\t\t\t\t\t</Quantity>\n" +
-				"                    <UnitPrice>\n" +
-				"\t\t\t\t\t\t1\n" +
-				"\t\t\t\t\t</UnitPrice>\n" +
-				"\t\t\t\t\t<Amount>5</Amount>\n" +
-				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<Spec/>\n" +
+				"\t\t\t\t\t<Unit/>\n" +
+				"\t\t\t\t\t<Quantity>1</Quantity>\n" +
+				"\t\t\t\t\t<UnitPrice>200</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>200</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount/>\n" +
 				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
-				"\t\t\t\t\t<TaxAmount>0.49549555</TaxAmount>\n" +
-				"\t\t\t\t\t<MxTotalAmount>5</MxTotalAmount>\n" +
-				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
-				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
-				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t\t<TaxAmount>19.82</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>200</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark/>\n" +
+				"\t\t\t\t\t<TaxRateMark/>\n" +
+				"\t\t\t\t\t<PolicyName/>\n" +
 				"\t\t\t\t</ProductItem>\n" +
 				"\t\t\t\t<ProductItem>\n" +
-				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
+				"\t\t\t\t\t<VenderOwnCode/>\n" +
 				"\t\t\t\t\t<ProductCode>1010115000000000000</ProductCode>\n" +
-				"\t\t\t\t\t<ProductName>新西兰姬娜果(YD)</ProductName>\n" +
-				"\t\t\t\t\t<RowType>0</RowType>\n" +
-				"\t\t\t\t\t<Spec></Spec>\n" +
-				"\t\t\t\t\t<Unit></Unit>\n" +
-				"\t\t\t\t\t<Quantity>\n" +
-				"\t\t\t\t\t\t1.158\n" +
-				"\t\t\t\t\t</Quantity>\n" +
-				"                    <UnitPrice>\n" +
-				"\t\t\t\t\t\t19.77547496\n" +
-				"\t\t\t\t\t</UnitPrice>\n" +
-				"\t\t\t\t\t<Amount>22.9</Amount>\n" +
-				"\t\t\t\t\t<DeductAmount></DeductAmount>\n" +
+				"\t\t\t\t\t<ProductName>MH370大型客机(YD)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>2</RowType>\n" +
+				"\t\t\t\t\t<Spec/>\n" +
+				"\t\t\t\t\t<Unit/>\n" +
+				"\t\t\t\t\t<Quantity>1</Quantity>\n" +
+				"\t\t\t\t\t<UnitPrice>790</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>790</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount/>\n" +
 				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
-				"\t\t\t\t\t<TaxAmount>2.26936941</TaxAmount>\n" +
-				"\t\t\t\t\t<MxTotalAmount>22.9</MxTotalAmount>\n" +
-				"\t\t\t\t\t<PolicyMark></PolicyMark>\n" +
-				"\t\t\t\t\t<TaxRateMark></TaxRateMark>\n" +
-				"\t\t\t\t\t<PolicyName></PolicyName>\n" +
+				"\t\t\t\t\t<TaxAmount>78.29</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>790</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark/>\n" +
+				"\t\t\t\t\t<TaxRateMark/>\n" +
+				"\t\t\t\t\t<PolicyName/>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode/>\n" +
+				"\t\t\t\t\t<ProductCode>1010115000000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>MH370大型客机(YD)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>1</RowType>\n" +
+				"\t\t\t\t\t<Spec/>\n" +
+				"\t\t\t\t\t<Unit/>\n" +
+				"\t\t\t\t\t<Quantity/>\n" +
+				"\t\t\t\t\t<UnitPrice/>\n" +
+				"\t\t\t\t\t<Amount>-200</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount/>\n" +
+				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>-19.82</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>-200</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark/>\n" +
+				"\t\t\t\t\t<TaxRateMark/>\n" +
+				"\t\t\t\t\t<PolicyName/>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode/>\n" +
+				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>东方明珠办公楼(GG)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>0</RowType>\n" +
+				"\t\t\t\t\t<Spec/>\n" +
+				"\t\t\t\t\t<Unit/>\n" +
+				"\t\t\t\t\t<Quantity>2</Quantity>\n" +
+				"\t\t\t\t\t<UnitPrice>400</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>800</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount/>\n" +
+				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>79.28</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>800</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark/>\n" +
+				"\t\t\t\t\t<TaxRateMark/>\n" +
+				"\t\t\t\t\t<PolicyName/>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode/>\n" +
+				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>火星星球(FG)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>2</RowType>\n" +
+				"\t\t\t\t\t<Spec/>\n" +
+				"\t\t\t\t\t<Unit/>\n" +
+				"\t\t\t\t\t<Quantity>1</Quantity>\n" +
+				"\t\t\t\t\t<UnitPrice>100</UnitPrice>\n" +
+				"\t\t\t\t\t<Amount>100</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount/>\n" +
+				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>9.91</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>100</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark/>\n" +
+				"\t\t\t\t\t<TaxRateMark/>\n" +
+				"\t\t\t\t\t<PolicyName/>\n" +
+				"\t\t\t\t</ProductItem>\n" +
+				"\t\t\t\t<ProductItem>\n" +
+				"\t\t\t\t\t<VenderOwnCode/>\n" +
+				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductName>火星星球(FG)</ProductName>\n" +
+				"\t\t\t\t\t<RowType>1</RowType>\n" +
+				"\t\t\t\t\t<Spec/>\n" +
+				"\t\t\t\t\t<Unit/>\n" +
+				"\t\t\t\t\t<Quantity/>\n" +
+				"\t\t\t\t\t<UnitPrice/>\n" +
+				"\t\t\t\t\t<Amount>-100</Amount>\n" +
+				"\t\t\t\t\t<DeductAmount/>\n" +
+				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
+				"\t\t\t\t\t<TaxAmount>-9.91</TaxAmount>\n" +
+				"\t\t\t\t\t<MxTotalAmount>-100</MxTotalAmount>\n" +
+				"\t\t\t\t\t<PolicyMark/>\n" +
+				"\t\t\t\t\t<TaxRateMark/>\n" +
+				"\t\t\t\t\t<PolicyName/>\n" +
 				"\t\t\t\t</ProductItem>\n" +
 				"\t\t\t</OrderDetails>\n" +
-				"            <Payments>\n" +
-				"                <PaymentItem>\n" +
-				"                    <PayCode>T</PayCode>\n" +
-				"                    <PayPrice>27.9</PayPrice>\n" +
-				"                </PaymentItem>\n" +
-				"<PaymentItem>"+
-		"                    <PayCode>h</PayCode>\n" +
-				"                    <PayPrice>0</PayPrice>\n" +
-				"                </PaymentItem>\n" +
-				"            </Payments>\n" +
-
+				"\t\t\t<Payments>\n" +
+				"\t\t\t\t<PaymentItem>\n" +
+				"\t\t\t\t\t<PayCode>PT_05</PayCode>\n" +
+				"\t\t\t\t\t<PayPrice>500</PayPrice>\n" +
+				"\t\t\t\t</PaymentItem>\n" +
+				"\t\t\t\t<PaymentItem>\n" +
+				"\t\t\t\t\t<PayCode>PT_01</PayCode>\n" +
+				"\t\t\t\t\t<PayPrice>790</PayPrice>\n" +
+				"\t\t\t\t</PaymentItem>\n" +
+				"\n" +
+				"\t\t\t</Payments>\n" +
 				"\t\t</Order>\n" +
 				"\t</OrderSize>\n" +
 				"</Request>\n";
@@ -134,7 +199,7 @@ public class HttpUtils {
 
 		String xml01 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
 				+ "<Request>\n" +
-				"\t<ClientNO>AF001</ClientNO>\n" +
+				"\t<ClientNO>gvc_01</ClientNO>\n" +
 				"\t<SerialNumber>JY21d7d081516d8219</SerialNumber>\n" +
 				"\t<InvType>12</InvType>\n" +
 				"\t<Spbmbbh>13.0</Spbmbbh>\n" +
@@ -144,8 +209,8 @@ public class HttpUtils {
 				"    <DataSource>1</DataSource>\n" +
 				"    <OpenId></OpenId>\n" +
 				"\t<Seller>\n" +
-				"\t\t<Identifier>500102010003643</Identifier>\n" +
-				"\t\t<Name>升级版测试用户3643</Name>\n" +
+				"\t\t<Identifier>500102010003697</Identifier>\n" +
+				"\t\t<Name>升级版测试用户3697</Name>\n" +
 				"\t\t<Address>漕宝路</Address>\n" +
 				"\t\t<TelephoneNo>021-23443453</TelephoneNo>\n" +
 				"\t\t<Bank>建设银行</Bank>\n" +
@@ -172,7 +237,7 @@ public class HttpUtils {
 				"\t\t\t\t\t<TelephoneNo>200123455</TelephoneNo>\n" +
 				"\t\t\t\t\t<Bank>中国银行</Bank>\n" +
 				"\t\t\t\t\t<BankAcc>40023154555</BankAcc>\n" +
-				"\t\t\t\t\t<Email>1362561661@qq.com</Email>\n" +
+				"\t\t\t\t\t<Email>kangzhongxu@datarj.com</Email>\n" +
 				"\t\t\t\t\t<IsSend>1</IsSend>\n" +
 				"\t\t\t\t\t<Recipient></Recipient>\n" +
 				"\t\t\t\t\t<ReciAddress></ReciAddress>\n" +
@@ -381,20 +446,20 @@ public class HttpUtils {
 				"\t\t\t</OrderDetails>\n" +
 				"            <Payments>\n" +
 				"                <PaymentItem>\n" +
-				"                    <PayCode>X</PayCode>\n" +
+				"                    <PayCode>PT_20</PayCode>\n" +
 				"                    <PayPrice>201.9</PayPrice>\n" +
 				"                </PaymentItem>\n" +
 				"            </Payments>\n" +
 				"\t\t</Order>\n" +
 				"\t</OrderSize>\n" +
 				"</Request>";
-		String Secret = getSign(xml01,"afbcd23beefaf229438007d04308fb61");
+		String Secret = getSign(InvoiceData,"08d39fb70c08eef4b4e92a5ec94fee90");
 		Map param = new HashMap();
 		param.put("methodName", "UploadOrderData");
-		param.put("AppKey","RJ46662ec70379");
+		param.put("AppKey","RJe766d3c9293b");
 		param.put("Secret", Secret);
 		param.put("Operation","01");
-		param.put("InvoiceData",xml01);
+		param.put("InvoiceData",InvoiceData);
 		String jsonString = mapper.writeValueAsString(param);
 
 		BufferedReader reader = null;
@@ -405,7 +470,7 @@ public class HttpUtils {
 
 			// 接报文的地址
 			URL uploadServlet = new URL(
-					"http://localhost:8080/dzfp_service_new/service");
+					"http://localhost:8080/service");
 			/*URL uploadServlet = new URL(
 					"http://test.datarj.com/webService/service");*/
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet

@@ -121,10 +121,11 @@ public class DealOrder01 implements IDealOrder {
         if (null == tmp || tmp.equals("")) {
             //处理折扣行数据
             jymxsqClList = discountDealUtil.dealDiscount(jyxxsqList, jymxsq2List, jyzfmxList, gsdm);
-	    //备注处理方式
+            //备注处理方式
             jyxxsqList = remarkUtil.dealRemark(jyxxsqList, jyzfmxList, gsdm);
             //保存申请及明细数据
             String tmp2 = saveorderdata.saveAllData(jyxxsqList, jymxsqList,jyzfmxList,jymxsqClList);
+            //String tmp2 ="123";
             // 保存操作成功与否
             if (null != tmp2 && !tmp2.equals("")) {
                 defaultResult.setReturnCode("9999");
@@ -301,17 +302,17 @@ public class DealOrder01 implements IDealOrder {
         if (null == reviewer) {
             reviewer = "";
         }
-        
+
         String sjly = String.valueOf(rootMap.get("DataSource"));
         if (null == sjly || sjly.equals("") ||  sjly.equals("null")) {
-        	sjly = "";
+            sjly = "";
         }
-        
+
         String openid =  String.valueOf(rootMap.get("OpenId"));
         if (null == openid || openid.equals("") || openid.equals("null")) {
-        	openid = "";
+            openid = "";
         }
-        
+
         // 销方信息
         Map sellerMap = (Map) rootMap.get("Seller");
         String identifier = (String) sellerMap.get("Identifier");
@@ -371,6 +372,13 @@ public class DealOrder01 implements IDealOrder {
                 if (null != orderMainMap.selectSingleNode("TotalAmount")
                         && !orderMainMap.selectSingleNode("TotalAmount").equals("")) {
                     totalAmount = orderMainMap.selectSingleNode("TotalAmount").getText();
+                }
+
+                // 全局折扣
+                String totalDiscount = "0";
+                if (null != orderMainMap.selectSingleNode("TotalDiscount")
+                        && !orderMainMap.selectSingleNode("TotalDiscount").equals("")) {
+                    totalDiscount = orderMainMap.selectSingleNode("TotalDiscount").getText();
                 }
 
                 // 含税标志
@@ -502,6 +510,7 @@ public class DealOrder01 implements IDealOrder {
                 }
                 jyxxsq.setZsfs(chargeTaxWay);
                 jyxxsq.setJshj(Double.valueOf(totalAmount));
+                jyxxsq.setQjzk(Double.valueOf(totalDiscount));
                 jyxxsq.setHsbz(taxMark);
                 jyxxsq.setBz(remark);
                 jyxxsq.setGflx(CustomerType);
@@ -533,11 +542,11 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setXgsj(new Date());
                 jyxxsq.setGsdm(gsdm);
                 if(sjly.equals("") || null == sjly){
-                	jyxxsq.setSjly("1");
+                    jyxxsq.setSjly("1");
                 }else{
-                	jyxxsq.setSjly(sjly);
+                    jyxxsq.setSjly(sjly);
                 }
-                
+
                 jyxxsq.setClztdm("00");
                 jyxxsqList.add(jyxxsq);
                 // List orderDetailsList = (List)
@@ -649,10 +658,10 @@ public class DealOrder01 implements IDealOrder {
                         }
 
                         jymxsq.setSpmxxh(spmxxh);
-			if(RowType.equals("2")){//如果为被折扣行，则明细序号不变，反之明细序号加1
-                        	
+                        if(RowType.equals("2")){//如果为被折扣行，则明细序号不变，反之明细序号加1
+
                         }else{
-                        	spmxxh++;
+                            spmxxh++;
                         }
                         jymxsq.setKkjje(Double.valueOf(MxTotalAmount));
                         jymxsq.setYkjje(0d);
