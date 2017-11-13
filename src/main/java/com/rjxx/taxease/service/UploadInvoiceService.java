@@ -17,6 +17,8 @@ import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -65,6 +67,7 @@ public class UploadInvoiceService {
     private DealOrder01 dealOrder01;
     @Autowired
     private SpvoService spvoService;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 解析参数
@@ -1271,6 +1274,7 @@ public class UploadInvoiceService {
         OMElement root = null;
         List<Jymxsq> jymxsqList = new ArrayList();
         List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();
+        logger.info("------------------"+OrderData);
         Map rsMap = new HashMap();
         Document xmlDoc = null;
         try {
