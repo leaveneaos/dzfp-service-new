@@ -1284,7 +1284,9 @@ public class UploadInvoiceService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        Map rootMap = XmlMapUtils.xml2Map(root, "fpxx");
+        Map Map = XmlMapUtils.xml2Map(root, "fpmx");
+
+        Map rootMap=(Map)Map.get("fpxx");
         // 购方名称
         String FPClientName = (String) rootMap.get("FPClientName");
 
@@ -1350,7 +1352,7 @@ public class UploadInvoiceService {
 
         Jyxxsq jyxxsq=new Jyxxsq();
         // 保存主表信息
-        jyxxsq.setKpddm("");
+        jyxxsq.setKpddm("afb_01");
         jyxxsq.setJylsh(SerialNo);
         jyxxsq.setFpzldm("12");
         jyxxsq.setKpr(FPInvoicer);
@@ -1568,7 +1570,8 @@ public class UploadInvoiceService {
             }
 
         String xml= GetXmlUtil.getFpkjXml(jyxxsq,jymxsqList,jyzfmxList);
-        String result=dealOrder01.execute(gsdm,xml,"11");
+        logger.info("-----------------"+xml);
+        String result=dealOrder01.execute(gsdm,xml,"01");
         return result;
     }
 }
