@@ -375,7 +375,7 @@ public class DealOrder01 implements IDealOrder {
                 }
 
                 // 全局折扣
-                String totalDiscount = "0";
+                String totalDiscount = "0.00";
                 if (null != orderMainMap.selectSingleNode("TotalDiscount")
                         && !orderMainMap.selectSingleNode("TotalDiscount").equals("")) {
                     totalDiscount = orderMainMap.selectSingleNode("TotalDiscount").getText();
@@ -510,7 +510,8 @@ public class DealOrder01 implements IDealOrder {
                 }
                 jyxxsq.setZsfs(chargeTaxWay);
                 jyxxsq.setJshj(Double.valueOf(totalAmount));
-                jyxxsq.setQjzk(Double.valueOf(totalDiscount));
+                String tmpQjzk =(null ==totalDiscount || totalDiscount.equals(""))?"0.00":totalDiscount;
+                jyxxsq.setQjzk(Double.valueOf(tmpQjzk));
                 jyxxsq.setHsbz(taxMark);
                 jyxxsq.setBz(remark);
                 jyxxsq.setGflx(CustomerType);
