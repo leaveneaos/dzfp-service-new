@@ -104,6 +104,8 @@ public class WebServiceController {
 			result = handerjysjxxservice.uploadOrder(AppKey, Secret, InvoiceData);
 		}else if(methodName.equals("CallService")){
 			result = uploadinvoiceservice.callService(AppKey, Secret, InvoiceData);
+		}else if(methodName.equals("CallService2")){
+			result = uploadinvoiceservice.callService2(InvoiceData);
 		}else if(methodName.equals("invoiceUpload")){
 			result = invoiceservice.invoiceUpload(methodName, InvoiceData);
 		}else if(methodName.equals("UploadOrderData")){

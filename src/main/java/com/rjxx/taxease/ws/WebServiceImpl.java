@@ -82,6 +82,19 @@ public class WebServiceImpl implements WebService {
 		}
 		return result;
 	}
+	@Override
+	public String CallService2(@WebParam(name = "invoiceData") String invoiceData) {
+		// TODO Auto-generated method stub
+		logger.debug("-------------"+invoiceData);
+		String result = "";
+		try {
+			result = uploadinvoiceservice.callService2(invoiceData);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result = e.getMessage();
+		}
+		return result;
+	}
 
 	@Override
 	public String invoiceUpload(@WebParam(name = "xml") String xml) {

@@ -14,6 +14,9 @@ public interface WebService {
     
     @WebMethod
     public String CallService(String AppId, String Sign, String invoiceData);//发票上传，全部红冲，部分红冲
+
+    @WebMethod
+    public String CallService2(String invoiceData);
     
     @WebMethod
     public String invoiceUpload(String xml);//af 发票上传
