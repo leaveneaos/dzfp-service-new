@@ -27,12 +27,7 @@
 				<OrderDate>${jylssj!}</OrderDate>
 				<ChargeTaxWay>0</ChargeTaxWay>
 				<TotalAmount>${jyxxsq.jshj?c!}</TotalAmount>
-				<TotalDiscount>
-					<#if (jyxxsq.qjzk)??>
-					${jyxxsq.qjzk?c!}
-					<#else>
-					</#if>
-				</TotalDiscount>
+				<TotalDiscount><#if (jyxxsq.qjzk)??>${jyxxsq.qjzk?c!}<#else></#if></TotalDiscount>
 				<TaxMark>${jyxxsq.hsbz!}</TaxMark>
 				<Remark>${jyxxsq.bz!}</Remark>
 				<ExtractedCode>${jyxxsq.tqm!}</ExtractedCode>

@@ -1287,69 +1287,135 @@ public class UploadInvoiceService {
         Map Map = XmlMapUtils.xml2Map(root, "fpmx");
 
         Map rootMap=(Map)Map.get("fpxx");
+
         // 购方名称
-        String FPClientName = (String) rootMap.get("FPClientName");
+        String FPClientName ="";
+        if (null != rootMap.get("FPClientName")
+                && !rootMap.get("FPClientName").equals("")) {
+            FPClientName = (String) rootMap.get("FPClientName");
+        }
+
 
         // 购方税号
-        String FPClientTaxCode = (String) rootMap.get("FPClientTaxCode");
+        String FPClientTaxCode = "";
+
+        if (null != rootMap.get("FPClientTaxCode")
+                && !rootMap.get("FPClientTaxCode").equals("")) {
+            FPClientTaxCode = (String) rootMap.get("FPClientTaxCode");
+        }
 
         // 交易流水号
-        String SerialNo = (String) rootMap.get("SerialNo");
-
+        String SerialNo = "";
+        if (null != rootMap.get("SerialNo")
+                && !rootMap.get("SerialNo").equals("")) {
+            SerialNo = (String) rootMap.get("SerialNo");
+        }
         // 订单号
-        String OrderNo = (String) rootMap.get("OrderNo");
-
+        String OrderNo = "";
+        if (null != rootMap.get("OrderNo")
+                && !rootMap.get("OrderNo").equals("")) {
+            OrderNo = (String) rootMap.get("OrderNo");
+        }
         // 订单时间
-        String OrderDate = (String) rootMap.get("OrderDate");
-
+        String OrderDate = "";
+        if (null != rootMap.get("OrderDate")
+                && !rootMap.get("OrderDate").equals("")) {
+            OrderDate = (String) rootMap.get("OrderDate");
+        }
         // 发票种类代码
         String invType = "12";
 
         // 购方开户行及账号
-        String FPClientBankAccount = (String) rootMap.get("FPClientBankAccount");
-
+        String FPClientBankAccount = "";
+        if (null != rootMap.get("FPClientBankAccount")
+                && !rootMap.get("FPClientBankAccount").equals("")) {
+            FPClientBankAccount = (String) rootMap.get("FPClientBankAccount");
+        }
         // 购方地址电话
-        String FPClientAddressTel = (String) rootMap.get("FPClientAddressTel");
-
+        String FPClientAddressTel = "";
+        if (null != rootMap.get("FPClientAddressTel")
+                && !rootMap.get("FPClientAddressTel").equals("")) {
+            FPClientAddressTel = (String) rootMap.get("FPClientAddressTel");
+        }
         // 销方开户行及账号
-        String FPSellerBankAccount = (String) rootMap.get("FPSellerBankAccount");
-
+        String FPSellerBankAccount = "";
+        if (null != rootMap.get("FPSellerBankAccount")
+                && !rootMap.get("FPSellerBankAccount").equals("")) {
+            FPSellerBankAccount = (String) rootMap.get("FPSellerBankAccount");
+        }
         //销方税号
-        String FPSellerTaxCode = String.valueOf(rootMap.get("FPSellerTaxCode"));
+        String FPSellerTaxCode = "";
+        if (null != rootMap.get("FPSellerTaxCode")
+                && !rootMap.get("FPSellerTaxCode").equals("")) {
+            FPSellerTaxCode = (String) rootMap.get("FPSellerTaxCode");
+        }
 
         // 销方名称
-        String FPSellerName = (String) rootMap.get("FPSellerName");
-
+        String FPSellerName = "";
+        if (null != rootMap.get("FPSellerName")
+                && !rootMap.get("FPSellerName").equals("")) {
+            FPSellerName = (String) rootMap.get("FPSellerName");
+        }
         //销方地址电话
-        String FPSellerAddressTel = String.valueOf(rootMap.get("FPSellerAddressTel"));
-
+        String FPSellerAddressTel = "";
+        if (null != rootMap.get("FPSellerAddressTel")
+                && !rootMap.get("FPSellerAddressTel").equals("")) {
+            FPSellerAddressTel = (String) rootMap.get("FPSellerAddressTel");
+        }
         //备注
-        String FPNotes =  String.valueOf(rootMap.get("FPNotes"));
-
+        String FPNotes =  "";
+        if (null != rootMap.get("FPNotes")
+                && !rootMap.get("FPNotes").equals("")) {
+            FPNotes = (String) rootMap.get("FPNotes");
+        }
         //开票人
-        String FPInvoicer =  String.valueOf(rootMap.get("FPInvoicer"));
-
+        String FPInvoicer =  "";
+        if (null != rootMap.get("FPInvoicer")
+                && !rootMap.get("FPInvoicer").equals("")) {
+            FPInvoicer = (String) rootMap.get("FPInvoicer");
+        }
         //复核人
-        String FPChecker =  String.valueOf(rootMap.get("FPChecker"));
-
+        String FPChecker =  "";
+        if (null != rootMap.get("FPChecker")
+                && !rootMap.get("FPChecker").equals("")) {
+            FPChecker = (String) rootMap.get("FPChecker");
+        }
         //收款人
-        String FPCashier =  String.valueOf(rootMap.get("FPCashier"));
-
+        String FPCashier =  "";
+        if (null != rootMap.get("FPCashier")
+                && !rootMap.get("FPCashier").equals("")) {
+            FPCashier = (String) rootMap.get("FPCashier");
+        }
         //价税合计
-        String TotalAmount=String.valueOf(rootMap.get("TotalAmount"));
-
+        String TotalAmount="";
+        if (null != rootMap.get("TotalAmount")
+                && !rootMap.get("TotalAmount").equals("")) {
+            TotalAmount = (String) rootMap.get("TotalAmount");
+        }
         //含税标志
-        String PriceKind=String.valueOf(rootMap.get("PriceKind"));
-
+        String PriceKind="";
+        if (null != rootMap.get("PriceKind")
+                && !rootMap.get("PriceKind").equals("")) {
+            PriceKind = (String) rootMap.get("PriceKind");
+        }
         //购方邮箱
-        String Email=String.valueOf(rootMap.get("Email"));
-
+        String Email="";
+        if (null != rootMap.get("Email")
+                && !rootMap.get("Email").equals("")) {
+            Email = (String) rootMap.get("Email");
+        }
         //是否打印销货清单
-        String FPListName =  String.valueOf(rootMap.get("FPListName"));
-
+        String FPListName =  "";
+        if (null != rootMap.get("FPListName")
+                && !rootMap.get("FPListName").equals("")) {
+            FPListName = (String) rootMap.get("FPListName");
+        }
         //是否打印销货清单
-        String FPState =  String.valueOf(rootMap.get("FPState"));
-
+        String FPState =  "";
+        if (null != rootMap.get("FPState")
+                && !rootMap.get("FPState").equals("")) {
+            FPState = (String) rootMap.get("FPState");
+        }
         Jyxxsq jyxxsq=new Jyxxsq();
         // 保存主表信息
         jyxxsq.setKpddm("afb_01");

@@ -28,14 +28,14 @@ public class Afbtest {
              "\t\t<SerialNo>201711131814166155</SerialNo><!--交易流水号，每次开票请求唯一，用于开票数据回写匹配-->\n" +
              "\t\t<OrderNo>171113004C1</OrderNo><!--业务订单号，主要用于业务人员识别该笔业务数据-->\n" +
              "\t\t<OrderDate>2017-11-13 18:14:16</OrderDate><!--业务订单时间-->\n" +
-             "<FPClientName>上海孚晟压缩机净化设备有限公司</FPClientName>\n" +
+             "\t\t<FPClientName>上海孚晟压缩机净化设备有限公司</FPClientName>\n" +
              "\t\t<FPClientTaxCode>91310118630592370P</FPClientTaxCode>\n" +
-             "\t\t<FPClientBankAccount>购方开户行及账号</FPClientBankAccount>\n" +
-             "\t\t<FPClientAddressTel>购方地址电话</FPClientAddressTel>\n" +
+             "\t\t<FPClientBankAccount></FPClientBankAccount>\n" +
+             "\t\t<FPClientAddressTel></FPClientAddressTel>\n" +
              "\t\t<FPSellerTaxCode>500102010003643</FPSellerTaxCode>\n" +
              "\t\t<FPSellerName>上海百旺测试3643</FPSellerName>\n" +
-             "\t\t<FPSellerBankAccount>销方开户行及账号</FPSellerBankAccount>\n" +
-             "\t\t<FPSellerAddressTel>销方地址电话</FPSellerAddressTel>\n" +
+             "\t\t<FPSellerBankAccount></FPSellerBankAccount>\n" +
+             "\t\t<FPSellerAddressTel></FPSellerAddressTel>\n" +
              "\t\t<FPNotes>备注</FPNotes>\n" +
              "\t\t<FPInvoicer>于凤梅</FPInvoicer>\n" +
              "\t\t<FPChecker>方丽萍</FPChecker>\n" +
