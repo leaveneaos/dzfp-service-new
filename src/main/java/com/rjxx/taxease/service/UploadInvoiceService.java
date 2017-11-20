@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Administrator on 2016/8/18.
  */
-@Service
+@Service("uploadInvoiceService")
 public class UploadInvoiceService {
 
     @Autowired

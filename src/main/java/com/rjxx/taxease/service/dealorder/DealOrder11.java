@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017-05-18.
  */
-@Service
+@Service("dealOrder11")
 public class DealOrder11 implements IDealOrder {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

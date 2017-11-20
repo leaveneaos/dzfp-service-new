@@ -21,7 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
-@Service
+@Service("handerJysjxxService")
 public class HanderJysjxxService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 

@@ -62,7 +62,7 @@ import java.util.*;
  *
  * @author Administrator
  */
-@Service
+@Service("invoiceService")
 public class InvoiceService {
 	 
 	 public InvoiceService(){

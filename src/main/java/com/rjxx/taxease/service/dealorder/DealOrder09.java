@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017-05-23.
  */
-@Service
+@Service("dealOrder09")
 public class DealOrder09 implements IDealOrder {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
