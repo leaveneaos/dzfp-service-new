@@ -32,19 +32,19 @@ public class WebServiceController {
 	protected HttpServletResponse response;
 
 	@Autowired
-	protected GetYkfpService getykfpservice;
+	protected GetYkfpService getYkfpService;
 	
 	@Autowired
-	protected HanderJysjxxService handerjysjxxservice;
+	protected HanderJysjxxService handerJysjxxService;
 	
 	@Autowired
-	protected UploadInvoiceService uploadinvoiceservice;
+	protected UploadInvoiceService uploadInvoiceService;
 	
 	@Autowired
-	protected InvoiceService invoiceservice;
+	protected InvoiceService invoiceService;
 	
 	@Autowired
-	protected DealOrderDataService dealorderdataservice;
+	protected DealOrderDataService dealOrderDataService;
 
 	@Autowired
 	protected GsxxService   gsxxService ;
@@ -99,15 +99,17 @@ public class WebServiceController {
 		String Operation = String.valueOf(map.get("Operation"));
 		String result = "";
 		if (methodName.equals("CallQuery")) {
-			result = getykfpservice.CallQuery(AppKey, Secret, InvoiceData);
+			result = getYkfpService.CallQuery(AppKey, Secret, InvoiceData);
 		}else if(methodName.equals("UploadOrder")){
-			result = handerjysjxxservice.uploadOrder(AppKey, Secret, InvoiceData);
+			result = handerJysjxxService.uploadOrder(AppKey, Secret, InvoiceData);
 		}else if(methodName.equals("CallService")){
-			result = uploadinvoiceservice.callService(AppKey, Secret, InvoiceData);
+			result = uploadInvoiceService.callService(AppKey, Secret, InvoiceData);
+		}else if(methodName.equals("CallService2")){
+			result = uploadInvoiceService.callService2(InvoiceData);
 		}else if(methodName.equals("invoiceUpload")){
-			result = invoiceservice.invoiceUpload(methodName, InvoiceData);
+			result = invoiceService.invoiceUpload(methodName, InvoiceData);
 		}else if(methodName.equals("UploadOrderData")){
-			result = dealorderdataservice.dealOrder(AppKey, Secret, Operation, InvoiceData);
+			result = dealOrderDataService.dealOrder(AppKey, Secret, Operation, InvoiceData);
 		}
 		
 

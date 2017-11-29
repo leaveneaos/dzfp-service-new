@@ -21,7 +21,7 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.List;
 
-@Service
+@Service("responseUtil")
 public class ResponseUtil {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

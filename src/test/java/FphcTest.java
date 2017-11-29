@@ -52,7 +52,7 @@ public class FphcTest {
 
         Map parms = new HashMap();
         parms.put("gsdm","cmsc");
-        List<Kpls> kplsList = kplsService.findAll(parms);
+        List<Kpls> kplsList = kplsService.findFphc(parms);
         Map result=new HashMap();
         for (int i = 0; i < kplsList.size(); i++) {
             try {

@@ -23,7 +23,7 @@ import java.util.Map;
  * 获取发票代码号码
  * Created by Administrator on 2017-05-18.
  */
-@Service
+@Service("dealOrder13")
 public class DealOrder13 implements IDealOrder {
 
     @Autowired

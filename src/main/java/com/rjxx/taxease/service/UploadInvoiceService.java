@@ -1,21 +1,11 @@
 package com.rjxx.taxease.service;
 
-import com.rjxx.taxeasy.domains.Gsxx;
-import com.rjxx.taxeasy.domains.Jyls;
-import com.rjxx.taxeasy.domains.Jyspmx;
-import com.rjxx.taxeasy.domains.Kpls;
-import com.rjxx.taxeasy.domains.Kpspmx;
-import com.rjxx.taxeasy.domains.Skp;
-import com.rjxx.taxeasy.domains.Xf;
-import com.rjxx.taxeasy.domains.Yh;
-import com.rjxx.taxeasy.service.GsxxService;
-import com.rjxx.taxeasy.service.JylsService;
-import com.rjxx.taxeasy.service.JyspmxService;
-import com.rjxx.taxeasy.service.KplsService;
-import com.rjxx.taxeasy.service.KpspmxService;
-import com.rjxx.taxeasy.service.SkpService;
-import com.rjxx.taxeasy.service.XfService;
-import com.rjxx.taxeasy.service.YhService;
+import com.rjxx.taxease.service.dealorder.DealOrder01;
+import com.rjxx.taxease.utils.XmlMapUtils;
+import com.rjxx.taxeasy.bizcomm.utils.GetXmlUtil;
+import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.vo.Spvo;
 import com.rjxx.utils.ResponseUtils;
 import com.rjxx.utils.TimeUtil;
 
@@ -24,6 +14,11 @@ import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -41,7 +36,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Administrator on 2016/8/18.
  */
-@Service
+@Service("uploadInvoiceService")
 public class UploadInvoiceService {
 
     @Autowired
@@ -67,6 +62,12 @@ public class UploadInvoiceService {
 
     @Autowired
     private KpspmxService kpspmxservice;
+
+    @Autowired
+    private DealOrder01 dealOrder01;
+    @Autowired
+    private SpvoService spvoService;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 解析参数
@@ -106,7 +107,7 @@ public class UploadInvoiceService {
      * 解析结果
      *
      * @param invoiceData
-     * @param yhBean
+     * @param
      * @return
      * @throws Exception
      */
@@ -1264,4 +1265,379 @@ public class UploadInvoiceService {
         //new DzfplogBean().setAttrs(bean).save();
     }
 
+    public String callService2(String OrderData) {
+        Map params1 = new HashMap();
+        String gsdm="afb";
+        params1.put("gsdm", gsdm);
+        Yh yh = yhservice.findOneByParams(params1);
+        int lrry = yh.getId();
+        OMElement root = null;
+        List<Jymxsq> jymxsqList = new ArrayList();
+        List<Jyzfmx> jyzfmxList = new ArrayList<Jyzfmx>();
+        logger.info("------------------"+OrderData);
+        Map rsMap = new HashMap();
+        Document xmlDoc = null;
+        try {
+            xmlDoc = DocumentHelper.parseText(OrderData);
+            root = XmlMapUtils.xml2OMElement(OrderData);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Map Map = XmlMapUtils.xml2Map(root, "fpmx");
+
+        Map rootMap=(Map)Map.get("fpxx");
+
+        // 购方名称
+        String FPClientName ="";
+        if (null != rootMap.get("FPClientName")
+                && !rootMap.get("FPClientName").equals("")) {
+            FPClientName = (String) rootMap.get("FPClientName");
+        }
+
+
+        // 购方税号
+        String FPClientTaxCode = "";
+
+        if (null != rootMap.get("FPClientTaxCode")
+                && !rootMap.get("FPClientTaxCode").equals("")) {
+            FPClientTaxCode = (String) rootMap.get("FPClientTaxCode");
+        }
+
+        // 交易流水号
+        String SerialNo = "";
+        if (null != rootMap.get("SerialNo")
+                && !rootMap.get("SerialNo").equals("")) {
+            SerialNo = (String) rootMap.get("SerialNo");
+        }
+        // 订单号
+        String OrderNo = "";
+        if (null != rootMap.get("OrderNo")
+                && !rootMap.get("OrderNo").equals("")) {
+            OrderNo = (String) rootMap.get("OrderNo");
+        }
+        // 订单时间
+        String OrderDate = "";
+        if (null != rootMap.get("OrderDate")
+                && !rootMap.get("OrderDate").equals("")) {
+            OrderDate = (String) rootMap.get("OrderDate");
+        }
+        // 发票种类代码
+        String invType = "12";
+
+        // 购方开户行及账号
+        String FPClientBankAccount = "";
+        if (null != rootMap.get("FPClientBankAccount")
+                && !rootMap.get("FPClientBankAccount").equals("")) {
+            FPClientBankAccount = (String) rootMap.get("FPClientBankAccount");
+        }
+        // 购方地址电话
+        String FPClientAddressTel = "";
+        if (null != rootMap.get("FPClientAddressTel")
+                && !rootMap.get("FPClientAddressTel").equals("")) {
+            FPClientAddressTel = (String) rootMap.get("FPClientAddressTel");
+        }
+        // 销方开户行及账号
+        String FPSellerBankAccount = "";
+        if (null != rootMap.get("FPSellerBankAccount")
+                && !rootMap.get("FPSellerBankAccount").equals("")) {
+            FPSellerBankAccount = (String) rootMap.get("FPSellerBankAccount");
+        }
+        //销方税号
+        String FPSellerTaxCode = "";
+        if (null != rootMap.get("FPSellerTaxCode")
+                && !rootMap.get("FPSellerTaxCode").equals("")) {
+            FPSellerTaxCode = (String) rootMap.get("FPSellerTaxCode");
+        }
+
+        // 销方名称
+        String FPSellerName = "";
+        if (null != rootMap.get("FPSellerName")
+                && !rootMap.get("FPSellerName").equals("")) {
+            FPSellerName = (String) rootMap.get("FPSellerName");
+        }
+        //销方地址电话
+        String FPSellerAddressTel = "";
+        if (null != rootMap.get("FPSellerAddressTel")
+                && !rootMap.get("FPSellerAddressTel").equals("")) {
+            FPSellerAddressTel = (String) rootMap.get("FPSellerAddressTel");
+        }
+        //备注
+        String FPNotes =  "";
+        if (null != rootMap.get("FPNotes")
+                && !rootMap.get("FPNotes").equals("")) {
+            FPNotes = (String) rootMap.get("FPNotes");
+        }
+        //开票人
+        String FPInvoicer =  "";
+        if (null != rootMap.get("FPInvoicer")
+                && !rootMap.get("FPInvoicer").equals("")) {
+            FPInvoicer = (String) rootMap.get("FPInvoicer");
+        }
+        //复核人
+        String FPChecker =  "";
+        if (null != rootMap.get("FPChecker")
+                && !rootMap.get("FPChecker").equals("")) {
+            FPChecker = (String) rootMap.get("FPChecker");
+        }
+        //收款人
+        String FPCashier =  "";
+        if (null != rootMap.get("FPCashier")
+                && !rootMap.get("FPCashier").equals("")) {
+            FPCashier = (String) rootMap.get("FPCashier");
+        }
+        //价税合计
+        String TotalAmount="";
+        if (null != rootMap.get("TotalAmount")
+                && !rootMap.get("TotalAmount").equals("")) {
+            TotalAmount = (String) rootMap.get("TotalAmount");
+        }
+        //含税标志
+        String PriceKind="";
+        if (null != rootMap.get("PriceKind")
+                && !rootMap.get("PriceKind").equals("")) {
+            PriceKind = (String) rootMap.get("PriceKind");
+        }
+        //购方邮箱
+        String Email="";
+        if (null != rootMap.get("Email")
+                && !rootMap.get("Email").equals("")) {
+            Email = (String) rootMap.get("Email");
+        }
+        //是否打印销货清单
+        String FPListName =  "";
+        if (null != rootMap.get("FPListName")
+                && !rootMap.get("FPListName").equals("")) {
+            FPListName = (String) rootMap.get("FPListName");
+        }
+        //是否打印销货清单
+        String FPState =  "";
+        if (null != rootMap.get("FPState")
+                && !rootMap.get("FPState").equals("")) {
+            FPState = (String) rootMap.get("FPState");
+        }
+        Jyxxsq jyxxsq=new Jyxxsq();
+        // 保存主表信息
+        jyxxsq.setKpddm("afb_01");
+        jyxxsq.setJylsh(SerialNo);
+        jyxxsq.setFpzldm("12");
+        jyxxsq.setKpr(FPInvoicer);
+        jyxxsq.setSkr(FPCashier);
+        jyxxsq.setFhr(FPChecker);
+        jyxxsq.setOpenid("");
+        jyxxsq.setXfsh(FPSellerTaxCode);
+        jyxxsq.setXfmc(FPSellerName);
+        jyxxsq.setXfdz(FPSellerAddressTel);
+        //jyxxsq.setXfdh(telephoneNo);
+        jyxxsq.setXfyh(FPSellerBankAccount);
+        //jyxxsq.setXfyhzh(bankAcc);
+        jyxxsq.setDdh(OrderNo);
+        jyxxsq.setSfdyqd("1");
+        jyxxsq.setSfcp("1");
+        jyxxsq.setSfdy("0");
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            jyxxsq.setDdrq(OrderDate == null ? new Date() : sim.parse(OrderDate));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        jyxxsq.setZsfs("0");
+        jyxxsq.setJshj(Double.valueOf(TotalAmount));
+        jyxxsq.setHsbz(PriceKind);
+        jyxxsq.setBz(FPNotes);
+        jyxxsq.setGflx("0");
+        jyxxsq.setGfsh(FPClientTaxCode.replaceAll(" ", ""));
+        jyxxsq.setGfmc(FPClientName.replaceAll(" ", ""));
+        jyxxsq.setGfdz(FPClientAddressTel);
+        //jyxxsq.setGfdh(buyerTelephoneNo);
+        jyxxsq.setGfyh(FPClientBankAccount);
+        //jyxxsq.setGfyhzh(buyerBankAcc);
+        jyxxsq.setGfemail(Email);//邮箱
+        //jyxxsq.setGfsjh(MobilephoneNo);//手机号
+        //jyxxsq.setKhh(khh);//客户号
+        if(Email!=null){
+            jyxxsq.setSffsyj("1");//是否发送邮件
+        }else{
+            jyxxsq.setSffsyj("0");//是否发送邮件
+        }
+        //为了照顾亚朵，途家两家老版本的发票开具xml样例
+                /*if (null != ExtractedCode && !ExtractedCode.equals("")) {
+                    jyxxsq.setTqm(ExtractedCode);
+                } else if (null != buyerExtractedCode && !buyerExtractedCode.equals("")) {
+                    jyxxsq.setTqm(buyerExtractedCode);
+                }*/
+        jyxxsq.setGfsjr("");
+        jyxxsq.setGfsjrdz("");
+        jyxxsq.setGfyb("");
+        jyxxsq.setYkpjshj(Double.valueOf("0.00"));
+        jyxxsq.setYxbz("1");
+        jyxxsq.setLrsj(new Date());
+        jyxxsq.setLrry(lrry);
+        jyxxsq.setXgry(lrry);
+        jyxxsq.setFpczlxdm("11");
+        jyxxsq.setXgsj(new Date());
+        jyxxsq.setGsdm(gsdm);
+        jyxxsq.setSjly("1");
+        jyxxsq.setClztdm("00");
+
+        List<Element> xnList = xmlDoc.selectNodes("root/fpxx");
+        if (null != xnList && xnList.size() > 0) {
+            for (Element xn : xnList) {
+                Element OrderDetails = (Element) xn.selectSingleNode("fpmx");
+                List<Element> orderDetailsList = (List<Element>) OrderDetails.elements("group");
+                if (null != orderDetailsList && orderDetailsList.size() > 0) {
+                    int spmxxh = 1;
+                    for (Element orderDetails : orderDetailsList) {
+                        Jymxsq jymxsq = new Jymxsq();
+
+                        // 商品名称
+                        String MXGoodsName = "";
+                        if (null != orderDetails.selectSingleNode("MXGoodsName")
+                                && !orderDetails.selectSingleNode("MXGoodsName").equals("")) {
+                            MXGoodsName = orderDetails.selectSingleNode("MXGoodsName").getText();
+                        }
+
+                        jymxsq.setSpmc(MXGoodsName);
+                        jymxsq.setDdh(jyxxsq.getDdh());
+                        jymxsq.setHsbz(jyxxsq.getHsbz());
+                        jymxsq.setFphxz("0");
+                        // 商品规格型号
+                        String MXStandard = "";
+                        if (null != orderDetails.selectSingleNode("MXStandard")
+                                && !orderDetails.selectSingleNode("MXStandard").equals("")) {
+                            MXStandard = orderDetails.selectSingleNode("MXStandard").getText();
+                        }
+                        jymxsq.setSpggxh(MXStandard);
+                        // 商品单位
+                        String MXUnit = "";
+                        if (null != orderDetails.selectSingleNode("MXUnit")
+                                && !orderDetails.selectSingleNode("MXUnit").equals("")) {
+                            MXUnit = orderDetails.selectSingleNode("MXUnit").getText();
+                        }
+                        jymxsq.setSpdw(MXUnit);
+                        // 商品数量
+                        String MXNumber = "";
+                        if (null != orderDetails.selectSingleNode("MXNumber")
+                                && !orderDetails.selectSingleNode("MXNumber").equals("")) {
+                            MXNumber = orderDetails.selectSingleNode("MXNumber").getText();
+                            try {
+                                jymxsq.setSps(Double.valueOf(MXNumber));
+                            } catch (Exception e) {
+                                jymxsq.setSps(null);
+                            }
+                        }
+                        // 商品单价
+                        String MXPrice = "";
+                        if (null != orderDetails.selectSingleNode("MXPrice")
+                                && !orderDetails.selectSingleNode("MXPrice").equals("")) {
+                            MXPrice = orderDetails.selectSingleNode("MXPrice").getText();
+                            try {
+                                jymxsq.setSpdj(Double.valueOf(MXPrice));
+                            } catch (Exception e) {
+                                jymxsq.setSpdj(null);
+                            }
+                        }
+                        // 商品金额
+                        String MXAmount = "";
+                        if (null != orderDetails.selectSingleNode("MXAmount")
+                                && !orderDetails.selectSingleNode("MXAmount").equals("")) {
+                            MXAmount = orderDetails.selectSingleNode("MXAmount").getText();
+                            jymxsq.setSpje(Double.valueOf(MXAmount));
+                        }
+                       /* // 扣除金额
+                        String DeductAmount = "";
+                        if (null != orderDetails.selectSingleNode("DeductAmount")
+                                && !orderDetails.selectSingleNode("DeductAmount").equals("")) {
+                            DeductAmount = orderDetails.selectSingleNode("DeductAmount").getText();
+                            jymxsq.setKce((null == DeductAmount || DeductAmount.equals("")) ? Double.valueOf("0.00")
+                                    : Double.valueOf(DeductAmount));
+                        }*/
+                        //税率
+                        String MXTaxRate = "";
+                        if (null != orderDetails.selectSingleNode("MXTaxRate")
+                                && !orderDetails.selectSingleNode("MXTaxRate").equals("")) {
+                            MXTaxRate = orderDetails.selectSingleNode("MXTaxRate").getText();
+                            jymxsq.setSpsl(Double.valueOf(MXTaxRate));
+                        }
+                        //商品税额
+                        String MXTaxAmount = "";
+                        if (null != orderDetails.selectSingleNode("MXTaxAmount")
+                                && !orderDetails.selectSingleNode("MXTaxAmount").equals("")) {
+                            MXTaxAmount = orderDetails.selectSingleNode("MXTaxAmount").getText();
+                            try {
+                                jymxsq.setSpse(Double.valueOf(MXTaxAmount));
+                            } catch (Exception e) {
+                                jymxsq.setSpse(null);
+                            }
+                        }
+                        /*//含税标志
+                        String MXPriceKind = "";
+                        if (null != orderDetails.selectSingleNode("MXPriceKind")
+                                && !orderDetails.selectSingleNode("MXPriceKind").equals("")) {
+                            MXPriceKind = orderDetails.selectSingleNode("MXPriceKind").getText();
+                            //
+                        }*/
+
+                        jymxsq.setSpmxxh(spmxxh);
+                        spmxxh++;
+                        if(jyxxsq.getHsbz().equals("1")){
+                            jymxsq.setKkjje(Double.valueOf(MXAmount));
+                            jymxsq.setJshj(Double.valueOf(MXAmount));
+                        }else {
+                            jymxsq.setKkjje(Double.valueOf(MXAmount)+Double.valueOf(MXTaxAmount));
+                            jymxsq.setJshj(Double.valueOf(MXAmount)+Double.valueOf(MXTaxAmount));
+                        }
+                        jymxsq.setYkjje(0d);
+                        /*String PolicyMark = "";
+                        if (null != orderDetails.selectSingleNode("PolicyMark")
+                                && !orderDetails.selectSingleNode("PolicyMark").equals("")) {
+                            PolicyMark = orderDetails.selectSingleNode("PolicyMark").getText();
+                        }
+                        jymxsq.setYhzcbs(PolicyMark);
+
+                        String TaxRateMark = "";
+                        if (null != orderDetails.selectSingleNode("TaxRateMark")
+                                && !orderDetails.selectSingleNode("TaxRateMark").equals("")) {
+                            TaxRateMark = orderDetails.selectSingleNode("TaxRateMark").getText();
+                        }
+                        jymxsq.setLslbz(TaxRateMark);
+
+                        String PolicyName = "";
+                        if (null != orderDetails.selectSingleNode("PolicyName")
+                                && !orderDetails.selectSingleNode("PolicyName").equals("")) {
+                            PolicyName = orderDetails.selectSingleNode("PolicyName").getText();
+                        }
+                        jymxsq.setYhzcmc(PolicyName);*/
+                        jymxsq.setGsdm(gsdm);
+                        jymxsq.setLrry(lrry);
+                        jymxsq.setLrsj(new Date());
+                        jymxsq.setXgry(lrry);
+                        jymxsq.setXgsj(new Date());
+                        jymxsq.setYxbz("1");
+                        jymxsqList.add(jymxsq);
+                    }
+                }
+            }
+        }
+            for(int i = 0; i < jymxsqList.size(); i++){
+                Jymxsq jymxsq = jymxsqList.get(i);
+                Map map = new HashMap();
+                map.put("gsdm",jymxsq.getGsdm());
+                map.put("spmc",jymxsq.getSpmc());
+                Spvo spvo = spvoService.findOneSpvo(map);
+                if(null==spvo){
+                }else {
+                    jymxsq.setSpdm(spvo.getSpbm());
+                    jymxsq.setYhzcbs(spvo.getYhzcbs());
+                    jymxsq.setLslbz(spvo.getLslbz());
+                    jymxsq.setYhzcmc(spvo.getYhzcmc());
+                }
+            }
+
+        String xml= GetXmlUtil.getFpkjXml(jyxxsq,jymxsqList,jyzfmxList);
+        logger.info("-----------------"+xml);
+        String result=dealOrder01.execute(gsdm,xml,"01");
+        return result;
+    }
 }

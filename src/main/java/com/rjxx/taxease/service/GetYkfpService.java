@@ -19,7 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-@Service
+@Service("getYkfpService")
 public class GetYkfpService {
 
 	@Autowired

@@ -33,7 +33,7 @@ import java.util.*;
  * Created by xlm on 2017/5/23.
  */
 
-@Service
+@Service("dealOrder04")
 public class DealOrder04 implements IDealOrder{
     @Autowired
     private SkpService skpservice;

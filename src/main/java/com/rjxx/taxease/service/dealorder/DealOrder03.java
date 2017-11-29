@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * Created by Administrator on 2017-05-18.
  */
-@Service
+@Service("dealOrder03")
 public class DealOrder03 implements IDealOrder {
 
     @Autowired

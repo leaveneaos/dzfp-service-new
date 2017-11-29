@@ -33,7 +33,7 @@ import java.util.*;
 /**
  * Created by Administrator on 2017-05-18.
  */
-@Service
+@Service("dealOrder02")
 public class DealOrder02 implements IDealOrder {
 
     @Autowired
