@@ -397,7 +397,7 @@ public class DealOrder04 implements IDealOrder{
         kpls2.setSkpid(jyls1.getSkpid());
         kpls2.setLrry(jyls1.getLrry());
         kpls2.setXgry(jyls1.getLrry());
-        kpls2.setSerialorder(SerialNumber+OrderNumber);
+        kpls2.setSerialorder(SerialNumber+OrderNumber+jyls1.getGsdm());
         kplsService.save(kpls2);
         List<Kpspmx> kpspmxList2=new ArrayList<>();
         for(Kpspmx kpspmx:kpspmxList){
