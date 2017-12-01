@@ -110,7 +110,7 @@ public class DealOrder07 implements IDealOrder{
             }
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             savejyxxsq(kpls.getKplsh(),SerialNumber,OrderNumber);
-            kpls.setSerialorder(SerialNumber+OrderNumber);
+            kpls.setSerialorder(SerialNumber+OrderNumber+kpls.getGsdm());
             kpls.setFpczlxdm("14");
             kpls.setFpztdm("14");
             kplsService.save(kpls);
