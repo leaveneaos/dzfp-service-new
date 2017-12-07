@@ -1322,6 +1322,12 @@ public class UploadInvoiceService {
                 && !rootMap.get("OrderDate").equals("")) {
             OrderDate = (String) rootMap.get("OrderDate");
         }
+        // 开票点代码
+        String ClientNo  = "";
+        if (null != rootMap.get("ClientNo ")
+                && !rootMap.get("ClientNo ").equals("")) {
+            ClientNo  = (String) rootMap.get("ClientNo ");
+        }
         // 发票种类代码
         String invType = "12";
 
@@ -1418,7 +1424,11 @@ public class UploadInvoiceService {
         }
         Jyxxsq jyxxsq=new Jyxxsq();
         // 保存主表信息
-        jyxxsq.setKpddm("afb_01");
+        jyxxsq.setKpddm(ClientNo);
+        Map skpmap=new HashMap();
+        skpmap.put("gsdm",gsdm);
+        skpmap.put("kpddm",ClientNo);
+        Skp skp=skpservice.findOneByParams(skpmap);
         jyxxsq.setJylsh(SerialNo);
         jyxxsq.setFpzldm("12");
         jyxxsq.setKpr(FPInvoicer);
@@ -1427,10 +1437,10 @@ public class UploadInvoiceService {
         jyxxsq.setOpenid("");
         jyxxsq.setXfsh(FPSellerTaxCode);
         jyxxsq.setXfmc(FPSellerName);
-        jyxxsq.setXfdz(FPSellerAddressTel);
-        //jyxxsq.setXfdh(telephoneNo);
-        jyxxsq.setXfyh(FPSellerBankAccount);
-        //jyxxsq.setXfyhzh(bankAcc);
+        jyxxsq.setXfdz(skp.getLxdz());
+        jyxxsq.setXfdh(skp.getLxdh());
+        jyxxsq.setXfyh(skp.getKhyh());
+        jyxxsq.setXfyhzh(skp.getYhzh());
         jyxxsq.setDdh(OrderNo);
         jyxxsq.setSfdyqd("1");
         jyxxsq.setSfcp("1");
