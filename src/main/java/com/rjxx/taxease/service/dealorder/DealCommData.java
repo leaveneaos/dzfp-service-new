@@ -260,10 +260,10 @@ public class DealCommData {
                     fplx = "12";
                 }
                 if(null !=skp.getZpmax()&& !skp.getZpmax().equals("")) {
-                    fplx = fplx.equals("")?"01":",01";
+                    fplx = fplx.equals("")?"01":fplx+",01";
                 }
                 if(null !=skp.getPpmax()&& !skp.getPpmax().equals("")) {
-                    fplx = fplx.equals("")?"02":",02";
+                    fplx = fplx.equals("")?"02":fplx+",02";
                 }
                 skp.setKplx(fplx.equals("")?null:fplx);
                 skp.setWrzs("1");//无人值守 ：默认1
