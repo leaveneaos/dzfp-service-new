@@ -1,15 +1,10 @@
 package com.rjxx.taxease.ws;
 
+import com.rjxx.taxease.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
-import com.rjxx.taxease.service.DealOrderDataService;
-import com.rjxx.taxease.service.GetYkfpService;
-import com.rjxx.taxease.service.HanderJysjxxService;
-import com.rjxx.taxease.service.InvoiceService;
-import com.rjxx.taxease.service.UploadInvoiceService;
 
 import javax.jws.WebParam;
 
@@ -42,6 +37,9 @@ public class WebServiceImpl implements WebService {
     
     @Autowired
     private DealOrderDataService dealorderdataservice;
+
+    @Autowired
+	private UploadCommonDataService uploadCommonDataService;
 
     public WebServiceImpl() {
     }
@@ -124,5 +122,17 @@ public class WebServiceImpl implements WebService {
 		return result;
 	}
 
-	
+	@Override
+	public String UploadCommonData(@WebParam(name = "AppId") String AppId,@WebParam(name = "Sign") String Sign,@WebParam(name = "InvoiceData") String InvoiceData) {
+		// TODO Auto-generated method stub
+		logger.debug("UploadCommonData:"+AppId + "," + Sign + ","+ InvoiceData);
+		String result = "";
+		try {
+			result = uploadCommonDataService.UploadCommonData(AppId, Sign, InvoiceData);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result = e.getMessage();
+		}
+		return result;
+	}
 }

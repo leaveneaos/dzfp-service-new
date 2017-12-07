@@ -23,5 +23,8 @@ public interface WebService {
     
     @WebMethod
     public String UploadOrderData(String AppId, String Sign, String Operation,String invoiceData);
-    
+
+    @WebMethod
+    public String UploadCommonData(String AppId, String Sign,String invoiceData);
+
 }
