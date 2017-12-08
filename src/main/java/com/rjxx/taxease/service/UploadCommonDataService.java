@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Service("UploadCommonDataService")
+@Service("uploadCommonDataService")
 public class UploadCommonDataService {
 
     @Autowired
