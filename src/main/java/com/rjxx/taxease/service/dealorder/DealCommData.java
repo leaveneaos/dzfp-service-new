@@ -62,6 +62,13 @@ public class DealCommData {
         //return result;
     }
 
+    /**
+     * 保存销方，开票点等信息，同时写入用户表，且
+     * 插入一条权限到销方的group权限数据，根据issueType
+     * 为03时保存一条数据kpfs到cszb中。
+     * @param xf,skpList,issueType
+     * @return  Map
+     */
     public Map saveXfAndSkp(Xf xf, List<Skp> skpList, String issueType){
         Map resultMap = new HashMap();
         Roles roles = rolesService.findDefaultOneByParams(null);
