@@ -74,7 +74,7 @@ public class DealCommData {
             yh.setSjhm(null);
             yh.setYx(null);
             yh.setXb("1");
-            yh.setYhmc("开票用户");
+            yh.setYhmc("开票用户"+xf.getXfsh().substring(xf.getXfsh().length()-5,xf.getXfsh().length()).toLowerCase());
             yh.setGsdm(xf.getGsdm());
             yh.setYhmm(PasswordUtils.encrypt("12345678"));
             yh.setRoleids(roles.getId().toString());
