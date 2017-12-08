@@ -22,44 +22,43 @@ public class Afbtest {
     @Test
     public void analysis(){
 
-     String xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-             "<root>\n" +
-             "\t<fpxx>\n" +
-             "\t\t<SerialNo>201711131814166155</SerialNo><!--交易流水号，每次开票请求唯一，用于开票数据回写匹配-->\n" +
-             "\t\t<OrderNo>171113004C1</OrderNo><!--业务订单号，主要用于业务人员识别该笔业务数据-->\n" +
-             "\t\t<OrderDate>2017-11-13 18:14:16</OrderDate><!--业务订单时间-->\n" +
-             "\t\t<FPClientName>上海孚晟压缩机净化设备有限公司</FPClientName>\n" +
-             "\t\t<FPClientTaxCode>91310118630592370P</FPClientTaxCode>\n" +
-             "\t\t<FPClientBankAccount></FPClientBankAccount>\n" +
-             "\t\t<FPClientAddressTel></FPClientAddressTel>\n" +
-             "\t\t<FPSellerTaxCode>500102010003643</FPSellerTaxCode>\n" +
-             "\t\t<FPSellerName>上海百旺测试3643</FPSellerName>\n" +
-             "\t\t<FPSellerBankAccount></FPSellerBankAccount>\n" +
-             "\t\t<FPSellerAddressTel></FPSellerAddressTel>\n" +
-             "\t\t<FPNotes>备注</FPNotes>\n" +
-             "\t\t<FPInvoicer>于凤梅</FPInvoicer>\n" +
-             "\t\t<FPChecker>方丽萍</FPChecker>\n" +
-             "\t\t<FPCashier>于凤梅</FPCashier>\n" +
-             "\t\t<TotalAmount>3000</TotalAmount>\n" +
-             "\t\t<PriceKind>0</PriceKind>\n" +
-             "\t\t<Email></Email>\n" +
-             "\t\t<FPListName/>\n" +
-             "\t\t<FPState>2</FPState>\n" +
-             "\t\t<InvQDState>0</InvQDState>\n" +
-             "\t\t<fpmx count=\"1\">\n" +
-             "\t\t\t<group xh=\"1\">\n" +
-             "\t\t\t\t<MXGoodsName>预付卡</MXGoodsName>\n" +
-             "\t\t\t\t<MXStandard>规格型号1</MXStandard>\n" +
-             "\t\t\t\t<MXUnit>计</MXUnit>\n" +
-             "\t\t\t\t<MXNumber>1</MXNumber>\n" +
-             "\t\t\t\t<MXPrice>3000</MXPrice>\n" +
-             "\t\t\t\t<MXAmount>3000</MXAmount>\n" +
-             "\t\t\t\t<MXTaxRate>0</MXTaxRate>\n" +
-             "\t\t\t\t<MXTaxAmount>0</MXTaxAmount>\n" +
-             "\t\t\t</group>\n" +
-             "\t\t</fpmx>\n" +
-             "\t</fpxx>\n" +
-             "</root>\n";
+     String xml="<root>\n" +
+             "<fpxx>\n" +
+             "<SerialNo>ddbcee06256ab9996be1fcf3d296f4b8</SerialNo>\n" +
+             "<OrderNo>17120700007</OrderNo>\n" +
+             "<OrderDate>2017-12-08 09:03:29</OrderDate>\n" +
+             "<ClientNo>afb_01</ClientNo>\n" +
+             "<FPClientName>个人</FPClientName>\n" +
+             "<FPClientTaxCode></FPClientTaxCode>\n" +
+             "<FPClientBankAccount></FPClientBankAccount>\n" +
+             "<FPClientAddressTel></FPClientAddressTel>\n" +
+             "<FPSellerTaxCode>91310107566588632G</FPSellerTaxCode>\n" +
+             "<FPSellerName>安付宝商务有限公司</FPSellerName>\n" +
+             "<FPSellerBankAccount>中国银行上海市溧阳路支行 044023445560219230</FPSellerBankAccount>\n" +
+             "<FPSellerAddressTel>上海市普陀区真光路1258号6楼608室 021-52629933</FPSellerAddressTel>\n" +
+             "<FPNotes></FPNotes>\n" +
+             "<FPInvoicer>周睿</FPInvoicer>\n" +
+             "<FPChecker>邹瑾</FPChecker>\n" +
+             "<FPCashier>周睿</FPCashier>\n" +
+             "<TotalAmount>10</TotalAmount>\n" +
+             "<PriceKind>0</PriceKind>\n" +
+             "<Email>1193951186@qq.com</Email>\n" +
+             "<FPListName></FPListName>\n" +
+             "<InvQDState>0</InvQDState>\n" +
+             "<fpmx count=\"1\">\n" +
+             "<group xh=\"1\">\n" +
+             "<MXGoodsName>预付卡</MXGoodsName>\n" +
+             "<MXStandard></MXStandard>\n" +
+             "<MXUnit></MXUnit>\n" +
+             "<MXNumber>1</MXNumber>\n" +
+             "<MXPrice>10</MXPrice>\n" +
+             "<MXAmount>10</MXAmount>\n" +
+             "<MXTaxRate>0</MXTaxRate>\n" +
+             "<MXTaxAmount>0</MXTaxAmount>\n" +
+             "</group>\n" +
+             "</fpmx>\n" +
+             "</fpxx>\n" +
+             "</root>";
 
 
      String result=uploadInvoiceService.callService2(xml);

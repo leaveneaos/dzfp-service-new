@@ -1324,9 +1324,9 @@ public class UploadInvoiceService {
         }
         // 开票点代码
         String ClientNo  = "";
-        if (null != rootMap.get("ClientNo ")
-                && !rootMap.get("ClientNo ").equals("")) {
-            ClientNo  = (String) rootMap.get("ClientNo ");
+        if (null != rootMap.get("ClientNo")
+                && !rootMap.get("ClientNo").equals("")) {
+            ClientNo  = (String) rootMap.get("ClientNo");
         }
         // 发票种类代码
         String invType = "12";
