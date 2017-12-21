@@ -712,7 +712,54 @@ public class WebServiceTestCall {
         String newSign = DigestUtils.md5Hex(signSourceData);
         return newSign;
     }
+    public static String WS_URL = "https://192.168.12.107/webService/services/invoiceService?wsdl";
 
+    public static  void testWsdl() throws Exception {
+        String xml="<root>\n" +
+                "<fpxx>\n" +
+                "<SerialNo>ddbcee06256ab9996be1fcf3d296f4b8</SerialNo>\n" +
+                "<OrderNo>17120700007</OrderNo>\n" +
+                "<OrderDate>2017-12-08 09:03:29</OrderDate>\n" +
+                "<ClientNo>afb_asas</ClientNo>\n" +
+                "<FPClientName>个人</FPClientName>\n" +
+                "<FPClientTaxCode></FPClientTaxCode>\n" +
+                "<FPClientBankAccount></FPClientBankAccount>\n" +
+                "<FPClientAddressTel></FPClientAddressTel>\n" +
+                "<FPSellerTaxCode>91310107566588632G</FPSellerTaxCode>\n" +
+                "<FPSellerName>安付宝商务有限公司</FPSellerName>\n" +
+                "<FPSellerBankAccount>中国银行上海市溧阳路支行 044023445560219230</FPSellerBankAccount>\n" +
+                "<FPSellerAddressTel>上海市普陀区真光路1258号6楼608室 021-52629933</FPSellerAddressTel>\n" +
+                "<FPNotes></FPNotes>\n" +
+                "<FPInvoicer>周睿</FPInvoicer>\n" +
+                "<FPChecker>邹瑾</FPChecker>\n" +
+                "<FPCashier>周睿</FPCashier>\n" +
+                "<TotalAmount>10</TotalAmount>\n" +
+                "<PriceKind>0</PriceKind>\n" +
+                "<Email>1193951186@qq.com</Email>\n" +
+                "<FPListName></FPListName>\n" +
+                "<InvQDState>0</InvQDState>\n" +
+                "<fpmx count=\"1\">\n" +
+                "<group xh=\"1\">\n" +
+                "<MXGoodsName>预付卡</MXGoodsName>\n" +
+                "<MXStandard></MXStandard>\n" +
+                "<MXUnit></MXUnit>\n" +
+                "<MXNumber>1</MXNumber>\n" +
+                "<MXPrice>10</MXPrice>\n" +
+                "<MXAmount>10</MXAmount>\n" +
+                "<MXTaxRate>0</MXTaxRate>\n" +
+                "<MXTaxAmount>0</MXTaxAmount>\n" +
+                "</group>\n" +
+                "</fpmx>\n" +
+                "</fpxx>\n" +
+                "</root>";
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient(WS_URL);
+        String methodName = "CallService2";
+        //String Secret = getSign(InvoiceData,key);
+        Object[] objects = client.invoke(methodName,xml);
+        //输出调用结果
+        System.out.println(objects[0].toString());
+    }
     public static void testuploadCommonData() throws Exception {
         final String InvoiceData="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<Seller>\n" +
@@ -772,7 +819,6 @@ public class WebServiceTestCall {
 
    //public static String WS_URL = "http://open2.datarj.com/webService/services/invoiceService?wsdl";
    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();
@@ -780,7 +826,8 @@ public class WebServiceTestCall {
         //testCallService();
         //testinvoiceUpload();
         //testuploadOrderData();
-        testuploadCommonData();
+       // testuploadCommonData();
+        testWsdl();
 
     }
 
