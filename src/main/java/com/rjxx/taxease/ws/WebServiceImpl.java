@@ -1,6 +1,9 @@
 package com.rjxx.taxease.ws;
 
+import com.alibaba.fastjson.JSON;
+import com.pk.hessian.bean.FwqxxBean;
 import com.rjxx.taxease.service.*;
+import com.rjxx.taxeasy.domains.Fwqxx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +27,19 @@ public class WebServiceImpl implements WebService {
     double param = 0.06;    //参数：金额和税额校验时允许的误差
     
     @Autowired
-    private GetYkfpService getykfpservice;
+    private GetYkfpService getYkfpService;
   
     @Autowired
-    private HanderJysjxxService handerjysjxxservice;
+    private HanderJysjxxService handerJysjxxService;
     
     @Autowired
-    private UploadInvoiceService uploadinvoiceservice;
+    private UploadInvoiceService uploadInvoiceService;
     
     @Autowired
-    private InvoiceService invoiceservice;
+    private InvoiceService invoiceService;
     
     @Autowired
-    private DealOrderDataService dealorderdataservice;
+    private DealOrderDataService dealOrderDataService;
 
     @Autowired
 	private UploadCommonDataService uploadCommonDataService;
@@ -48,7 +51,7 @@ public class WebServiceImpl implements WebService {
 	public String CallQuery(@WebParam(name = "AppId") String AppId,@WebParam(name = "Sign") String Sign,@WebParam(name = "queryData") String QueryData) {
 		// TODO Auto-generated method stub
         logger.debug(AppId + "," + Sign + "," + QueryData);
-        String result = getykfpservice.CallQuery(AppId, Sign, QueryData);
+        String result = getYkfpService.CallQuery(AppId, Sign, QueryData);
 		return result;
 	}
 
@@ -59,7 +62,7 @@ public class WebServiceImpl implements WebService {
 		logger.debug(AppId + "," + Sign + "," + OrderData);
 		String result = "";
 		try {
-			result = handerjysjxxservice.uploadOrder(AppId, Sign, OrderData);
+			result = handerJysjxxService.uploadOrder(AppId, Sign, OrderData);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			result = e.getMessage();
@@ -73,7 +76,7 @@ public class WebServiceImpl implements WebService {
 		logger.debug(AppId + "," + Sign + "," + invoiceData);
 		String result = "";
 		try {
-			result = uploadinvoiceservice.callService(AppId, Sign, invoiceData);
+			result = uploadInvoiceService.callService(AppId, Sign, invoiceData);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			result = e.getMessage();
@@ -86,7 +89,7 @@ public class WebServiceImpl implements WebService {
 		logger.debug("-------------"+invoiceData);
 		String result = "";
 		try {
-			result = uploadinvoiceservice.callService2(invoiceData);
+			result = uploadInvoiceService.callService2(invoiceData);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			result = e.getMessage();
@@ -95,12 +98,34 @@ public class WebServiceImpl implements WebService {
 	}
 
 	@Override
+	public String Cb(Fwqxx fwqxx) {
+    	logger.debug("-----服务器信息-------"+JSON.toJSONString(fwqxx));
+    	String result="";
+    	try{
+    		result=invoiceService.cb(fwqxx);
+		}catch (Exception e){
+          result=e.getMessage();
+		}
+		return result;
+	}
+	@Override
+	public String Fx(Fwqxx fwqxx) {
+		logger.debug("-----服务器信息-------"+JSON.toJSONString(fwqxx));
+		String result="";
+		try{
+			result=invoiceService.fx(fwqxx);
+		}catch (Exception e){
+			result=e.getMessage();
+		}
+		return result;
+	}
+	@Override
 	public String invoiceUpload(@WebParam(name = "xml") String xml) {
 		// TODO Auto-generated method stub
 		logger.debug(xml);
 		String result = "";
 		try {
-			result = invoiceservice.invoiceUpload("invoiceUpload", xml);
+			result = invoiceService.invoiceUpload("invoiceUpload", xml);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			result = e.getMessage();
@@ -114,7 +139,7 @@ public class WebServiceImpl implements WebService {
 		logger.debug(AppId + "," + Sign + ","+Operation +","+ InvoiceData);
 		String result = "";
 		try {
-			result = dealorderdataservice.uploadOrderData(AppId, Sign, Operation, InvoiceData);
+			result = dealOrderDataService.uploadOrderData(AppId, Sign, Operation, InvoiceData);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			result = e.getMessage();

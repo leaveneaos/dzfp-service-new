@@ -1,34 +1,22 @@
 package com.rjxx.taxease.service;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMDocument;
+
+import com.rjxx.taxeasy.bizcomm.utils.SkOperationService;
+import com.rjxx.taxeasy.domains.*;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.stax.xop.ContentIDGenerator;
-import org.apache.axiom.util.stax.xop.OptimizationPolicy;
-import org.apache.axiom.util.stax.xop.XOPEncodingStreamWriter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.rjxx.taxease.service.result.DefaultResult;
 import com.rjxx.taxeasy.bizcomm.utils.DataOperte;
 import com.rjxx.taxeasy.bizcomm.utils.GetYjnr;
 import com.rjxx.taxeasy.bizcomm.utils.SendalEmail;
-import com.rjxx.taxeasy.domains.Gsxx;
-import com.rjxx.taxeasy.domains.Jyls;
-import com.rjxx.taxeasy.domains.Jyspmx;
-import com.rjxx.taxeasy.domains.Skp;
-import com.rjxx.taxeasy.domains.Xf;
 import com.rjxx.taxeasy.service.GsxxService;
-import com.rjxx.taxeasy.service.JylsService;
-import com.rjxx.taxeasy.service.JyspmxService;
 import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.taxeasy.service.SpvoService;
 import com.rjxx.taxeasy.service.XfService;
@@ -39,11 +27,7 @@ import com.rjxx.utils.TemplateUtils;
 import com.rjxx.utils.TimeUtil;
 import com.rjxx.utils.XmlJaxbUtils;
 import sun.misc.BASE64Encoder;
-
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -51,10 +35,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -89,6 +71,9 @@ public class InvoiceService {
 	 
 	 @Autowired
      private SpvoService spvoService;
+
+	 @Autowired
+	 private SkOperationService skOperationService;
 	 
 	 private Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
@@ -541,5 +526,24 @@ public class InvoiceService {
 			}  
 	        return properties.getProperty(str);
     }
-    
+
+    public String cb(Fwqxx fwqxx) {
+        String result=null;
+        try{
+            result=skOperationService.Cb(fwqxx);
+        }catch (Exception e){
+            result=e.getMessage();
+        }
+       return result;
+    }
+
+    public String fx(Fwqxx fwqxx) {
+        String result=null;
+        try{
+            result=skOperationService.Fx(fwqxx);
+        }catch (Exception e){
+            result=e.getMessage();
+        }
+        return result;
+    }
 }
