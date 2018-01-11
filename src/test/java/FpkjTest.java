@@ -121,8 +121,9 @@ public class FpkjTest {
                 System.out.println(result2);
                 logger.debug("封装传开票通的报文" + result2);
                 String url = "http://210.14.78.228:7090/SKServer/SKDo";
+                int j=2;
                 result = fpclService.DzfphttpPost(result2, url, kplsVO5.getDjh() + "$" + kplsVO5.getKplsh(), kplsVO5.getXfsh(),
-                        kplsVO5.getJylsh());
+                        kplsVO5.getJylsh(),j);
                 String  serialorder=fpclService.updateKpls(result);
                 String  resultxml=serialorder;
                 logger.debug("封装传开票通的返回报文" + JSONObject.toJSONString(result));

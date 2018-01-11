@@ -23,178 +23,51 @@ public class HttpUtils {
 	public void sendMessage() throws Exception {
 		System.out.println("调用servlet开始=================");
 		ObjectMapper mapper = new ObjectMapper();
-		String InvoiceData="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-				"<Request>\n" +
-				"\t<ClientNO>gvc_01</ClientNO>\n" +
-				"\t<SerialNumber>JY32B2d24drfaf</SerialNumber>\n" +
-				"\t<InvType>12</InvType>\n" +
-				"\t<Spbmbbh>13.0</Spbmbbh>\n" +
-				"\t<Drawer>测试</Drawer>\n" +
-				"\t<Payee/>\n" +
-				"\t<Reviewer/>\n" +
-				"\t<DataSource>1</DataSource>\n" +
-				"\t<OpenId/>\n" +
-				"\t<Seller>\n" +
-				"\t\t<Identifier>500102010003643</Identifier>\n" +
-				"\t\t<Name>上海百旺测试3643</Name>\n" +
-				"\t\t<Address>德意志</Address>\n" +
-				"\t\t<TelephoneNo>021-59895352</TelephoneNo>\n" +
-				"\t\t<Bank>美利坚大银行</Bank>\n" +
-				"\t\t<BankAcc>128906323710203</BankAcc>\n" +
-				"\t</Seller>\n" +
-				"\t<OrderSize count=\"1\">\n" +
-				"\t\t<Order>\n" +
-				"\t\t\t<OrderMain>\n" +
-				"\t\t\t\t<OrderNo>5d33ddadf3</OrderNo>\n" +
-				"\t\t\t\t<InvoiceList>0</InvoiceList>\n" +
-				"\t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
-				"\t\t\t\t<InvoiceSfdy>0</InvoiceSfdy>\n" +
-				"\t\t\t\t<OrderDate>2017-08-09 15:26:23</OrderDate>\n" +
-				"\t\t\t\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
-				"\t\t\t\t<TotalAmount>1590</TotalAmount>\n" +
-				"\t\t\t\t<TotalDiscount>300</TotalDiscount>\n" +
-				"\t\t\t\t<TaxMark>1</TaxMark>\n" +
-				"\t\t\t\t<Remark/>\n" +
-				"\t\t\t\t<ExtractedCode/>\n" +
-				"\t\t\t\t<Buyer>\n" +
-				"\t\t\t\t\t<CustomerType>0</CustomerType>\n" +
-				"\t\t\t\t\t<Identifier>91370600050948561K</Identifier>\n" +
-				"\t\t\t\t\t<Name>康中徐</Name>\n" +
-				"\t\t\t\t\t<Address>漕宝路</Address>\n" +
-				"\t\t\t\t\t<TelephoneNo>123456</TelephoneNo>\n" +
-				"\t\t\t\t\t<Bank>中国银行</Bank>\n" +
-				"\t\t\t\t\t<BankAcc>123456778</BankAcc>\n" +
-				"\t\t\t\t\t<Email>kangzhongxu@datarj.com</Email>\n" +
-				"\t\t\t\t\t<IsSend>1</IsSend>\n" +
-				"\t\t\t\t\t<Recipient/>\n" +
-				"\t\t\t\t\t<ReciAddress/>\n" +
-				"\t\t\t\t\t<Zip/>\n" +
-				"\t\t\t\t</Buyer>\n" +
-				"\t\t\t</OrderMain>\n" +
-				"\t\t\t<OrderDetails count=\"2\">\n" +
-				"\t\t\t\t<ProductItem>\n" +
-				"\t\t\t\t\t<VenderOwnCode/>\n" +
-				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
-				"\t\t\t\t\t<ProductName>法拉利(YD)</ProductName>\n" +
-				"\t\t\t\t\t<RowType>0</RowType>\n" +
-				"\t\t\t\t\t<Spec/>\n" +
-				"\t\t\t\t\t<Unit/>\n" +
-				"\t\t\t\t\t<Quantity>1</Quantity>\n" +
-				"\t\t\t\t\t<UnitPrice>200</UnitPrice>\n" +
-				"\t\t\t\t\t<Amount>200</Amount>\n" +
-				"\t\t\t\t\t<DeductAmount/>\n" +
-				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
-				"\t\t\t\t\t<TaxAmount>19.82</TaxAmount>\n" +
-				"\t\t\t\t\t<MxTotalAmount>200</MxTotalAmount>\n" +
-				"\t\t\t\t\t<PolicyMark/>\n" +
-				"\t\t\t\t\t<TaxRateMark/>\n" +
-				"\t\t\t\t\t<PolicyName/>\n" +
-				"\t\t\t\t</ProductItem>\n" +
-				"\t\t\t\t<ProductItem>\n" +
-				"\t\t\t\t\t<VenderOwnCode/>\n" +
-				"\t\t\t\t\t<ProductCode>1010115000000000000</ProductCode>\n" +
-				"\t\t\t\t\t<ProductName>MH370大型客机(YD)</ProductName>\n" +
-				"\t\t\t\t\t<RowType>2</RowType>\n" +
-				"\t\t\t\t\t<Spec/>\n" +
-				"\t\t\t\t\t<Unit/>\n" +
-				"\t\t\t\t\t<Quantity>1</Quantity>\n" +
-				"\t\t\t\t\t<UnitPrice>790</UnitPrice>\n" +
-				"\t\t\t\t\t<Amount>790</Amount>\n" +
-				"\t\t\t\t\t<DeductAmount/>\n" +
-				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
-				"\t\t\t\t\t<TaxAmount>78.29</TaxAmount>\n" +
-				"\t\t\t\t\t<MxTotalAmount>790</MxTotalAmount>\n" +
-				"\t\t\t\t\t<PolicyMark/>\n" +
-				"\t\t\t\t\t<TaxRateMark/>\n" +
-				"\t\t\t\t\t<PolicyName/>\n" +
-				"\t\t\t\t</ProductItem>\n" +
-				"\t\t\t\t<ProductItem>\n" +
-				"\t\t\t\t\t<VenderOwnCode/>\n" +
-				"\t\t\t\t\t<ProductCode>1010115000000000000</ProductCode>\n" +
-				"\t\t\t\t\t<ProductName>MH370大型客机(YD)</ProductName>\n" +
-				"\t\t\t\t\t<RowType>1</RowType>\n" +
-				"\t\t\t\t\t<Spec/>\n" +
-				"\t\t\t\t\t<Unit/>\n" +
-				"\t\t\t\t\t<Quantity/>\n" +
-				"\t\t\t\t\t<UnitPrice/>\n" +
-				"\t\t\t\t\t<Amount>-200</Amount>\n" +
-				"\t\t\t\t\t<DeductAmount/>\n" +
-				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
-				"\t\t\t\t\t<TaxAmount>-19.82</TaxAmount>\n" +
-				"\t\t\t\t\t<MxTotalAmount>-200</MxTotalAmount>\n" +
-				"\t\t\t\t\t<PolicyMark/>\n" +
-				"\t\t\t\t\t<TaxRateMark/>\n" +
-				"\t\t\t\t\t<PolicyName/>\n" +
-				"\t\t\t\t</ProductItem>\n" +
-				"\t\t\t\t<ProductItem>\n" +
-				"\t\t\t\t\t<VenderOwnCode/>\n" +
-				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
-				"\t\t\t\t\t<ProductName>东方明珠办公楼(GG)</ProductName>\n" +
-				"\t\t\t\t\t<RowType>0</RowType>\n" +
-				"\t\t\t\t\t<Spec/>\n" +
-				"\t\t\t\t\t<Unit/>\n" +
-				"\t\t\t\t\t<Quantity>2</Quantity>\n" +
-				"\t\t\t\t\t<UnitPrice>400</UnitPrice>\n" +
-				"\t\t\t\t\t<Amount>800</Amount>\n" +
-				"\t\t\t\t\t<DeductAmount/>\n" +
-				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
-				"\t\t\t\t\t<TaxAmount>79.28</TaxAmount>\n" +
-				"\t\t\t\t\t<MxTotalAmount>800</MxTotalAmount>\n" +
-				"\t\t\t\t\t<PolicyMark/>\n" +
-				"\t\t\t\t\t<TaxRateMark/>\n" +
-				"\t\t\t\t\t<PolicyName/>\n" +
-				"\t\t\t\t</ProductItem>\n" +
-				"\t\t\t\t<ProductItem>\n" +
-				"\t\t\t\t\t<VenderOwnCode/>\n" +
-				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
-				"\t\t\t\t\t<ProductName>火星星球(FG)</ProductName>\n" +
-				"\t\t\t\t\t<RowType>2</RowType>\n" +
-				"\t\t\t\t\t<Spec/>\n" +
-				"\t\t\t\t\t<Unit/>\n" +
-				"\t\t\t\t\t<Quantity>1</Quantity>\n" +
-				"\t\t\t\t\t<UnitPrice>100</UnitPrice>\n" +
-				"\t\t\t\t\t<Amount>100</Amount>\n" +
-				"\t\t\t\t\t<DeductAmount/>\n" +
-				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
-				"\t\t\t\t\t<TaxAmount>9.91</TaxAmount>\n" +
-				"\t\t\t\t\t<MxTotalAmount>100</MxTotalAmount>\n" +
-				"\t\t\t\t\t<PolicyMark/>\n" +
-				"\t\t\t\t\t<TaxRateMark/>\n" +
-				"\t\t\t\t\t<PolicyName/>\n" +
-				"\t\t\t\t</ProductItem>\n" +
-				"\t\t\t\t<ProductItem>\n" +
-				"\t\t\t\t\t<VenderOwnCode/>\n" +
-				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
-				"\t\t\t\t\t<ProductName>火星星球(FG)</ProductName>\n" +
-				"\t\t\t\t\t<RowType>1</RowType>\n" +
-				"\t\t\t\t\t<Spec/>\n" +
-				"\t\t\t\t\t<Unit/>\n" +
-				"\t\t\t\t\t<Quantity/>\n" +
-				"\t\t\t\t\t<UnitPrice/>\n" +
-				"\t\t\t\t\t<Amount>-100</Amount>\n" +
-				"\t\t\t\t\t<DeductAmount/>\n" +
-				"\t\t\t\t\t<TaxRate>0.11</TaxRate>\n" +
-				"\t\t\t\t\t<TaxAmount>-9.91</TaxAmount>\n" +
-				"\t\t\t\t\t<MxTotalAmount>-100</MxTotalAmount>\n" +
-				"\t\t\t\t\t<PolicyMark/>\n" +
-				"\t\t\t\t\t<TaxRateMark/>\n" +
-				"\t\t\t\t\t<PolicyName/>\n" +
-				"\t\t\t\t</ProductItem>\n" +
-				"\t\t\t</OrderDetails>\n" +
-				"\t\t\t<Payments>\n" +
-				"\t\t\t\t<PaymentItem>\n" +
-				"\t\t\t\t\t<PayCode>PT_05</PayCode>\n" +
-				"\t\t\t\t\t<PayPrice>500</PayPrice>\n" +
-				"\t\t\t\t</PaymentItem>\n" +
-				"\t\t\t\t<PaymentItem>\n" +
-				"\t\t\t\t\t<PayCode>PT_01</PayCode>\n" +
-				"\t\t\t\t\t<PayPrice>790</PayPrice>\n" +
-				"\t\t\t\t</PaymentItem>\n" +
-				"\n" +
-				"\t\t\t</Payments>\n" +
-				"\t\t</Order>\n" +
-				"\t</OrderSize>\n" +
-				"</Request>\n";
+		String InvoiceData="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+				"<Seller>\n" +
+				"\t<Identifier>310101123456780</Identifier>\n" +
+				"\t<!--Identifier必须，发票开具方税号String20，15、18或20位-->\n" +
+				"\t<Name>发票开具方名称2</Name>\n" +
+				"\t<!--Name必须，发票开具方名称String100-->\n" +
+				"\t<Address>某某路10号1203室</Address>\n" +
+				"\t<!--Address必须，发票开具方地址String100-->\n" +
+				"\t<TelephoneNo>021-55555555</TelephoneNo>\n" +
+				"\t<!--TelephoneNo必须，发票开具方电话String20-->\n" +
+				"\t<Bank>中国建设银行打浦桥支行</Bank>\n" +
+				"\t<!--Bank必须，发票开具方银行String100-->\n" +
+				"\t<BankAcc>123456789-0</BankAcc>\n" +
+				"\t<!--BankAcc必须，发票开具方银行账号String30-->\n" +
+				"\t<Drawer>开票人</Drawer>\n" +
+				"\t<!--Drawer必须，开票人String20-->\n" +
+				"\t<Payee>收款人</Payee>\n" +
+				"\t<!--Payee可选，收款人String20-->\n" +
+				"\t<Reviewer>复核人</Reviewer>\n" +
+				"\t<!--Reviewer可选，复核人String20-->\n" +
+				"\t<IssueType>01</IssueType>\n" +
+				"\t<!--IssueType必选，开票方式（01税控盘或金税盘开票，03税控盘组或税控服务器开票）String2-->\n" +
+				"\t<EticketLim>9999.99</EticketLim>\n" +
+				"\t<!--EticketLim可选，电子票开票限额，开具电票必须，即税控盘或金税盘的最大开票限额double（18,2）-->\n" +
+				"\t<SpecialticketLim>9999.99</SpecialticketLim>\n" +
+				"\t<!--SpecialticketLim可选，专用发票开票限额，开具专票必须，即税控盘或金税盘的最大开票限额double（18,2）-->\n" +
+				"\t<OrdinaryticketLim>9999.99</OrdinaryticketLim>\n" +
+				"\t<!--RdinaryticketLim可选，普通发票开票限额，开具普票必须，即税控盘或金税盘的最大开票限额double（18,2）-->\n" +
+				"\t<Clients size=\"1\">\n" +
+				"\t\t<Client>\n" +
+				"\t\t\t<ClientNO>gvc_04</ClientNO>\n" +
+				"\t\t\t<!--必须,开票点编号 ,每个开票点对应唯一编号，比如KP001，KP002，String（40）-->\n" +
+				"\t\t\t<Name>陆家嘴1店</Name>\n" +
+				"\t\t\t<!--必须,开票点名称String（40）-->\n" +
+				"\t\t\t<TaxEquip>1</TaxEquip>\n" +
+				"\t\t\t<!--必须，税控设备厂商,1表示百旺厂商设备，2表示航信厂商设备String（1）-->\n" +
+				"\t\t\t<EquipNum>499000135091</EquipNum>\n" +
+				"\t\t\t<!--必须，税控设备号，如果是盘则是盘号，服务器则是核心板版号String（12）-->\n" +
+				"\t\t\t<TaxDiskPass>税控盘密码</TaxDiskPass>\n" +
+				"\t\t\t<!--必须，TaxDiskPass税控盘密码（百旺一般为88888888，航信12345678.准确的需要插盘登录客户端获取）-->\n" +
+				"\t\t\t<CertiCipher>证书密码</CertiCipher>\n" +
+				"\t\t\t<!--当TaxEquip为1时必须，反之可选，CertiCipher证书密码（百旺一般为12345678.准确的需要插盘登录客户端获取）-->\n" +
+				"\t\t</Client>\n" +
+				"\t</Clients>\n" +
+				"</Seller>\n";
 
 
 		String xml01 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -455,7 +328,7 @@ public class HttpUtils {
 				"</Request>";
 		String Secret = getSign(InvoiceData,"08d39fb70c08eef4b4e92a5ec94fee90");
 		Map param = new HashMap();
-		param.put("methodName", "UploadOrderData");
+		param.put("methodName", "UploadCommonData");
 		param.put("AppKey","RJe766d3c9293b");
 		param.put("Secret", Secret);
 		param.put("Operation","01");

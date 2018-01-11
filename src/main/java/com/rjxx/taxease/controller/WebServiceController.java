@@ -9,18 +9,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.rjxx.taxease.service.*;
 import com.rjxx.taxeasy.service.GsxxService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.rjxx.taxease.service.DealOrderDataService;
-import com.rjxx.taxease.service.GetYkfpService;
-import com.rjxx.taxease.service.HanderJysjxxService;
-import com.rjxx.taxease.service.InvoiceService;
-import com.rjxx.taxease.service.UploadInvoiceService;
 
 @Controller
 @RequestMapping("/service")
@@ -45,6 +40,9 @@ public class WebServiceController {
 	
 	@Autowired
 	protected DealOrderDataService dealOrderDataService;
+
+	@Autowired
+	protected UploadCommonDataService uploadCommonDataService;
 
 	@Autowired
 	protected GsxxService   gsxxService ;
@@ -110,6 +108,8 @@ public class WebServiceController {
 			result = invoiceService.invoiceUpload(methodName, InvoiceData);
 		}else if(methodName.equals("UploadOrderData")){
 			result = dealOrderDataService.dealOrder(AppKey, Secret, Operation, InvoiceData);
+		}else if(methodName.equals("UploadCommonData")){
+			result = uploadCommonDataService.UploadCommonData(AppKey,Secret,InvoiceData);
 		}
 		
 

@@ -208,46 +208,111 @@ public class WebServiceTestCall {
     }
 
     public static void testinvoiceUpload() throws Exception {
-        final String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Request>" +
-                "    <TotalAmount>1</TotalAmount>" +
-                "    <SerialNumber>d00090d5949505</SerialNumber>" +
-                "    <Main>" +
-                "        <OrderNumber>700dd8899</OrderNumber>" +
-                "        <OrderDate>2016-07-11</OrderDate>" +
-                "        <OrderTime>06:08:41</OrderTime>" +
-                "        <Seller>" +
-                "            <Identifier>500102010003643</Identifier>" +
-                "            <Name>上海百旺测试3643</Name>" +
-                "            <Address>Shanghai JingAn District West Nanjing Road No.15, JingAn JiaLi Center Room 607</Address>" +
-                "            <TelephoneNumber>021-xxxxxxxx</TelephoneNumber>" +
-                "        </Seller>" +
-                "        <Buyer>" +
-                "            <Identifier/>" +
-                "            <Name>王五</Name>" +
-                "            <IsSend>1</IsSend>" +
-                "            <Payment>ALIPAY-FASTPAY</Payment>" +
-                "            <Address>&#x6c5f;&#x82cf;&#x7701;,&#x5357;&#x4eac;&#x5e02; CN &#x8f6f;&#x4ef6;&#x5927;&#x9053;108&#x53f7;&#x84dd;&#x7b79;&#x8c37;2&#x680b;1&#x5355;&#x5143;401 ;;;;210012;;;; &#x9648;&#x4e16;&#x6770;</Address>" +
-                "            <TelephoneNumber>18811049101</TelephoneNumber>" +
-                "            <Email>kangzhongxu@datarj.com</Email>" +
-                "        </Buyer>" +
-                "    </Main>" +
-                "    <Details size=\"2\">" +
-                "        <ProductItem>" +
-                "            <Description>Abercrombie and Fitch Apparel</Description>" +
-                "            <Unit>EACH</Unit>" +
-                "            <Quantity>1</Quantity>" +
-                "            <UnitPrice>1000</UnitPrice>" +
-                "            <Amount>1000.00</Amount>" +
-                "        </ProductItem>" +
-                "        <ProductItem>" +
-                "            <Description>Abercrombie and Fitch Apparel</Description>" +
-                "            <Unit>EACH</Unit>" +
-                "            <Quantity>1</Quantity>" +
-                "            <UnitPrice>1000</UnitPrice>" +
-                "            <Amount>1000.00</Amount>" +
-                "        </ProductItem>" +
-                "    </Details>" +
-                "</Request>";
+        final String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "\n" +
+                "<Request> \n" +
+                "  <TotalAmount>1</TotalAmount>  \n" +
+                "  <SerialNumber>7000219192884761815</SerialNumber>  \n" +
+                "  <Main> \n" +
+                "    <OrderNumber>70002191928</OrderNumber>  \n" +
+                "    <OrderDate>2017-10-27</OrderDate>  \n" +
+                "    <OrderTime>02:37:29</OrderTime>  \n" +
+                "    <Seller> \n" +
+                "      <Identifier>310106550096887</Identifier>  \n" +
+                "      <Name>#x4e0a;#x6d77;#x5929;#x5929;#x9c9c;#x679c;#x7535;#x5b50;#x5546;#x52a1;#x6709;#x9650;#x516c;#x53f8;</Name>  \n" +
+                "      <Address>Shanghai JingAn District West Nanjing Road No.15, JingAn JiaLi Center Room 607</Address>  \n" +
+                "      <TelephoneNumber>021-xxxxxxxx</TelephoneNumber> \n" +
+                "    </Seller>  \n" +
+                "    <Buyer> \n" +
+                "      <Identifier/>  \n" +
+                "      <Name>#x4e0a;#x6d77;#x8d3a;#x5229;#x6c0f;</Name>  \n" +
+                "      <IsSend>0</IsSend>  \n" +
+                "      <Payment>ALIPAY-FASTPAY</Payment>  \n" +
+                "      <Address>#x6c5f;#x82cf;#x7701;#x82cf;#x5dde;#x5e02; CN #x5343;#x706f;#x9547;#x5c11;#x537f;#x897f;#x8def;#x540d;#x4eba;#x534e;#x57ce;14#x680b;601#x53f7;#x9646;#x80e4;</Address>  \n" +
+                "      <TelephoneNumber>13818609648</TelephoneNumber>  \n" +
+                "      <Email>luyins1@163.com</Email> \n" +
+                "    </Buyer> \n" +
+                "  </Main>  \n" +
+                "  <Details size=\"1\"> \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>143.20</UnitPrice>  \n" +
+                "      <Amount>143.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>187.20</UnitPrice>  \n" +
+                "      <Amount>187.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>179.20</UnitPrice>  \n" +
+                "      <Amount>179.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>259.20</UnitPrice>  \n" +
+                "      <Amount>259.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>259.20</UnitPrice>  \n" +
+                "      <Amount>259.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>295.20</UnitPrice>  \n" +
+                "      <Amount>295.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>131.20</UnitPrice>  \n" +
+                "      <Amount>131.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>223.20</UnitPrice>  \n" +
+                "      <Amount>223.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>223.20</UnitPrice>  \n" +
+                "      <Amount>223.20</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>1240.00</UnitPrice>  \n" +
+                "      <Amount>1240.00</Amount> \n" +
+                "    </ProductItem>  \n" +
+                "    <ProductItem> \n" +
+                "      <Description>Abercrombie and Fitch Apparel</Description>  \n" +
+                "      <Unit>EACH</Unit>  \n" +
+                "      <Quantity>1.00</Quantity>  \n" +
+                "      <UnitPrice>1580.00</UnitPrice>  \n" +
+                "      <Amount>1580.00</Amount> \n" +
+                "    </ProductItem> \n" +
+                "  </Details> \n" +
+                "</Request>\n";
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient(WS_URL);
         String methodName = "invoiceUpload";
@@ -647,17 +712,123 @@ public class WebServiceTestCall {
         String newSign = DigestUtils.md5Hex(signSourceData);
         return newSign;
     }
+    public static String WS_URL = "https://192.168.12.107/webService/services/invoiceService?wsdl";
 
-   //public static String WS_URL = "http://open.datarj.com/webService/services/invoiceService?wsdl";
+    public static  void testWsdl() throws Exception {
+        String xml="<root>\n" +
+                "<fpxx>\n" +
+                "<SerialNo>ddbcee06256ab9996be1fcf3d296f4b8</SerialNo>\n" +
+                "<OrderNo>17120700007</OrderNo>\n" +
+                "<OrderDate>2017-12-08 09:03:29</OrderDate>\n" +
+                "<ClientNo>afb_asas</ClientNo>\n" +
+                "<FPClientName>个人</FPClientName>\n" +
+                "<FPClientTaxCode></FPClientTaxCode>\n" +
+                "<FPClientBankAccount></FPClientBankAccount>\n" +
+                "<FPClientAddressTel></FPClientAddressTel>\n" +
+                "<FPSellerTaxCode>91310107566588632G</FPSellerTaxCode>\n" +
+                "<FPSellerName>安付宝商务有限公司</FPSellerName>\n" +
+                "<FPSellerBankAccount>中国银行上海市溧阳路支行 044023445560219230</FPSellerBankAccount>\n" +
+                "<FPSellerAddressTel>上海市普陀区真光路1258号6楼608室 021-52629933</FPSellerAddressTel>\n" +
+                "<FPNotes></FPNotes>\n" +
+                "<FPInvoicer>周睿</FPInvoicer>\n" +
+                "<FPChecker>邹瑾</FPChecker>\n" +
+                "<FPCashier>周睿</FPCashier>\n" +
+                "<TotalAmount>10</TotalAmount>\n" +
+                "<PriceKind>0</PriceKind>\n" +
+                "<Email>1193951186@qq.com</Email>\n" +
+                "<FPListName></FPListName>\n" +
+                "<InvQDState>0</InvQDState>\n" +
+                "<fpmx count=\"1\">\n" +
+                "<group xh=\"1\">\n" +
+                "<MXGoodsName>预付卡</MXGoodsName>\n" +
+                "<MXStandard></MXStandard>\n" +
+                "<MXUnit></MXUnit>\n" +
+                "<MXNumber>1</MXNumber>\n" +
+                "<MXPrice>10</MXPrice>\n" +
+                "<MXAmount>10</MXAmount>\n" +
+                "<MXTaxRate>0</MXTaxRate>\n" +
+                "<MXTaxAmount>0</MXTaxAmount>\n" +
+                "</group>\n" +
+                "</fpmx>\n" +
+                "</fpxx>\n" +
+                "</root>";
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient(WS_URL);
+        String methodName = "CallService2";
+        //String Secret = getSign(InvoiceData,key);
+        Object[] objects = client.invoke(methodName,xml);
+        //输出调用结果
+        System.out.println(objects[0].toString());
+    }
+    public static void testuploadCommonData() throws Exception {
+        final String InvoiceData="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<Seller>\n" +
+                "\t<Identifier>310101123456780</Identifier>\n" +
+                "\t<!--Identifier必须，发票开具方税号String20，15、18或20位-->\n" +
+                "\t<Name>发票开具方名称2</Name>\n" +
+                "\t<!--Name必须，发票开具方名称String100-->\n" +
+                "\t<Address>某某路10号1203室</Address>\n" +
+                "\t<!--Address必须，发票开具方地址String100-->\n" +
+                "\t<TelephoneNo>021-55555555</TelephoneNo>\n" +
+                "\t<!--TelephoneNo必须，发票开具方电话String20-->\n" +
+                "\t<Bank>中国建设银行打浦桥支行</Bank>\n" +
+                "\t<!--Bank必须，发票开具方银行String100-->\n" +
+                "\t<BankAcc>123456789-0</BankAcc>\n" +
+                "\t<!--BankAcc必须，发票开具方银行账号String30-->\n" +
+                "\t<Drawer>开票人</Drawer>\n" +
+                "\t<!--Drawer必须，开票人String20-->\n" +
+                "\t<Payee>收款人</Payee>\n" +
+                "\t<!--Payee可选，收款人String20-->\n" +
+                "\t<Reviewer>复核人</Reviewer>\n" +
+                "\t<!--Reviewer可选，复核人String20-->\n" +
+                "\t<IssueType>01</IssueType>\n" +
+                "\t<!--IssueType必选，开票方式（01税控盘或金税盘开票，03税控盘组或税控服务器开票）String2-->\n" +
+                "\t<EticketLim>9999.99</EticketLim>\n" +
+                "\t<!--EticketLim可选，电子票开票限额，开具电票必须，即税控盘或金税盘的最大开票限额double（18,2）-->\n" +
+                "\t<SpecialticketLim>9999.99</SpecialticketLim>\n" +
+                "\t<!--SpecialticketLim可选，专用发票开票限额，开具专票必须，即税控盘或金税盘的最大开票限额double（18,2）-->\n" +
+                "\t<OrdinaryticketLim>9999.99</OrdinaryticketLim>\n" +
+                "\t<!--RdinaryticketLim可选，普通发票开票限额，开具普票必须，即税控盘或金税盘的最大开票限额double（18,2）-->\n" +
+                "\t<Clients size=\"1\">\n" +
+                "\t\t<Client>\n" +
+                "\t\t\t<ClientNO>gvc_04</ClientNO>\n" +
+                "\t\t\t<!--必须,开票点编号 ,每个开票点对应唯一编号，比如KP001，KP002，String（40）-->\n" +
+                "\t\t\t<Name>陆家嘴1店</Name>\n" +
+                "\t\t\t<!--必须,开票点名称String（40）-->\n" +
+                "\t\t\t<TaxEquip>1</TaxEquip>\n" +
+                "\t\t\t<!--必须，税控设备厂商,1表示百旺厂商设备，2表示航信厂商设备String（1）-->\n" +
+                "\t\t\t<EquipNum>499000135091</EquipNum>\n" +
+                "\t\t\t<!--必须，税控设备号，如果是盘则是盘号，服务器则是核心板版号String（12）-->\n" +
+                "\t\t\t<TaxDiskPass>税控盘密码</TaxDiskPass>\n" +
+                "\t\t\t<!--必须，TaxDiskPass税控盘密码（百旺一般为88888888，航信12345678.准确的需要插盘登录客户端获取）-->\n" +
+                "\t\t\t<CertiCipher>证书密码</CertiCipher>\n" +
+                "\t\t\t<!--当TaxEquip为1时必须，反之可选，CertiCipher证书密码（百旺一般为12345678.准确的需要插盘登录客户端获取）-->\n" +
+                "\t\t</Client>\n" +
+                "\t</Clients>\n" +
+                "</Seller>\n";
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient(WS_URL);
+        String methodName = "UploadCommonData";
+        String AppKey = "RJe766d3c9293b";
+        String key ="08d39fb70c08eef4b4e92a5ec94fee90";
+        String Secret = getSign(InvoiceData,key);
+        Object[] objects = client.invoke(methodName, AppKey, Secret,InvoiceData);
+        //输出调用结果
+        System.out.println(objects[0].toString());
+    }
+
+   //public static String WS_URL = "http://open2.datarj.com/webService/services/invoiceService?wsdl";
    //public static String WS_URL = "http://test.datarj.com/webService/services/invoiceService?wsdl";
-   public static String WS_URL = "http://localhost:8080/services/invoiceService?wsdl";
 
     public static void main(String[] args) throws Exception {
         //testCallQuery();
         //testUploadOrder();
         //testCallService();
         //testinvoiceUpload();
-        testuploadOrderData();
+        //testuploadOrderData();
+       // testuploadCommonData();
+        testWsdl();
+
     }
 
 }

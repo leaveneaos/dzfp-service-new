@@ -1,5 +1,7 @@
 package com.rjxx.taxease.utils;
 
+import com.rjxx.taxease.service.result.CommData;
+import com.rjxx.taxease.service.result.CommDataResult;
 import com.rjxx.taxease.service.result.DefaultResult;
 import com.rjxx.utils.XmlJaxbUtils;
 
@@ -23,7 +25,7 @@ public class ResponeseUtils {
 
     public static String printFailure1(String errorMessage) {
         DefaultResult defaultResult = new DefaultResult();
-        defaultResult.setReturnCode("0000");
+        defaultResult.setReturnCode("9999");
         defaultResult.setReturnMessage(errorMessage);
         return XmlJaxbUtils.toXml(defaultResult);
     }
@@ -39,6 +41,29 @@ public class ResponeseUtils {
         defaultResult.setReturnCode("0000");
         defaultResult.setReturnMessage("待开票数据保存成功");
         return XmlJaxbUtils.toXml(defaultResult);
+    }
+
+    /**
+     * 公共数据初始化返回信息
+     *
+     * @param xfsh
+     * @return
+     */
+    public static String printCommDataResult(String returnCode,String returnMes, String xfsh,
+                                             String name,String loginName,String passWord) {
+        CommDataResult commDataResult = new CommDataResult();
+        CommData CommData = new CommData();
+        if(returnCode.equals("0000")){
+            CommData.setIdentifier(xfsh);
+            CommData.setName(name);
+            CommData.setLoginName(loginName);
+            CommData.setPassWord(passWord);
+            commDataResult.setCommData(CommData);
+        }
+        commDataResult.setReturnCode(returnCode);
+        commDataResult.setReturnMessage(returnMes);
+
+        return XmlJaxbUtils.toXml(commDataResult);
     }
 
 }

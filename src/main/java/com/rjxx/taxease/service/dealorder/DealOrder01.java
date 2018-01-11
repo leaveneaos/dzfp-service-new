@@ -4,11 +4,7 @@ import com.rjxx.taxease.service.result.DefaultResult;
 import com.rjxx.taxease.utils.CallDllWebServiceUtil;
 import com.rjxx.taxease.utils.ResponseUtil;
 import com.rjxx.taxease.utils.XmlMapUtils;
-import com.rjxx.taxeasy.bizcomm.utils.DiscountDealUtil;
-import com.rjxx.taxeasy.bizcomm.utils.FpclService;
-import com.rjxx.taxeasy.bizcomm.utils.InvoiceSplitUtils;
-import com.rjxx.taxeasy.bizcomm.utils.RemarkProcessingUtil;
-import com.rjxx.taxeasy.bizcomm.utils.SaveOrderData;
+import com.rjxx.taxeasy.bizcomm.utils.*;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.KplsVO4;
@@ -65,12 +61,10 @@ public class DealOrder01 implements IDealOrder {
     private DiscountDealUtil discountDealUtil;
 
     @Autowired
-    private JymxsqClService jymxsqClService;
+    private RemarkProcessingUtil remarkUtil;
 
     @Autowired
-    private InvoiceSplitUtils invoiceSplitUtils;
-    @Autowired
-    private RemarkProcessingUtil remarkUtil;
+    private XfService xfService;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -769,6 +763,18 @@ public class DealOrder01 implements IDealOrder {
             if (null != skp && !skp.equals("")) {
                 jyxxsq.setXfid(skp.getXfid());
                 jyxxsq.setSkpid(skp.getId());
+                //20180111 kzx 判断是否是使用初始配置参数（销方，开票点数据）
+                Cszb cszb = cszbservice.getSpbmbbh(gsdm,skp.getXfid(),skp.getId(),"sfsycshpz");
+                if(cszb.getCsz().equals("是")){
+                    Xf xf = xfService.findOne(skp.getXfid());
+                    Map resultSys = GetXfxx.getXfxx(xf,skp);
+                    if(null == jyxxsq.getSkr() || jyxxsq.getSkr().equals("")){
+                        jyxxsq.setSkr(String.valueOf(resultSys.get("skr")));
+                    }
+                    if(null == jyxxsq.getFhr() || jyxxsq.getFhr().equals("")){
+                        jyxxsq.setFhr(String.valueOf(resultSys.get("fhr")));
+                    }
+                }
             }
             /*fpzldm = jyxxsq.getFpzldm();
             if (fpzldm.equals("0")) { // 专票
