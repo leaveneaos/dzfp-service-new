@@ -86,6 +86,16 @@ public class DealOrder04 implements IDealOrder{
             }
             Result04 result04 = new Result04();
         try {
+            if (CNDNCode.equals("") || CNDNNo.equals("")) {
+                result04.setReturnCode("9999");
+                result04.setReturnMessage("原发票代码、发票号码不允许为空！");
+                return XmlJaxbUtils.toXml(result04);
+            }
+            if(!ServiceType.equals("1")){
+                result04.setReturnCode("9999");
+                result04.setReturnMessage("该接口的发票业务类型ServiceType必须为红子发票1");
+                return XmlJaxbUtils.toXml(result04);
+            }
             Kpls parms = new Kpls();
             parms.setFpdm(CNDNCode);
             parms.setFphm(CNDNNo);
@@ -120,16 +130,7 @@ public class DealOrder04 implements IDealOrder{
                 result04.setReturnMessage("该接口目前只支持电子发票红冲！");
                 return XmlJaxbUtils.toXml(result04);
             }*/
-            if (CNDNCode.equals("") || CNDNNo.equals("")) {
-                result04.setReturnCode("9999");
-                result04.setReturnMessage("原发票代码、发票号码不允许为空！");
-                return XmlJaxbUtils.toXml(result04);
-            }
-            if(!ServiceType.equals("1")){
-                result04.setReturnCode("9999");
-                result04.setReturnMessage("该接口的发票业务类型ServiceType必须为红子发票1");
-                return XmlJaxbUtils.toXml(result04);
-            }
+
             if(kpls==null){
                 result04.setReturnCode("9999");
                 result04.setReturnMessage("没有该笔数据！");
