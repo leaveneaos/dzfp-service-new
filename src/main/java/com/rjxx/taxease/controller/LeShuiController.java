@@ -132,10 +132,17 @@ public class LeShuiController {
                 String status = authBody.getStatus();
                 Jxfpxx jxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(invoiceCode, invoiceNo);
                 jxfpxx.setRzsj(authorizeTime);//*可能会变
-                jxfpxx.setRzbz(status);//*可能会变
+                if("0".equals(status)){
+                    jxfpxx.setRzbz("Y");
+                    jxhdjl.setRzbz("Y");
+
+                }else{
+                    jxfpxx.setRzbz("N");
+                    jxhdjl.setRzbz("N");
+                }
+                jxfpxx.setRzzt(status);//0成功 1失败 2已发送乐税
                 jxhdjl.setFplsh(jxfpxx.getFplsh());
                 jxhdjl.setRzsj(authorizeTime);
-                jxhdjl.setRzbz(status);
                 jxhdjl.setRzmsg(message);
                 jxfpxxJpaDao.save(jxfpxx);
                 jxhdjlJpaDao.save(jxhdjl);
