@@ -9,6 +9,7 @@ import com.rjxx.taxeasy.service.KpspmxService;
 import com.rjxx.taxeasy.service.leshui.LeshuiService;
 import com.rjxx.taxeasy.vo.KplsVO5;
 import com.rjxx.utils.TemplateUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -225,7 +226,9 @@ public class FpkjTest {
 
     @Autowired
     private LeshuiService leshuiService;
+
     @Test
+    @Ignore
     public void testJXDZCX(){
         System.out.println(leshuiService.fpcx("3100173130","37922151","91310112312480621D",
                 "rjxx",510));
