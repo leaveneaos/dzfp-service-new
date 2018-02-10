@@ -73,17 +73,20 @@ public class LeShuiController {
                 String authType = fp.getAuthType();
                 String invoicesStatus = fp.getInvoicesStatus();
                 String isAuth = fp.getIsAuth();
-                Jxfpxx jxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(fpdm, fphm);
-                jxfpxx.setRzsj(authTime);//*可能会变
-                jxfpxx.setRzlx(authType);//*可能会变
-                jxfpxx.setRzbz(isAuth);//*可能会变
-                jxfpxx.setFpzt(invoicesStatus);//*可能会变
+                Jxfpxx oldJxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(fpdm, fphm);
+                oldJxfpxx.setUniqueid(uniqueId);
+                oldJxfpxx.setGfsh(taxCode);
+                oldJxfpxx.setXgsj(new Date());
+                oldJxfpxx.setRzsj(authTime);//*可能会变
+                oldJxfpxx.setRzlx(authType);//*可能会变
+                oldJxfpxx.setRzbz(isAuth);//*可能会变
+                oldJxfpxx.setFpzt(invoicesStatus);//*可能会变
                 jxhdjl.setRzsj(authTime);
                 jxhdjl.setRzlx(authType);
                 jxhdjl.setRzbz(isAuth);
                 jxhdjl.setFpzt(invoicesStatus);
-                jxhdjl.setFplsh(jxfpxx.getFplsh());
-                jxfpxxJpaDao.save(jxfpxx);
+                jxhdjl.setFplsh(oldJxfpxx.getFplsh());
+                jxfpxxJpaDao.save(oldJxfpxx);
                 jxhdjlJpaDao.save(jxhdjl);
             }
             return success();
@@ -130,21 +133,24 @@ public class LeShuiController {
                 Date authorizeTime = authBody.getAuthorizeTime();
                 String message = authBody.getMessage();
                 String status = authBody.getStatus();
-                Jxfpxx jxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(invoiceCode, invoiceNo);
-                jxfpxx.setRzsj(authorizeTime);//*可能会变
+                Jxfpxx oldJxfpxx = jxfpxxJpaDao.findByFpdmAndFphm(invoiceCode, invoiceNo);
+                oldJxfpxx.setXgsj(new Date());
+                oldJxfpxx.setBatchid(batchId);
+                oldJxfpxx.setUniqueid(uniqueId);
+                oldJxfpxx.setRzsj(authorizeTime);//*可能会变
                 if("0".equals(status)){
-                    jxfpxx.setRzbz("Y");
+                    oldJxfpxx.setRzbz("Y");
                     jxhdjl.setRzbz("Y");
 
                 }else{
-                    jxfpxx.setRzbz("N");
+                    oldJxfpxx.setRzbz("N");
                     jxhdjl.setRzbz("N");
                 }
-                jxfpxx.setRzzt(status);//0成功 1失败 2已发送乐税
-                jxhdjl.setFplsh(jxfpxx.getFplsh());
+                oldJxfpxx.setRzzt(status);//0成功 1失败 2已发送乐税
+                jxhdjl.setFplsh(oldJxfpxx.getFplsh());
                 jxhdjl.setRzsj(authorizeTime);
                 jxhdjl.setRzmsg(message);
-                jxfpxxJpaDao.save(jxfpxx);
+                jxfpxxJpaDao.save(oldJxfpxx);
                 jxhdjlJpaDao.save(jxhdjl);
             }
             return success();

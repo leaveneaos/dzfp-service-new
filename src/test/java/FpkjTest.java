@@ -6,6 +6,7 @@ import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.service.KplsService;
 import com.rjxx.taxeasy.service.KpspmxService;
+import com.rjxx.taxeasy.service.leshui.LeshuiService;
 import com.rjxx.taxeasy.vo.KplsVO5;
 import com.rjxx.utils.TemplateUtils;
 import org.junit.Test;
@@ -220,5 +221,13 @@ public class FpkjTest {
         }
         result.put("jymxsqList",jymxsqList);
         return result;
+    }
+
+    @Autowired
+    private LeshuiService leshuiService;
+    @Test
+    public void testJXDZCX(){
+        System.out.println(leshuiService.fpcx("3100173130","37922151","91310112312480621D",
+                "rjxx",510));
     }
 }
