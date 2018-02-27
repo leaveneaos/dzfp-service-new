@@ -116,9 +116,22 @@ public class DealOrder01 implements IDealOrder {
             //处理折扣行数据
             jymxsqClList = discountDealUtil.dealDiscount(jyxxsqList, jymxsq2List, jyzfmxList, gsdm);
             //备注处理方式
-            jyxxsqList = remarkUtil.dealRemark(jyxxsqList, jyzfmxList, gsdm);
-            //保存申请及明细数据
-            String tmp2 = saveorderdata.saveAllData(jyxxsqList, jymxsqList,jyzfmxList,jymxsqClList);
+            String bzjg ="";
+            try {
+                jyxxsqList = remarkUtil.dealRemark(jyxxsqList, gsdm);//根据参数设置处理备注
+                jyxxsqList = remarkUtil.dealZfRemark(jyxxsqList, jyzfmxList, gsdm);//处理支付备注
+            }catch (Exception e){
+                //e.printStackTrace();
+                bzjg ="9999";
+            }
+            String tmp2 = "";
+            if(!bzjg.equals("")){
+                tmp2 ="处理备注出错！";
+            }else{
+                //保存申请及明细数据
+                tmp2 = saveorderdata.saveAllData(jyxxsqList, jymxsqList,jyzfmxList,jymxsqClList);
+            }
+
             //String tmp2 ="123";
             // 保存操作成功与否
             if (null != tmp2 && !tmp2.equals("")) {
