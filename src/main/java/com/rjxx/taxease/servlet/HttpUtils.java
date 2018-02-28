@@ -72,8 +72,8 @@ public class HttpUtils {
 
 		String xml01 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
 				+ "<Request>\n" +
-				"\t<ClientNO>gvc_01</ClientNO>\n" +
-				"\t<SerialNumber>JY21d7d081516d8219</SerialNumber>\n" +
+				"\t<ClientNO>gvc</ClientNO>\n" +
+				"\t<SerialNumber>JY21d72d1g261</SerialNumber>\n" +
 				"\t<InvType>12</InvType>\n" +
 				"\t<Spbmbbh>13.0</Spbmbbh>\n" +
 				"\t<Drawer>刘先生</Drawer>\n" +
@@ -82,8 +82,8 @@ public class HttpUtils {
 				"    <DataSource>1</DataSource>\n" +
 				"    <OpenId></OpenId>\n" +
 				"\t<Seller>\n" +
-				"\t\t<Identifier>500102010003697</Identifier>\n" +
-				"\t\t<Name>升级版测试用户3697</Name>\n" +
+				"\t\t<Identifier>500102010003643</Identifier>\n" +
+				"\t\t<Name>上海百旺测试3643</Name>\n" +
 				"\t\t<Address>漕宝路</Address>\n" +
 				"\t\t<TelephoneNo>021-23443453</TelephoneNo>\n" +
 				"\t\t<Bank>建设银行</Bank>\n" +
@@ -100,8 +100,8 @@ public class HttpUtils {
 				"\t\t\t\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
 				"\t\t\t\t<TotalAmount>201.9</TotalAmount>\n" +
 				"\t\t\t\t<TaxMark>1</TaxMark>\n" +
-				"\t\t\t\t<Remark></Remark>\n" +
-				"\t\t\t\t<ExtractedCode>00117d140d0d04068</ExtractedCode>\n" +
+				"\t\t\t\t<Remark>真的好开心呀</Remark>\n" +
+				"\t\t\t\t<ExtractedCode></ExtractedCode>\n" +
 				"\t\t\t\t<Buyer>\n" +
 				"\t\t\t\t\t<CustomerType>0</CustomerType>\n" +
 				"\t\t\t\t\t<Identifier>91370600050948561M</Identifier>\n" +
@@ -110,7 +110,7 @@ public class HttpUtils {
 				"\t\t\t\t\t<TelephoneNo>200123455</TelephoneNo>\n" +
 				"\t\t\t\t\t<Bank>中国银行</Bank>\n" +
 				"\t\t\t\t\t<BankAcc>40023154555</BankAcc>\n" +
-				"\t\t\t\t\t<Email>kangzhongxu@datarj.com</Email>\n" +
+				"\t\t\t\t\t<Email>ch-unjie_.p-an@boge-rubb_er-plastics.com</Email>\n" +
 				"\t\t\t\t\t<IsSend>1</IsSend>\n" +
 				"\t\t\t\t\t<Recipient></Recipient>\n" +
 				"\t\t\t\t\t<ReciAddress></ReciAddress>\n" +
@@ -120,7 +120,7 @@ public class HttpUtils {
 				"\t\t\t<OrderDetails count=\"9\">\n" +
 				"\t\t\t\t<ProductItem>\n" +
 				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
-				"\t\t\t\t\t<ProductCode>1030303000000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductCode>1010303020100000000</ProductCode>\n" +
 				"\t\t\t\t\t<ProductName>白熊啤酒330ml</ProductName>\n" +
 				"\t\t\t\t\t<RowType>0</RowType>\n" +
 				"\t\t\t\t\t<Spec></Spec>\n" +
@@ -230,7 +230,7 @@ public class HttpUtils {
 				"\t\t\t\t</ProductItem>\n" +
 				"\t\t\t\t<ProductItem>\n" +
 				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
-				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductCode>1040107020000000000</ProductCode>\n" +
 				"\t\t\t\t\t<ProductName>菲律宾香蕉（YD)</ProductName>\n" +
 				"\t\t\t\t\t<RowType>0</RowType>\n" +
 				"\t\t\t\t\t<Spec></Spec>\n" +
@@ -296,7 +296,7 @@ public class HttpUtils {
 				"\t\t\t\t</ProductItem>\n" +
 				"\t\t\t\t<ProductItem>\n" +
 				"\t\t\t\t\t<VenderOwnCode></VenderOwnCode>\n" +
-				"\t\t\t\t\t<ProductCode>1010115010000000000</ProductCode>\n" +
+				"\t\t\t\t\t<ProductCode>1040107020000000000</ProductCode>\n" +
 				"\t\t\t\t\t<ProductName>201飞机盒包装（YD)</ProductName>\n" +
 				"\t\t\t\t\t<RowType>0</RowType>\n" +
 				"\t\t\t\t\t<Spec></Spec>\n" +
@@ -326,13 +326,13 @@ public class HttpUtils {
 				"\t\t</Order>\n" +
 				"\t</OrderSize>\n" +
 				"</Request>";
-		String Secret = getSign(InvoiceData,"08d39fb70c08eef4b4e92a5ec94fee90");
+		String Secret = getSign(xml01,"08d39fb70c08eef4b4e92a5ec94fee90");
 		Map param = new HashMap();
-		param.put("methodName", "UploadCommonData");
+		param.put("methodName", "UploadOrderData");
 		param.put("AppKey","RJe766d3c9293b");
 		param.put("Secret", Secret);
 		param.put("Operation","01");
-		param.put("InvoiceData",InvoiceData);
+		param.put("InvoiceData",xml01);
 		String jsonString = mapper.writeValueAsString(param);
 
 		BufferedReader reader = null;
