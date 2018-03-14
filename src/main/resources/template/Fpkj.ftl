@@ -78,7 +78,17 @@
 						</#if>
 					</TaxAmount>
 					<MxTotalAmount>${jymxsq.jshj?c!}</MxTotalAmount>
-					<PolicyMark>${jymxsq.yhzcbs!}</PolicyMark>
+					<PolicyMark>
+						<#if (jymxsq.yhzcbs)??>
+							<#if jymxsq.yhzcbs!="">
+							${jymxsq.yhzcbs!}
+							<#else>
+                                0
+							</#if>
+						<#else>
+						${jymxsq.yhzcbs!"0"}
+						</#if>
+					</PolicyMark>
 					<TaxRateMark>${jymxsq.lslbz!}</TaxRateMark>
 					<PolicyName>${jymxsq.yhzcmc!}</PolicyName>
 				</ProductItem>
