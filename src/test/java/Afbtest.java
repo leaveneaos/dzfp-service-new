@@ -1,11 +1,15 @@
+import com.alibaba.fastjson.JSON;
 import com.rjxx.Application;
-import com.rjxx.taxeasy.service.UploadInvoiceService;
+import com.rjxx.taxeasy.bizcomm.utils.GetLsvBz;
+import com.rjxx.taxeasey.service.UploadInvoiceService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.Map;
 
 /**
  * Created by xlm on 2017/11/9.
@@ -18,7 +22,8 @@ public class Afbtest {
 
     @Autowired
     private UploadInvoiceService  uploadInvoiceService;
-
+    @Autowired
+    private GetLsvBz getLsvBz;
     @Test
     public void analysis(){
 
@@ -61,6 +66,8 @@ public class Afbtest {
              "</root>";
 
 
-     String result=uploadInvoiceService.callService2(xml);
+     //String result=uploadInvoiceService.callService2(xml);
+        Map yhzcMap=getLsvBz.getLsvBz(0.17,"6010000000000000000");
+        System.out.println(JSON.toJSONString(yhzcMap));
     }
 }
