@@ -283,7 +283,7 @@
                         <lib>${java.home}/lib/ext/sunjce_provider.jar</lib>
                     </libs>
                     <!-- 加载文件的过滤器，就是你的工程目录了-->
-                    <inFilter>com/rjxx/taxease/**</inFilter>
+                    <inFilter>com/rjxx/taxeasy/**</inFilter>
                     <!-- 对classes混淆，-->
                     <injar>classes</injar>
                     <!-- 输出目录-->
