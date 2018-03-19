@@ -67,7 +67,7 @@ public class Afbtest {
 
 
      //String result=uploadInvoiceService.callService2(xml);
-        Map yhzcMap=getLsvBz.getLsvBz(0.17,"6010000000000000000");
+        Map yhzcMap=getLsvBz.getLsvBz(0d,"1060201010700000000");
         System.out.println(JSON.toJSONString(yhzcMap));
     }
 }
