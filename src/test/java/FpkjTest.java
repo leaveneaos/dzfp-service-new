@@ -233,4 +233,69 @@ public class FpkjTest {
         System.out.println(leshuiService.fpcx("3100173130","37922151","91310112312480621D",
                 "rjxx",510));
     }
+
+
+
+
+
+    class Testss implements Runnable {
+
+        private String createTime;
+        private String openid;
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getOpenid() {
+            return openid;
+        }
+
+        public void setOpenid(String openid) {
+            this.openid = openid;
+        }
+
+        @Override
+        public void run() {
+            boolean paichong = paichong(createTime, openid);
+            System.out.println(paichong);
+        }
+    }
+
+    /**
+     * 排重
+     */
+    private static final int MESSAGE_CACHE_SIZE = 1000;
+    private static List<String> cacheList = new ArrayList<>(MESSAGE_CACHE_SIZE);
+    public   synchronized boolean paichong(String createTime, String fromUserName) {
+        String flag = createTime + fromUserName;
+        if (cacheList.contains(flag)) {
+            logger.info("cacheList里已存在"+flag);
+            return false;
+        }
+        if(cacheList.size()>=MESSAGE_CACHE_SIZE){
+            cacheList.remove(0);
+        }
+        cacheList.add(flag);
+        return true;
+    }
+
+
+    @Test
+    public void testpaichong(){
+        Testss test = new Testss();
+        test.setCreateTime("123");
+        test.setOpenid("456");
+        Testss test2 = new Testss();
+        test2.setCreateTime("123");
+        test2.setOpenid("456");
+        Thread thread1 = new Thread(test);
+        Thread thread2 = new Thread(test2);
+        thread1.start();
+        thread2.start();
+    }
 }
