@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.rjxx.taxease</groupId>
+    <groupId>com.rjxx.taxeasy</groupId>
     <artifactId>dzfp-service-new</artifactId>
     <packaging>war</packaging>
     <version>1.0.0-SNAPSHOT</version>
@@ -214,8 +214,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -240,7 +240,7 @@
                     <!-- 是否混淆-->
                     <obfuscate>true</obfuscate>
                     <!-- 指定生成文件分类 -->
-                    <attachArtifactClassifier>dzf-service-new-pg</attachArtifactClassifier>
+                    <attachArtifactClassifier>dzfp-service-new-pg</attachArtifactClassifier>
                     <options>
                         <!-- JDK目标版本1.8-->
                         <option>-target 1.8</option>
@@ -269,9 +269,9 @@
                         <!-- 不混淆所有的set/get方法，毕竟项目中使用的部分第三方框架会用到大量的set/get映射-->
                         <option>-keepclassmembers public class * {void set*(***);*** get*();}</option>
                         <!-- 不混淆threadpool包下的所有类名,且类中的方法也不混淆-->
-                        <option>-keep class com.rjxx.taxease.ws.**{ &lt;methods&gt;; }</option>
-                        <option>-keep class com.rjxx.taxease.vo.**{ *; }</option>
-                        <option>-keep class com.rjxx.taxease.service.result.**{ *; }</option>
+                        <option>-keep class com.rjxx.taxeasy.ws.**{ &lt;methods&gt;; }</option>
+                        <option>-keep class com.rjxx.taxeasy.vo.**{ *; }</option>
+                        <option>-keep class com.rjxx.taxeasy.service.result.**{ *; }</option>
                     </options>
                     <outjar>${project.build.finalName}-pg.war</outjar>
                     <!-- 添加依赖，这里你可以按你的需要修改，这里测试只需要一个JRE的Runtime包就行了 -->
@@ -283,7 +283,7 @@
                         <lib>${java.home}/lib/ext/sunjce_provider.jar</lib>
                     </libs>
                     <!-- 加载文件的过滤器，就是你的工程目录了-->
-                    <inFilter>com/rjxx/taxease/**</inFilter>
+                    <inFilter>com/rjxx/taxeasy/**</inFilter>
                     <!-- 对classes混淆，-->
                     <injar>classes</injar>
                     <!-- 输出目录-->
