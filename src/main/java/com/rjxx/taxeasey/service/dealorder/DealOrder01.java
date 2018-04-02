@@ -118,7 +118,7 @@ public class DealOrder01 implements IDealOrder {
             String bzjg ="";
             try {
                 jyxxsqList = remarkUtil.dealRemark(jyxxsqList, gsdm);//根据参数设置处理备注
-                jyxxsqList = remarkUtil.dealZfRemark(jyxxsqList, jyzfmxList, gsdm);//处理支付备注
+                jyxxsqList = remarkUtil.dealZfRemark(jyxxsqList, jyzfmxList,gsdm);//处理支付备注
             }catch (Exception e){
                 //e.printStackTrace();
                 bzjg ="9999";
