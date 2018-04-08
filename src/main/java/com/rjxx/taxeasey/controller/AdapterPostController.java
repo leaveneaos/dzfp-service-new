@@ -30,7 +30,12 @@ public class AdapterPostController {
 
     @RequestMapping(method = RequestMethod.POST)
     public Result post(@RequestBody String str) {
-        JSONObject jsonObject = JSON.parseObject(str);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSON.parseObject(str);
+        }catch (Exception e){
+            return ResultUtil.error("数据格式错误");
+        }
         String sign = jsonObject.getString("sign");
         String appId = jsonObject.getString("appId");
         JSONObject data = jsonObject.getJSONObject("data");
