@@ -20,7 +20,7 @@ public class HttpUtils {
 		ObjectMapper mapper = new ObjectMapper();
 		String InvoiceData="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<Seller>\n" +
-				"\t<Identifier>310101123456780</Identifier>\n" +
+				"\t<Identifier>310101123456783</Identifier>\n" +
 				"\t<!--Identifier必须，发票开具方税号String20，15、18或20位-->\n" +
 				"\t<Name>发票开具方名称2</Name>\n" +
 				"\t<!--Name必须，发票开具方名称String100-->\n" +
@@ -48,10 +48,14 @@ public class HttpUtils {
 				"\t<!--RdinaryticketLim可选，普通发票开票限额，开具普票必须，即税控盘或金税盘的最大开票限额double（18,2）-->\n" +
 				"\t<Clients size=\"1\">\n" +
 				"\t\t<Client>\n" +
-				"\t\t\t<ClientNO>gvc_04</ClientNO>\n" +
+				"\t\t\t<ClientNO>gvc_11</ClientNO>\n" +
 				"\t\t\t<!--必须,开票点编号 ,每个开票点对应唯一编号，比如KP001，KP002，String（40）-->\n" +
 				"\t\t\t<Name>陆家嘴1店</Name>\n" +
 				"\t\t\t<!--必须,开票点名称String（40）-->\n" +
+				"<BrandCode>pp03</BrandCode>\n" +
+				"\t\t\t<!--非必须,品牌代码，保证公司下唯一String（50）-->\n" +
+				"\t\t\t<BrandName>火狐01</BrandName>\n" +
+				"\t\t\t<!--非必须,品牌名称， String（50）-->\n"+
 				"\t\t\t<TaxEquip>1</TaxEquip>\n" +
 				"\t\t\t<!--必须，税控设备厂商,1表示百旺厂商设备，2表示航信厂商设备String（1）-->\n" +
 				"\t\t\t<EquipNum>499000135091</EquipNum>\n" +
@@ -68,7 +72,7 @@ public class HttpUtils {
 		String xml01 = "\n" +
 				"\t\t\t\t<Request>\n" +
 				"\t\t\t\t<ClientNO>alipay_02</ClientNO>\n" +
-				"\t\t\t\t<SerialNumber>JY21dddd2243</SerialNumber>\n" +
+				"\t\t\t\t<SerialNumber>JY21dddd2245</SerialNumber>\n" +
 				"\t\t\t\t<InvType>12</InvType>\n" +
 				"\t\t\t\t<Spbmbbh>13.0</Spbmbbh>\n" +
 				"\t\t\t\t<Drawer>刘先生</Drawer>\n" +
@@ -91,7 +95,7 @@ public class HttpUtils {
 				"\t\t\t\t<InvoiceList>0</InvoiceList>\n" +
 				"\t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
 				"\t\t\t\t<InvoiceSfdy>0</InvoiceSfdy>\n" +
-				"\t\t\t\t<OrderDate>2017-08-15 16:58:21</OrderDate>\n" +
+				"\t\t\t\t<OrderDate>2018-04-12 17:48:21</OrderDate>\n" +
 				"\t\t\t\t<ChargeTaxWay>2</ChargeTaxWay>\n" +
 				"\t\t\t\t<TotalAmount>1840.1</TotalAmount>\n" +
 				"\t\t\t\t<TaxMark>0</TaxMark>\n" +
@@ -140,13 +144,13 @@ public class HttpUtils {
 				"\t\t\t\t</Order>\n" +
 				"\t\t\t\t</OrderSize>\n" +
 				"\t\t\t\t</Request>";
-		String Secret = getSign(xml01,"a4bc50406ca43cad291be7818364bf10");
+		String Secret = getSign(InvoiceData,"a4bc50406ca43cad291be7818364bf10");
 		Map param = new HashMap();
-		param.put("methodName", "UploadOrderData");
+		param.put("methodName", "UploadCommonData");
 		param.put("AppKey","RJf046355349b8");
 		param.put("Secret", Secret);
 		param.put("Operation","01");
-		param.put("InvoiceData",xml01);
+		param.put("InvoiceData",InvoiceData);
 		String jsonString = mapper.writeValueAsString(param);
 
 		BufferedReader reader = null;

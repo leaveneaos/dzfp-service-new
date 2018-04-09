@@ -3,18 +3,22 @@ package com.rjxx.taxeasey.service.dealorder;
 
 import com.rjxx.taxeasey.utils.ResponeseUtils;
 import com.rjxx.taxeasey.utils.XmlMapUtils;
+import com.rjxx.taxeasy.dao.PpJpaDao;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.*;
+import com.rjxx.taxeasy.vo.SkpVo;
 import com.rjxx.time.TimeUtil;
 import com.rjxx.utils.PasswordUtils;
 import org.apache.axiom.om.OMElement;
+import org.apache.poi.xslf.util.PPTX2PNG;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service("dealCommData")
@@ -33,13 +37,16 @@ public class DealCommData {
     @Autowired
     private CszbService cszbService;
 
+    @Autowired
+    private PpJpaDao ppJpaDao;
+
     public String execute(Gsxx gsxx, String OrderData) {
         Map resultMap = new HashMap();
         String result = "";//处理返回后的结果信息
         //调用解析xml的公共方法。
         resultMap = dealCommonData(gsxx,OrderData);
         Xf xf = (Xf)resultMap.get("Xf");
-        List<Skp> skpList = (List)resultMap.get("skpList");
+        List<SkpVo> skpList = (List)resultMap.get("skpList");
         String issueType = (String)resultMap.get("issueType");
         //调用校验数据是否符合规则方法。
         result = checkCommData(xf,skpList,issueType);
@@ -69,9 +76,11 @@ public class DealCommData {
      * @param xf,skpList,issueType
      * @return  Map
      */
-    public Map saveXfAndSkp(Xf xf, List<Skp> skpList, String issueType){
+    @Transactional
+    public Map saveXfAndSkp(Xf xf, List<SkpVo> skpVoList, String issueType){
         Map resultMap = new HashMap();
         Roles roles = rolesService.findDefaultOneByParams(null);
+        Date lrsj = TimeUtil.getSysDate();
         if(null == roles || roles.equals("")){
             return resultMap;
         }else{
@@ -90,22 +99,40 @@ public class DealCommData {
             yh.setYxbz("1");
             yh.setLrry(1);
             yh.setXgry(1);
-            yh.setLrsj(TimeUtil.getSysDate());
-            yh.setXgsj(TimeUtil.getSysDate());
+            yh.setLrsj(lrsj);
+            yh.setXgsj(lrsj);
             try {
                 yhService.save(yh);
                 xf.setLrry(yh.getId());
                 xf.setXgry(yh.getId());
                 xfService.saveNew(xf);
-                for(int i =0;i<skpList.size();i++){
-                    Skp skp = skpList.get(i);
-                    skp.setXfid(xf.getId());
-                    skp.setLrry(yh.getId());
-                    skp.setXgry(yh.getId());
-                    skp.setLrsj(TimeUtil.getSysDate());
-                    skp.setXgsj(TimeUtil.getSysDate());
-                    skp.setGsdm(xf.getGsdm());
+                List<Skp> skpList = new ArrayList<>();
+                for(int i =0;i<skpVoList.size();i++){
+                    SkpVo skpvo = skpVoList.get(i);
+                    int pid = 0;
+                    if(null!=skpvo.getPpdm() && !skpvo.getPpdm().equals("")){
+                        Pp pp = new Pp();
+                        pp.setPpdm(skpvo.getPpdm());
+                        pp.setPpmc(skpvo.getPpmc());
+                        pp.setYxbz("1");
+                        pp.setLrry(yh.getId());
+                        pp.setXgry(yh.getId());
+                        pp.setLrsj(lrsj);
+                        pp.setXgsj(lrsj);
+                        pp.setGsdm(skpvo.getGsdm());
+                        pid = ppJpaDao.save(pp).getId();
+                    }
+                    skpvo.setXfid(xf.getId());
+                    skpvo.setLrry(yh.getId());
+                    skpvo.setXgry(yh.getId());
+                    skpvo.setLrsj(lrsj);
+                    skpvo.setXgsj(lrsj);
+                    skpvo.setGsdm(xf.getGsdm());
+                    skpvo.setPid(pid);
+                    Skp skp = new Skp(skpvo);
+                    skpList.add(skp);
                 }
+
                 skpJpaDao.save(skpList);
                 if(issueType.equals("03")){
                     Cszb cszb = new Cszb();
@@ -153,7 +180,7 @@ public class DealCommData {
         Document xmlDoc = null;
         Map resultMap = new HashMap();
         Xf xfBo = new Xf();
-        List<Skp> skpList = new ArrayList<Skp>();
+        List<SkpVo> skpList = new ArrayList<SkpVo>();
         try {
             xmlDoc = DocumentHelper.parseText(OrderData);
             root = XmlMapUtils.xml2OMElement(OrderData);
@@ -168,6 +195,8 @@ public class DealCommData {
         String sellerTel = (String) rootMap.get("TelephoneNo");
         String sellerBank = (String) rootMap.get("Bank");
         String sellerBankAcc = (String) rootMap.get("BankAcc");
+        String ybnsrqssj = (String) rootMap.get("Ybnsrqssj");
+        String ybnsrlx = (String) rootMap.get("Ybnsrlx");
         String drawer = (String) rootMap.get("Drawer");//开票人
         String payee = (String) rootMap.get("Payee");//收款人
         String reviewer = (String) rootMap.get("Reviewer");//复核人
@@ -183,6 +212,8 @@ public class DealCommData {
         xfBo.setXfyh(sellerBank);
         xfBo.setXfyhzh(sellerBankAcc);
         xfBo.setYxbz("1");
+        xfBo.setYbnsrqssj(ybnsrqssj);
+        xfBo.setYbnsrjyzs(ybnsrlx);
         xfBo.setFhr(reviewer);
         xfBo.setGsdm(gsxx.getGsdm());
         xfBo.setKpr(drawer);
@@ -204,7 +235,7 @@ public class DealCommData {
         List<Element> xnList = xmlDoc.selectNodes("Seller/Clients");
         if (null != xnList && xnList.size() > 0) {
             for (Element xn : xnList) {
-                Skp skp = new Skp();
+                SkpVo skpvo = new SkpVo();
                 Element clientMap = (Element) xn.selectSingleNode("Client");
                 // 开票点代码
                 String clientNO = "";
@@ -237,44 +268,59 @@ public class DealCommData {
                         && !clientMap.selectSingleNode("CertiCipher").equals("")) {
                     certiCipher = clientMap.selectSingleNode("CertiCipher").getText();
                 }
+
+                String brandCode ="";//品牌代码
+                if (null != clientMap.selectSingleNode("BrandCode")
+                        && !clientMap.selectSingleNode("BrandCode").equals("")) {
+                    brandCode = clientMap.selectSingleNode("BrandCode").getText();
+                }
+
+                String brandName ="";//品牌名称
+                if (null != clientMap.selectSingleNode("BrandName")
+                        && !clientMap.selectSingleNode("BrandName").equals("")) {
+                    brandName = clientMap.selectSingleNode("BrandName").getText();
+                }
                 //skp.setXfid(xfid);保存时需要更新进去
-                skp.setKpddm(clientNO);
-                skp.setKpdmc(clientName);
-                skp.setSkph(equipNum);
-                skp.setSbcs(taxEquip);
-                skp.setLxdz(sellerAddress);
-                skp.setSkpmm(taxDiskPass);
-                skp.setZsmm(certiCipher);
-                skp.setLxdh(sellerTel);
-                skp.setKhyh(sellerBank);
-                skp.setYhzh(sellerBankAcc);
-                skp.setSkr(payee);
-                skp.setFhr(reviewer);
-                skp.setKpr(drawer);
-                skp.setDpmax(eticketLim.equals("")?null:Double.valueOf(eticketLim));
-                skp.setFpfz(eticketLim.equals("")?null:Double.valueOf(eticketLim));
-                skp.setZpmax(specialticketLim.equals("")?null:Double.valueOf(specialticketLim));
-                skp.setZpfz(specialticketLim.equals("")?null:Double.valueOf(specialticketLim));
-                skp.setPpmax(ordinaryticketLim.equals("")?null:Double.valueOf(ordinaryticketLim));
-                skp.setPpfz(ordinaryticketLim.equals("")?null:Double.valueOf(ordinaryticketLim));
-                skp.setLrry(1);
-                skp.setLrsj(new Date());
-                skp.setXgry(1);
-                skp.setXgsj(new Date());
-                skp.setYxbz("1");
+                skpvo.setKpddm(clientNO);
+                skpvo.setKpdmc(clientName);
+                skpvo.setSkph(equipNum);
+                skpvo.setSbcs(taxEquip);
+                skpvo.setLxdz(sellerAddress);
+                skpvo.setSkpmm(taxDiskPass);
+                skpvo.setZsmm(certiCipher);
+                skpvo.setLxdh(sellerTel);
+                skpvo.setKhyh(sellerBank);
+                skpvo.setYhzh(sellerBankAcc);
+                skpvo.setSkr(payee);
+                skpvo.setFhr(reviewer);
+                skpvo.setKpr(drawer);
+                skpvo.setDpmax(eticketLim.equals("")?null:Double.valueOf(eticketLim));
+                skpvo.setFpfz(eticketLim.equals("")?null:Double.valueOf(eticketLim));
+                skpvo.setZpmax(specialticketLim.equals("")?null:Double.valueOf(specialticketLim));
+                skpvo.setZpfz(specialticketLim.equals("")?null:Double.valueOf(specialticketLim));
+                skpvo.setPpmax(ordinaryticketLim.equals("")?null:Double.valueOf(ordinaryticketLim));
+                skpvo.setPpfz(ordinaryticketLim.equals("")?null:Double.valueOf(ordinaryticketLim));
+                skpvo.setLrry(1);
+                skpvo.setLrsj(new Date());
+                skpvo.setXgry(1);
+                skpvo.setXgsj(new Date());
+                skpvo.setYxbz("1");
+                skpvo.setPpdm(brandCode);
+                skpvo.setPpmc(brandName);
                 String fplx = "";
-                if(null !=skp.getDpmax()&& !skp.getDpmax().equals("")){
+                if(null !=skpvo.getDpmax()&& !skpvo.getDpmax().equals("")){
                     fplx = "12";
                 }
-                if(null !=skp.getZpmax()&& !skp.getZpmax().equals("")) {
+                if(null !=skpvo.getZpmax()&& !skpvo.getZpmax().equals("")) {
                     fplx = fplx.equals("")?"01":fplx+",01";
                 }
-                if(null !=skp.getPpmax()&& !skp.getPpmax().equals("")) {
+                if(null !=skpvo.getPpmax()&& !skpvo.getPpmax().equals("")) {
                     fplx = fplx.equals("")?"02":fplx+",02";
                 }
-                skp.setKplx(fplx.equals("")?null:fplx);
-                skp.setWrzs("1");//无人值守 ：默认1
-                skpList.add(skp);
+                skpvo.setKplx(fplx.equals("")?null:fplx);
+                skpvo.setWrzs("1");//无人值守 ：默认1
+                skpvo.setGsdm(gsxx.getGsdm());
+                skpList.add(skpvo);
             }
         }
         resultMap.put("Xf",xfBo);
@@ -292,7 +338,7 @@ public class DealCommData {
      * @param issueType
      * @return
      */
-    private String checkCommData(Xf xf,List<Skp> list,String issueType){
+    private String checkCommData(Xf xf,List<SkpVo> list,String issueType){
 
         List<Xf> xfList = xfService.findAllByParams(xf);
         String result = "";
@@ -335,20 +381,29 @@ public class DealCommData {
             result +=  xf.getXfsh()+"销方已存在;";
         }
         if(null == issueType || issueType.equals("") ){
-            result +=  "IssueType开票方式不能为空";
+            result +=  "IssueType开票方式不能为空;";
         }else if(!issueType.equals("01") && !issueType.equals("03")){
             result +=  "IssueType开票方式必须为01或03;";
+        }
+
+        if(null !=xf.getYbnsrqssj() && !xf.getYbnsrqssj().equals("")){
+            if(xf.getYbnsrqssj().length()>6){
+                result +=  "Ybnsrqssj一般纳税人起始时间必须为YYYYMM;";
+            }
+        }
+        if(null !=xf.getYbnsrjyzs() && (!xf.getYbnsrjyzs().equals("2") || !xf.getYbnsrjyzs().equals("3") || !xf.getYbnsrjyzs().equals("4"))){
+            result +=  "Ybnsrlx一般纳税人类型只能为（2，3，4）的一种;";
         }
         if(null == list || list.isEmpty()){
             result +=  xf.getXfsh()+"Clients开票点节点不能为空;";
         }else{
-            Skp skp = list.get(0);
+            SkpVo skp = list.get(0);
             String kplx = skp.getKplx();
             if(null == kplx ||kplx.equals("")){
                 result +=  "开票限额必须填写一个;";
             }
             for(int i=0;i<list.size();i++){
-                Skp skp2 = list.get(i);
+                SkpVo skp2 = list.get(i);
                 Map params = new HashMap();
                 params.put("gsdm",skp2.getGsdm());
                 params.put("kpddm",skp2.getKpddm());
@@ -382,6 +437,12 @@ public class DealCommData {
                 if(null !=skp2.getSbcs() && !skp2.getSbcs().equals("") && skp2.getSbcs().equals("1")
                         && (null == skp2.getZsmm() || skp2.getZsmm().equals(""))){
                     result +=  "当TaxEquip为1时,CertiCipher证书密码不能为空;";
+                }
+                if(null != skp2.getPpdm() && !skp2.getPpdm().equals("")){
+                    List<Pp> pplist = ppJpaDao.findAllByPpdm(skp2.getPpdm(),skp2.getGsdm());
+                    if(!pplist.isEmpty()){
+                        result +=  "BrandCode品牌代码"+skp2.getPpdm()+"已存在";
+                    }
                 }
             }
         }
