@@ -72,7 +72,7 @@ public class HttpUtils {
 		String xml01 = "\n" +
 				"\t\t\t\t<Request>\n" +
 				"\t\t\t\t<ClientNO>alipay_02</ClientNO>\n" +
-				"\t\t\t\t<SerialNumber>JY21dddd2245</SerialNumber>\n" +
+				"\t\t\t\t<SerialNumber>JY21dddd2247</SerialNumber>\n" +
 				"\t\t\t\t<InvType>12</InvType>\n" +
 				"\t\t\t\t<Spbmbbh>13.0</Spbmbbh>\n" +
 				"\t\t\t\t<Drawer>刘先生</Drawer>\n" +
@@ -96,7 +96,7 @@ public class HttpUtils {
 				"\t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
 				"\t\t\t\t<InvoiceSfdy>0</InvoiceSfdy>\n" +
 				"\t\t\t\t<OrderDate>2018-04-12 17:48:21</OrderDate>\n" +
-				"\t\t\t\t<ChargeTaxWay>2</ChargeTaxWay>\n" +
+				"\t\t\t\t<ChargeTaxWay>0</ChargeTaxWay>\n" +
 				"\t\t\t\t<TotalAmount>1840.1</TotalAmount>\n" +
 				"\t\t\t\t<TaxMark>0</TaxMark>\n" +
 				"\t\t\t\t<Remark>真的好开心呀</Remark>\n" +
@@ -104,7 +104,7 @@ public class HttpUtils {
 				"\t\t\t\t<Buyer>\n" +
 				"\t\t\t\t<CustomerType>0</CustomerType>\n" +
 				"\t\t\t\t<Identifier>91370600050948561M</Identifier>\n" +
-				"\t\t\t\t<Name>个人</Name>\n" +
+				"\t\t\t\t<Name> 个 人 </Name>\n" +
 				"\t\t\t\t<Address>徐家汇</Address>\n" +
 				"\t\t\t\t<TelephoneNo>200123455</TelephoneNo>\n" +
 				"\t\t\t\t<Bank>中国银行</Bank>\n" +
@@ -144,13 +144,13 @@ public class HttpUtils {
 				"\t\t\t\t</Order>\n" +
 				"\t\t\t\t</OrderSize>\n" +
 				"\t\t\t\t</Request>";
-		String Secret = getSign(InvoiceData,"a4bc50406ca43cad291be7818364bf10");
+		String Secret = getSign(xml01,"a4bc50406ca43cad291be7818364bf10");
 		Map param = new HashMap();
-		param.put("methodName", "UploadCommonData");
+		param.put("methodName", "UploadOrderData");
 		param.put("AppKey","RJf046355349b8");
 		param.put("Secret", Secret);
 		param.put("Operation","01");
-		param.put("InvoiceData",InvoiceData);
+		param.put("InvoiceData",xml01);
 		String jsonString = mapper.writeValueAsString(param);
 
 		BufferedReader reader = null;
@@ -160,10 +160,10 @@ public class HttpUtils {
 			StringBuffer buffer = new StringBuffer();
 
 			// 接报文的地址
-			URL uploadServlet = new URL(
-					"http://localhost:8080/service");
 			/*URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/service");*/
+					"http://localhost:8080/service");*/
+			URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/service");
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数

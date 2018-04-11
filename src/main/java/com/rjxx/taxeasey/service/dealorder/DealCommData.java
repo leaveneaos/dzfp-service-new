@@ -1,17 +1,24 @@
 package com.rjxx.taxeasey.service.dealorder;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.taxeasey.utils.ResponeseUtils;
 import com.rjxx.taxeasey.utils.XmlMapUtils;
+import com.rjxx.taxeasy.dao.GsxxJpaDao;
 import com.rjxx.taxeasy.dao.PpJpaDao;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.domains.*;
+import com.rjxx.taxeasy.dto.ClientData;
+import com.rjxx.taxeasy.dto.CommonData;
+import com.rjxx.taxeasy.dto.SellerData;
 import com.rjxx.taxeasy.service.*;
 import com.rjxx.taxeasy.vo.SkpVo;
 import com.rjxx.time.TimeUtil;
 import com.rjxx.utils.PasswordUtils;
+import com.rjxx.utils.RJCheckUtil;
 import org.apache.axiom.om.OMElement;
-import org.apache.poi.xslf.util.PPTX2PNG;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -40,6 +47,9 @@ public class DealCommData {
     @Autowired
     private PpJpaDao ppJpaDao;
 
+    @Autowired
+    protected GsxxJpaDao gsxxJpaDao ;
+
     public String execute(Gsxx gsxx, String OrderData) {
         Map resultMap = new HashMap();
         String result = "";//处理返回后的结果信息
@@ -67,6 +77,65 @@ public class DealCommData {
             }
         }
         //return result;
+    }
+
+    /**
+     *
+     * @param OrderData
+     * @return
+     */
+    public String execute2(String OrderData) {
+        Map resultMap = new HashMap();
+        String result = "";//处理返回后的结果信息
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSON.parseObject(OrderData);
+        }catch (Exception e){
+            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！","","","","");
+        }
+        try {
+            String sign = jsonObject.getString("sign");
+            String appId = jsonObject.getString("appId");
+            JSONObject data = jsonObject.getJSONObject("seller");
+            Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
+            if(null == gsxx){
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护","","","","");
+            }
+            String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
+            if ("0".equals(check)) {
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过","","","","");
+            }else{
+                //调用解析Json的公共方法。
+                ObjectMapper mapper = new ObjectMapper();
+                CommonData commonData=mapper.readValue(jsonObject.toJSONString(), CommonData.class);
+                resultMap = dealCommonData2(gsxx, commonData);
+                Xf xf = (Xf)resultMap.get("Xf");
+                List<SkpVo> skpList = (List)resultMap.get("skpList");
+                String issueType = (String)resultMap.get("issueType");
+                //调用校验数据是否符合规则方法。
+                result = checkCommData(xf,skpList,issueType);
+                if(null != result && !result.equals("")){
+                    return ResponeseUtils.printResultToJson("9999",result,"","","","");
+                }else{
+                    //保存待处理数据。
+                    resultMap = saveXfAndSkp(xf,skpList,issueType);
+                    //保存失败
+                    if(null == resultMap || resultMap.isEmpty()){
+                        return ResponeseUtils.printResultToJson("9999","保存信息出错","","","","");
+                    }else{
+                        String dlyhid = (String)resultMap.get("dlyhid");
+                        String yhmm = (String)resultMap.get("yhmm");
+                        String xfsh = (String)resultMap.get("xfsh");
+                        String xfmc = (String)resultMap.get("xfmc");
+                        return ResponeseUtils.printResultToJson("0000","成功",xfsh,xfmc,dlyhid,yhmm);
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponeseUtils.printResultToJson("9999","公共信息初始化失败！","","","","");
+        }
+
     }
 
     /**
@@ -329,6 +398,99 @@ public class DealCommData {
         return resultMap;
     }
 
+
+    /**
+     * 解析Json转换成CommData数据方法。
+     *
+     * @param gsxx
+     * @param commonData
+     * @return
+     */
+    private Map dealCommonData2(Gsxx gsxx, CommonData commonData) {
+
+        Map resultMap = new HashMap();
+        Xf xfBo = new Xf();
+        SellerData sellerData = commonData.getSeller();
+        List<SkpVo> skpList = new ArrayList<SkpVo>();
+        xfBo.setXfmc(sellerData.getName());
+        xfBo.setXfsh(sellerData.getIdentifier());
+        xfBo.setSjjgbm(null);
+        xfBo.setXfdh(sellerData.getTelephoneNo());
+        xfBo.setXfdz(sellerData.getAddress());
+        xfBo.setXfyh(sellerData.getBank());
+        xfBo.setXfyhzh(sellerData.getBankAcc());
+        xfBo.setYxbz("1");
+        xfBo.setYbnsrqssj(sellerData.getYbnsrqssj());
+        xfBo.setYbnsrjyzs(sellerData.getYbnsrlx());
+        xfBo.setFhr(sellerData.getReviewer());
+        xfBo.setGsdm(gsxx.getGsdm());
+        xfBo.setKpr(sellerData.getDrawer());
+        xfBo.setSkr(sellerData.getPayee());
+        xfBo.setLrry(1);
+        xfBo.setXgry(1);
+        xfBo.setLrsj(new Date());
+        xfBo.setXgsj(new Date());
+        xfBo.setXflxr(null);
+        xfBo.setXfyb(null);
+        xfBo.setZfr(null);
+        xfBo.setDzpzdje(Double.valueOf(sellerData.getEticketLim()) ==null?null:sellerData.getEticketLim());
+        xfBo.setDzpfpje(Double.valueOf(sellerData.getEticketLim()) ==null?null:sellerData.getEticketLim());
+        xfBo.setZpzdje(Double.valueOf(sellerData.getSpecialticketLim()) ==null?null:sellerData.getSpecialticketLim());
+        xfBo.setZpfpje(Double.valueOf(sellerData.getSpecialticketLim()) ==null?null:sellerData.getSpecialticketLim());
+        xfBo.setPpzdje(Double.valueOf(sellerData.getOrdinaryticketLim()) ==null?null:sellerData.getOrdinaryticketLim());
+        xfBo.setPpfpje(Double.valueOf(sellerData.getOrdinaryticketLim()) ==null?null:sellerData.getOrdinaryticketLim());
+        List<ClientData> clientDataList = sellerData.getClient();
+        for(int i=0;i<clientDataList.size();i++){
+            ClientData clientData = clientDataList.get(i);
+            SkpVo skpvo = new SkpVo();
+            skpvo.setKpddm(clientData.getClientNO());
+            skpvo.setKpdmc(clientData.getName());
+            skpvo.setSkph(clientData.getEquipNum());
+            skpvo.setSbcs(clientData.getTaxEquip());
+            skpvo.setLxdz(xfBo.getXfdz());
+            skpvo.setSkpmm(clientData.getTaxDiskPass());
+            skpvo.setZsmm(clientData.getCertiCipher());
+            skpvo.setLxdh(xfBo.getXfdh());
+            skpvo.setKhyh(xfBo.getXfyh());
+            skpvo.setYhzh(xfBo.getXfyhzh());
+            skpvo.setSkr(xfBo.getSkr());
+            skpvo.setFhr(xfBo.getFhr());
+            skpvo.setKpr(xfBo.getKpr());
+            skpvo.setDpmax(xfBo.getDzpzdje());
+            skpvo.setFpfz(xfBo.getDzpfpje());
+            skpvo.setZpmax(xfBo.getZpzdje());
+            skpvo.setZpfz(xfBo.getZpfpje());
+            skpvo.setPpmax(xfBo.getPpzdje());
+            skpvo.setPpfz(xfBo.getPpfpje());
+            skpvo.setLrry(1);
+            skpvo.setLrsj(new Date());
+            skpvo.setXgry(1);
+            skpvo.setXgsj(new Date());
+            skpvo.setYxbz("1");
+            skpvo.setPpdm(clientData.getBrandCode());
+            skpvo.setPpmc(clientData.getBrandName());
+            String fplx = "";
+            if(null !=skpvo.getDpmax()&& !skpvo.getDpmax().equals("")){
+                fplx = "12";
+            }
+            if(null !=skpvo.getZpmax()&& !skpvo.getZpmax().equals("")) {
+                fplx = fplx.equals("")?"01":fplx+",01";
+            }
+            if(null !=skpvo.getPpmax()&& !skpvo.getPpmax().equals("")) {
+                fplx = fplx.equals("")?"02":fplx+",02";
+            }
+            skpvo.setKplx(fplx.equals("")?null:fplx);
+            skpvo.setWrzs("1");//无人值守 ：默认1
+            skpvo.setGsdm(gsxx.getGsdm());
+            skpList.add(skpvo);
+        }
+
+
+        resultMap.put("Xf",xfBo);
+        resultMap.put("skpList",skpList);
+        resultMap.put("issueType",sellerData.getIssueType());
+        return resultMap;
+    }
 
     /**
      * 校验待保存数据是否全部符合规则。
