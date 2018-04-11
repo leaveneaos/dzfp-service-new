@@ -242,6 +242,7 @@ public class DealOrder04 implements IDealOrder{
         jyxxsq.setLrry(kpls.getLrry());
         jyxxsq.setSfdyqd(kpls.getSfdyqd());
         jyxxsq.setHsbz("1");
+        jyxxsq.setZsfs(kpls.getZsfs()==null?"0":kpls.getZsfs());
         jyxxsq.setTqm(tqm);
         jyxxsqService.save(jyxxsq);
         result.put("jyxxsq", jyxxsq);
@@ -271,6 +272,7 @@ public class DealOrder04 implements IDealOrder{
             }catch (Exception e){
                 jymxsq.setSpdj(null);
             }
+            jymxsq.setKce(kpspmx.getKce()==null?0d:kpspmx.getKce());
             jymxsq.setSpdm(kpspmx.getSpdm());
             jymxsq.setSpse(-kpspmx.getSpse());
             jymxsq.setSpdw(kpspmx.getSpdw());
@@ -340,6 +342,7 @@ public class DealOrder04 implements IDealOrder{
         jyls1.setXgry(kpls.getLrry());
         jyls1.setXgsj(TimeUtil.getNowDate());
         jyls1.setSkpid(kpls.getSkpid());
+        jyls1.setZsfs(jyxxsq.getZsfs());
         jyls1.setSqlsh(jyxxsq.getSqlsh());
         if(jyls1.getGsdm().equals("Family")){
             jyls1.setTqm(jyls1.getJylsh());
@@ -377,6 +380,7 @@ public class DealOrder04 implements IDealOrder{
         kpls2.setSkr(jyls1.getSkr());
         kpls2.setKpr(jyls1.getKpr());
         kpls2.setFhr(jyls1.getFhr());
+        kpls2.setZsfs(jyls1.getZsfs());
         kpls2.setHztzdh(jyls1.getHztzdh());
         /*kpls2.setHkFpdm(jyls1.getYfpdm());
         kpls2.setHkFphm(jyls1.getYfphm());*/
@@ -443,6 +447,7 @@ public class DealOrder04 implements IDealOrder{
             kpspmx1.setSpsl(jyspmx.getSpsl());
             kpspmx1.setSpse(jyspmx.getSpse());
             kpspmx1.setHcrq(TimeUtil.getNowDate());
+            kpspmx1.setKce(jyspmx.getKce()==null?0d:jyspmx.getKce());
             kpspmx1.setLrsj(jyspmx.getLrsj());
             kpspmx1.setLrry(jyspmx.getLrry());
             kpspmx1.setXgsj(jyspmx.getXgsj());
