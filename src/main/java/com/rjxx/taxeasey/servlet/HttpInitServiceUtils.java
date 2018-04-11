@@ -42,7 +42,7 @@ public class HttpInitServiceUtils {
 				"    \"client\": [{\n" +
 				"      \"clientNO\": \"KP001\",\n" +
 				"      \"name\": \"陆家嘴1店\",\n" +
-				"      \"brandCode\": \"pp01\",\n" +
+				"      \"brandCode\": \"pp05\",\n" +
 				"      \"brandName\": \"火狐01\",\n" +
 				"      \"taxEquip\": \"1\",\n" +
 				"      \"equipNum\": \"499000135091\",\n" +
@@ -97,7 +97,7 @@ public class HttpInitServiceUtils {
 				buffer.append(strMessage);
 			}
 
-			System.out.println("接收返回值:" + buffer);
+			System.out.println("接收返回值:" + buffer.toString().replaceAll("\\\\",""));
 
 		} catch (java.net.ConnectException e) {
 			throw new Exception();

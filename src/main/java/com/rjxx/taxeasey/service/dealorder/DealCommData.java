@@ -544,8 +544,8 @@ public class DealCommData {
         }
         if(null == issueType || issueType.equals("") ){
             result +=  "IssueType开票方式不能为空;";
-        }else if(!issueType.equals("01") && !issueType.equals("03")){
-            result +=  "IssueType开票方式必须为01或03;";
+        }else if(!issueType.equals("01") && !issueType.equals("03") && !issueType.equals("04")){
+            result +=  "IssueType开票方式必须为01,03或04;";
         }
 
         if(null !=xf.getYbnsrqssj() && !xf.getYbnsrqssj().equals("")){
@@ -553,7 +553,7 @@ public class DealCommData {
                 result +=  "Ybnsrqssj一般纳税人起始时间必须为YYYYMM;";
             }
         }
-        if(null !=xf.getYbnsrjyzs() && (!xf.getYbnsrjyzs().equals("2") || !xf.getYbnsrjyzs().equals("3") || !xf.getYbnsrjyzs().equals("4"))){
+        if(null !=xf.getYbnsrjyzs() && (!xf.getYbnsrjyzs().equals("2") && !xf.getYbnsrjyzs().equals("3") && !xf.getYbnsrjyzs().equals("4"))){
             result +=  "Ybnsrlx一般纳税人类型只能为（2，3，4）的一种;";
         }
         if(null == list || list.isEmpty()){
