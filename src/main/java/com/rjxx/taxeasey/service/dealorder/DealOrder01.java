@@ -522,7 +522,7 @@ public class DealOrder01 implements IDealOrder {
                 jyxxsq.setBz(remark);
                 jyxxsq.setGflx(CustomerType);
                 jyxxsq.setGfsh(buyerIdentifier.replaceAll(" ",""));
-                jyxxsq.setGfmc(buyerName.replaceAll(" ",""));
+                jyxxsq.setGfmc(buyerName.trim());
                 jyxxsq.setGfdz(buyerAddress);
                 jyxxsq.setGfdh(buyerTelephoneNo);
                 jyxxsq.setGfyh(buyerBank);
