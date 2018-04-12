@@ -24,7 +24,7 @@ public class HttpInitServiceUtils {
 				"  \"appId\":\"RJf046355349b8\",\n" +
 				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
 				"  \"seller\": {\n" +
-				"    \"identifier\": \"310101123456789\",\n" +
+				"    \"identifier\": \"310101123456792\",\n" +
 				"    \"name\": \"发票开具方名称\",\n" +
 				"    \"address\": \"某某路10号1203室\",\n" +
 				"    \"telephoneNo\": \"021-55555555\",\n" +
@@ -40,9 +40,9 @@ public class HttpInitServiceUtils {
 				"    \"specialticketLim\": \"9999.99\",\n" +
 				"    \"ordinaryticketLim\": \"9999.99\",\n" +
 				"    \"client\": [{\n" +
-				"      \"clientNO\": \"KP001\",\n" +
+				"      \"clientNO\": \"KP002\",\n" +
 				"      \"name\": \"陆家嘴1店\",\n" +
-				"      \"brandCode\": \"pp05\",\n" +
+				"      \"brandCode\": \"pp06\",\n" +
 				"      \"brandName\": \"火狐01\",\n" +
 				"      \"taxEquip\": \"1\",\n" +
 				"      \"equipNum\": \"499000135091\",\n" +
@@ -51,8 +51,38 @@ public class HttpInitServiceUtils {
 				"    }]\n" +
 				"  }\n" +
 				"}\n";
-		JSONObject jsonObject = JSON.parseObject(data);
-		JSONObject Seller = jsonObject.getJSONObject("seller");
+
+		String seller ="{\n" +
+				"  \"appId\":\"RJf046355349b8\",\n" +
+				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
+				"  \"seller\": {\n" +
+				"\"yidentifier\": \"310101123456790\",\n" +
+				"    \"identifier\": \"310101123456790\",\n" +
+				"    \"name\": \"发票开具方名称2\",\n" +
+				"    \"address\": \"某某路10号1203室2\",\n" +
+				"    \"telephoneNo\": \"021-55555556\",\n" +
+				"    \"bank\": \"中国建设银行打浦桥支行2\",\n" +
+				"    \"bankAcc\": \"123456789-1\",\n" +
+				"  }\n" +
+				"}\n";
+
+		String client ="{\n" +
+				"  \"appId\":\"RJf046355349b8\",\n" +
+				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
+				"   \"client\": {\n" +
+				"\"identifier\": \"310101123456790\",\n" +
+				"\"type\": \"02\",\n" +
+				"      \"clientNO\": \"KP002\",\n" +
+				"      \"name\": \"陆家嘴3店\",\n" +
+				"      \"brandCode\": \"pp01\",\n" +
+				"      \"taxEquip\": \"1\",\n" +
+				"      \"equipNum\": \"499000135091\",\n" +
+				"      \"taxDiskPass\": \"税控盘密码\",\n" +
+				"      \"certiCipher\": \"证书密码\"\n" +
+				"    }\n" +
+				"}\n";
+		JSONObject jsonObject = JSON.parseObject(client);
+		JSONObject Seller = jsonObject.getJSONObject("client");
 		String Sign = getSign( JSON.toJSONString(Seller),"a4bc50406ca43cad291be7818364bf10");
 		jsonObject.put("sign", Sign);
 		String s = JSON.toJSONString(jsonObject);
@@ -70,7 +100,7 @@ public class HttpInitServiceUtils {
 
 			// 接报文的地址
 			URL uploadServlet = new URL(
-					"http://localhost:8080/initService/commDataUpload");
+					"http://localhost:8080/initService/clientDataUpdate");
 			/*URL uploadServlet = new URL(
 					"http://test.datarj.com/webService/service");*/
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet

@@ -77,7 +77,7 @@ public class ResponeseUtils {
                                              String name,String loginName,String passWord) {
         CommDataResult commDataResult = new CommDataResult();
         CommData CommData = new CommData();
-        if(returnCode.equals("0000")){
+        if(returnCode.equals("0000") && null!= loginName && !loginName.equals("")){
             CommData.setIdentifier(xfsh);
             CommData.setName(name);
             CommData.setLoginName(loginName);
