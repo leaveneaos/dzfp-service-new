@@ -37,7 +37,7 @@ public class CommDataController {
 	@RequestMapping(value ="/commDataUpload",method = RequestMethod.POST)
 	@ResponseBody
 	public String commDataUpload(@RequestBody String str){
-
+		System.out.println("初始化信息接口传入报文："+str);
 		String result = dealCommData.execute2(str);
 
 		// 设置返回报文的格式
@@ -67,7 +67,7 @@ public class CommDataController {
 	@RequestMapping(value ="/sellerDataUpdate",method = RequestMethod.POST)
 	@ResponseBody
 	public String sellerDataUpdate(@RequestBody String str){
-
+        System.out.println("销货方更新接口传入报文："+str);
 		String result = dealCommData.execute3(str);
 
 		// 设置返回报文的格式
@@ -96,7 +96,7 @@ public class CommDataController {
 	@RequestMapping(value ="/clientDataUpdate",method = RequestMethod.POST)
 	@ResponseBody
 	public String clientDataUpdate(@RequestBody String str){
-
+		System.out.println("门店信息更新接口传入报文："+str);
 		String result = dealCommData.execute4(str);
 
 		// 设置返回报文的格式
