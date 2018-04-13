@@ -1,10 +1,9 @@
 package com.rjxx.taxeasey.servlet;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rjxx.taxeasy.dto.CommonData;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.BufferedReader;
@@ -14,6 +13,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HttpInitServiceUtils {
@@ -52,19 +52,7 @@ public class HttpInitServiceUtils {
 				"  }\n" +
 				"}\n";
 
-		String seller ="{\n" +
-				"  \"appId\":\"RJf046355349b8\",\n" +
-				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
-				"  \"seller\": {\n" +
-				"\"yidentifier\": \"310101123456790\",\n" +
-				"    \"identifier\": \"310101123456790\",\n" +
-				"    \"name\": \"发票开具方名称2\",\n" +
-				"    \"address\": \"某某路10号1203室2\",\n" +
-				"    \"telephoneNo\": \"021-55555556\",\n" +
-				"    \"bank\": \"中国建设银行打浦桥支行2\",\n" +
-				"    \"bankAcc\": \"123456789-1\",\n" +
-				"  }\n" +
-				"}\n";
+		String seller ="{\"appId\":\"RJ9015cfe90f14\",\"seller\":{\"identifier\":\"fdrtgfghty01531\",\"name\":\"2112\",\"address\":\"12\",\"telephoneNo\":\"15021233087\",\"bank\":\"1212\",\"bankAcc\":\"322323\",\"yidentifier\":\"887776776556689\"},\"sign\":\"144b60669c79e1218eaef4ab2390e5c7\"}";
 
 		String client ="{\n" +
 				"  \"appId\":\"RJf046355349b8\",\n" +
@@ -81,10 +69,12 @@ public class HttpInitServiceUtils {
 				"      \"certiCipher\": \"证书密码\"\n" +
 				"    }\n" +
 				"}\n";
-		JSONObject jsonObject = JSON.parseObject(client);
-		JSONObject Seller = jsonObject.getJSONObject("client");
-		String Sign = getSign( JSON.toJSONString(Seller),"a4bc50406ca43cad291be7818364bf10");
-		jsonObject.put("sign", Sign);
+		HashMap<String, JSONObject> jsonObject = JSON.parseObject(seller,LinkedHashMap.class, Feature.OrderedField);
+		JSONObject Seller =  jsonObject.get("seller");
+		 //Seller = jsonObject.getJSONObject("seller");
+		String Sign = getSign( Seller.toString(),"b3f6e805c65f39a2c25e604eb1b08740");
+		JSONObject jsonObject1 = JSON.parseObject(seller);
+		jsonObject1.put("sign", Sign);
 		String s = JSON.toJSONString(jsonObject);
 		Map param = new HashMap();
 		ObjectMapper mapper = new ObjectMapper();
@@ -100,9 +90,9 @@ public class HttpInitServiceUtils {
 
 			// 接报文的地址
 			URL uploadServlet = new URL(
-					"http://localhost:8080/initService/clientDataUpdate");
+					"http://localhost:8080/initService/sellerDataUpdate");
 			/*URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/service");*/
+					"http://test.datarj.com/webService/initService/sellerDataUpdate");*/
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数
@@ -147,5 +137,10 @@ public class HttpInitServiceUtils {
 	public static void main(String args[]) throws Exception{
 		HttpInitServiceUtils tt = new HttpInitServiceUtils();
 		tt.sendMessage() ;
+		String signSourceData = "data={\"identifier\":\"fdrtgfghty01531\",\"name\":\"2112\",\"address\":\"12\",\"telephoneNo\":\"15021233087\",\"bank\":\"1212\",\"bankAcc\":\"322323\",\"yidentifier\":\"887776776556689\"}&key=b3f6e805c65f39a2c25e604eb1b08740";
+		String newSign =  DigestUtils.md5Hex(signSourceData);
+
+		System.out.println(newSign);
+		System.out.println(getSign("{\"identifier\":\"fdrtgfghty01531\",\"name\":\"2112\",\"address\":\"12\",\"telephoneNo\":\"15021233087\",\"bank\":\"1212\",\"bankAcc\":\"322323\",\"yidentifier\":\"887776776556689\"}","b3f6e805c65f39a2c25e604eb1b08740"));
 	}
 }

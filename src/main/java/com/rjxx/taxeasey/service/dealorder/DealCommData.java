@@ -3,6 +3,7 @@ package com.rjxx.taxeasey.service.dealorder;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.taxeasey.utils.ResponeseUtils;
 import com.rjxx.taxeasey.utils.XmlMapUtils;
@@ -87,16 +88,19 @@ public class DealCommData {
     public String execute2(String OrderData) {
         Map resultMap = new HashMap();
         String result = "";//处理返回后的结果信息
-        JSONObject jsonObject = null;
+        //JSONObject jsonObject = null;
+        HashMap<String, Object> jsonObject = null;
         try {
-            jsonObject = JSON.parseObject(OrderData);
+            //jsonObject = JSON.parseObject(OrderData);
+             jsonObject = JSON.parseObject(OrderData,LinkedHashMap.class, Feature.OrderedField);
+
         }catch (Exception e){
             return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！","","","","");
         }
         try {
-            String sign = jsonObject.getString("sign");
-            String appId = jsonObject.getString("appId");
-            JSONObject data = jsonObject.getJSONObject("seller");
+            String sign = String.valueOf(jsonObject.get("sign"));
+            String appId = String.valueOf(jsonObject.get("appId"));
+            JSONObject data = (JSONObject)jsonObject.get("seller");
             Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
             if(null == gsxx){
                 return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护","","","","");
@@ -107,7 +111,7 @@ public class DealCommData {
             }else{
                 //调用解析Json的公共方法。
                 ObjectMapper mapper = new ObjectMapper();
-                CommonData commonData=mapper.readValue(jsonObject.toJSONString(), CommonData.class);
+                CommonData commonData=mapper.readValue(JSON.parseObject(OrderData).toJSONString(), CommonData.class);
                 resultMap = dealCommonData2(gsxx, commonData);
                 Xf xf = (Xf)resultMap.get("Xf");
                 List<SkpVo> skpList = (List)resultMap.get("skpList");
@@ -147,16 +151,19 @@ public class DealCommData {
     public String execute4(String clientStr) {
         Map resultMap = new HashMap();
         String reCode = "";//处理返回后的结果信息
-        JSONObject jsonObject = null;
+        //JSONObject jsonObject = null;
+        HashMap<String, Object> jsonObject = null;
         try {
-            jsonObject = JSON.parseObject(clientStr);
+            //jsonObject = JSON.parseObject(clientStr);
+            jsonObject = JSON.parseObject(clientStr,LinkedHashMap.class, Feature.OrderedField);
+
         }catch (Exception e){
             return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！","","","","");
         }
         try {
-            String sign = jsonObject.getString("sign");
-            String appId = jsonObject.getString("appId");
-            JSONObject data = jsonObject.getJSONObject("client");
+            String sign = String.valueOf(jsonObject.get("sign"));
+            String appId = String.valueOf(jsonObject.get("appId"));
+            JSONObject data = (JSONObject)jsonObject.get("client");
             Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
             if(null == gsxx){
                 return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护","","","","");
@@ -191,17 +198,19 @@ public class DealCommData {
     public String execute3(String sellerStr) {
         Map resultMap = new HashMap();
         String reCode = "";//处理返回后的结果信息
-        JSONObject jsonObject = null;
+        //JSONObject jsonObject = null;
+        HashMap<String, Object> jsonObject = null;
         try {
-            jsonObject = JSON.parseObject(sellerStr);
+            //jsonObject = JSON.parseObject(sellerStr);
+            jsonObject = JSON.parseObject(sellerStr,LinkedHashMap.class, Feature.OrderedField);
         }catch (Exception e){
             return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！","","","","");
         }
         try {
-            String sign = jsonObject.getString("sign");
-            String appId = jsonObject.getString("appId");
-            JSONObject data = jsonObject.getJSONObject("seller");
-            Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
+            String sign = String.valueOf(jsonObject.get("sign"));
+            String appId = String.valueOf(jsonObject.get("appId"));
+            JSONObject data = (JSONObject)jsonObject.get("seller");
+            Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId.toString());
             if(null == gsxx){
                 return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护","","","","");
             }
