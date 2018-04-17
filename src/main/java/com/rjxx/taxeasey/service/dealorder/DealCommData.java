@@ -617,7 +617,7 @@ public class DealCommData {
                         xfParm2.setGsdm(gsxx.getGsdm());
                         xfParm2.setXfsh(sellerData.getIdentifier());
                         Xf xf2 = xfService.findOneByParams(xfParm2);
-                        if(null !=xf2){
+                        if(null !=xf2 && !sellerData.getYidentifier().equals(sellerData.getIdentifier())){
                             resultMap.put("reCode","9999");
                             resultMap.put("reMessage","销货方税号"+sellerData.getIdentifier()+"对应销货方已存在！");
                             return resultMap;
