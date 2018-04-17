@@ -666,7 +666,7 @@ public class DealCommData {
                         xf.setPpfpje(sellerData.getOrdinaryticketLim());
                     }
                 }
-                String res = checkSeller(xf,"04");
+                String res = checkSeller(xf,"04",true);
                 if(null != res && !res.equals("")){
                     resultMap.put("reCode","9999");
                     resultMap.put("reMessage",res);
@@ -885,7 +885,7 @@ public class DealCommData {
     private String checkCommData(Xf xf,List<SkpVo> list,String issueType){
 
         String result ="";
-        result=checkSeller(xf,issueType);
+        result=checkSeller(xf,issueType,false);
         if(null == list || list.isEmpty()){
             result +=  xf.getXfsh()+"Clients开票点节点不能为空;";
         }else{
@@ -969,7 +969,7 @@ public class DealCommData {
      * @param issueType
      * @return
      */
-    private String checkSeller(Xf xf,String issueType){
+    private String checkSeller(Xf xf,String issueType,boolean isupdate){
         List<Xf> xfList = xfService.findAllByParams(xf);
         String result = "";
         if(null == xf.getXfsh() || xf.getXfsh().equals("")){
@@ -1007,7 +1007,7 @@ public class DealCommData {
         }else if (xf.getKpr().length() > 4) {
             result += "Drawer开票人"+xf.getKpr()+"过长;";
         }
-        if(null != xfList && !xfList.isEmpty()){
+        if(null != xfList && !xfList.isEmpty() && !isupdate){
             result +=  xf.getXfsh()+"销方已存在;";
         }
         if(null == issueType || issueType.equals("") ){
