@@ -38,9 +38,9 @@ public class AdapterPostController {
         }
         String sign = jsonObject.getString("sign");
         String appId = jsonObject.getString("appId");
-        JSONObject data = jsonObject.getJSONObject("data");
+        String data = jsonObject.getString("data");
         Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
-        String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
+        String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), data, sign);
         if ("0".equals(check)) {
             return ResultUtil.error("验签失败");
         }
