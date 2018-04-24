@@ -40,6 +40,9 @@ public class AdapterPostController {
         String appId = jsonObject.getString("appId");
         String data = jsonObject.getString("data");
         Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
+        if(gsxx==null){
+            return ResultUtil.error("公司信息获取失败");
+        }
         String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), data, sign);
         if ("0".equals(check)) {
             return ResultUtil.error("验签失败");
