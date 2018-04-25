@@ -2,6 +2,7 @@ package com.rjxx.taxeasey.controller.common;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.rjxx.taxeasey.service.dealorder.DealCommData;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ public class CommDataController {
 	 * @return String
 	 */
 	@RequestMapping(value ="/commDataUpload",method = RequestMethod.POST)
+	@ApiOperation(value ="销货方，开票点信息新增接口" )
 	@ResponseBody
 	public String commDataUpload(@RequestBody String str){
 		System.out.println("初始化信息接口传入报文："+str);
@@ -66,6 +68,7 @@ public class CommDataController {
 	 */
 	@RequestMapping(value ="/sellerDataUpdate",method = RequestMethod.POST)
 	@ResponseBody
+	@ApiOperation(value ="销货方信息更新接口" )
 	public String sellerDataUpdate(@RequestBody String str){
         System.out.println("销货方更新接口传入报文："+str);
 		String result = dealCommData.execute3(str);
@@ -95,6 +98,7 @@ public class CommDataController {
 	 */
 	@RequestMapping(value ="/clientDataUpdate",method = RequestMethod.POST)
 	@ResponseBody
+	@ApiOperation(value = "门店信息新增或更新接口")
 	public String clientDataUpdate(@RequestBody String str){
 		System.out.println("门店信息更新接口传入报文："+str);
 		String result = dealCommData.execute4(str);

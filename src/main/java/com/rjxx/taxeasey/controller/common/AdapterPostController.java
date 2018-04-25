@@ -8,6 +8,7 @@ import com.rjxx.taxeasy.service.jkpz.JkpzService;
 import com.rjxx.utils.RJCheckUtil;
 import com.rjxx.utils.yjapi.Result;
 import com.rjxx.utils.yjapi.ResultUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class AdapterPostController {
     @Autowired
     private JkpzService jkpzService;
 
+    @ApiOperation(value = "交易数据上传/开票/红冲")
     @RequestMapping(method = RequestMethod.POST)
     public Result post(@RequestBody String str) {
         JSONObject jsonObject = null;
