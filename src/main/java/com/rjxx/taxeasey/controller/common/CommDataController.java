@@ -1,4 +1,4 @@
-package com.rjxx.taxeasey.controller;
+package com.rjxx.taxeasey.controller.common;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.rjxx.taxeasey.service.dealorder.DealCommData;
