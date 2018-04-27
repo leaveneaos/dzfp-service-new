@@ -36,15 +36,22 @@ public class AdapterPostController {
     @ApiOperation(value = "交易数据上传/开票/红冲")
     @RequestMapping(method = RequestMethod.POST)
     public Result post(@RequestBody String str) {
-        HashMap<String, Object> jsonObject = null;
+        HashMap<String, Object> map = null;
         try {
-            jsonObject = JSON.parseObject(str,LinkedHashMap.class, Feature.OrderedField);
+            map = JSON.parseObject(str,LinkedHashMap.class, Feature.OrderedField);
         }catch (Exception e){
+            e.printStackTrace();
             return ResultUtil.error("数据格式错误");
         }
-        String sign = (String) jsonObject.get("sign");
-        String appId = (String) jsonObject.get("appId");
-        JSONObject data = (JSONObject) jsonObject.get("data");
+        String sign = (String) map.get("sign");
+        String appId = (String) map.get("appId");
+        JSONObject data = null;
+        try {
+            data = (JSONObject) map.get("data");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.error("数据格式错误");
+        }
         Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
         if(gsxx==null){
             return ResultUtil.error("公司信息获取失败");
@@ -56,7 +63,7 @@ public class AdapterPostController {
         return jkpzService.jkpzInvoice(str);
     }
 
-
+//
 //    public static void main(String[] args) {
 //        AdapterPost post = new AdapterPost();
 //        AdapterData data = new AdapterData();
@@ -70,7 +77,7 @@ public class AdapterPostController {
 //        data.setDrawer("王亚辉");
 //        data.setVersion("19");
 //        data.setInvType("12");
-//        data.setSerialNumber("20180323103125X");
+//        data.setSerialNumber("20180323103125X"+ NumberUtil.getRandomLetter());
 //        data.setOrder(order);
 //        data.setSeller(seller);
 //
@@ -145,11 +152,12 @@ public class AdapterPostController {
 //        post.setSign(sign);
 //        post.setData(data);
 //        post.setClientNo("KP001");
+//        post.setReqType("01");
 //        String postJson=JSON.toJSONString(post);
 //        System.out.println("request="+postJson);
 //
-//        String url = "http://localhost:8080/kptService";
-//        String result = HttpClientUtil.doPostJson(url, postJson);
-//        System.out.println(result);
+////        String url = "http://test.datarj.com/webService/kptService";
+////        String result = HttpClientUtil.doPostJson(url, postJson);
+////        System.out.println(result);
 //    }
 }
