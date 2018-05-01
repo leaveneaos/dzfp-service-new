@@ -1,10 +1,9 @@
 package com.rjxx.taxeasey.servlet;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rjxx.taxeasy.dto.CommonData;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.BufferedReader;
@@ -14,6 +13,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HttpInitServiceUtils {
@@ -24,7 +24,7 @@ public class HttpInitServiceUtils {
 				"  \"appId\":\"RJf046355349b8\",\n" +
 				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
 				"  \"seller\": {\n" +
-				"    \"identifier\": \"310101123456789\",\n" +
+				"    \"identifier\": \"310101123456792\",\n" +
 				"    \"name\": \"发票开具方名称\",\n" +
 				"    \"address\": \"某某路10号1203室\",\n" +
 				"    \"telephoneNo\": \"021-55555555\",\n" +
@@ -40,9 +40,9 @@ public class HttpInitServiceUtils {
 				"    \"specialticketLim\": \"9999.99\",\n" +
 				"    \"ordinaryticketLim\": \"9999.99\",\n" +
 				"    \"client\": [{\n" +
-				"      \"clientNO\": \"KP001\",\n" +
+				"      \"clientNO\": \"KP002\",\n" +
 				"      \"name\": \"陆家嘴1店\",\n" +
-				"      \"brandCode\": \"pp01\",\n" +
+				"      \"brandCode\": \"pp06\",\n" +
 				"      \"brandName\": \"火狐01\",\n" +
 				"      \"taxEquip\": \"1\",\n" +
 				"      \"equipNum\": \"499000135091\",\n" +
@@ -51,9 +51,29 @@ public class HttpInitServiceUtils {
 				"    }]\n" +
 				"  }\n" +
 				"}\n";
-		JSONObject jsonObject = JSON.parseObject(data);
-		JSONObject Seller = jsonObject.getJSONObject("seller");
-		String Sign = getSign( JSON.toJSONString(Seller),"a4bc50406ca43cad291be7818364bf10");
+
+		String seller ="{\"appId\":\"RJ9015cfe90f14\",\"seller\":{\"identifier\":\"876478787232988\",\"name\":\"的方式当2\",\"address\":\"18738727123\",\"telephoneNo\":\"房贷\",\"bank\":\"f韩国国会\",\"bankAcc\":\"韩国国会\",\"issueType\":\"01\",\"drawer\":\"的方式当\",\"yidentifier\":\"876478787232988\"},\"sign\":\"0e731036a3bb3dbd1071e9867f77f712\"}";
+
+		String client ="{\n" +
+				"  \"appId\":\"RJf046355349b8\",\n" +
+				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
+				"   \"client\": {\n" +
+				"\"identifier\": \"310101123456790\",\n" +
+				"\"type\": \"02\",\n" +
+				"      \"clientNO\": \"KP002\",\n" +
+				"      \"name\": \"陆家嘴3店\",\n" +
+				"      \"brandCode\": \"pp01\",\n" +
+				"      \"taxEquip\": \"1\",\n" +
+				"      \"equipNum\": \"499000135091\",\n" +
+				"      \"taxDiskPass\": \"税控盘密码\",\n" +
+				"      \"certiCipher\": \"证书密码\"\n" +
+				"    }\n" +
+				"}\n";
+		HashMap<String, Object> jsonObject = JSON.parseObject(seller,LinkedHashMap.class, Feature.OrderedField);
+		JSONObject Seller =  (JSONObject)jsonObject.get("seller");
+		 //Seller = jsonObject.getJSONObject("seller");
+		String Sign = getSign( Seller.toString(),"b3f6e805c65f39a2c25e604eb1b08740");
+		//JSONObject jsonObject1 = JSON.parseObject(seller);
 		jsonObject.put("sign", Sign);
 		String s = JSON.toJSONString(jsonObject);
 		Map param = new HashMap();
@@ -69,10 +89,10 @@ public class HttpInitServiceUtils {
 			StringBuffer buffer = new StringBuffer();
 
 			// 接报文的地址
-			URL uploadServlet = new URL(
-					"http://localhost:8080/initService/commDataUpload");
 			/*URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/service");*/
+					"http://localhost:8080/initService/sellerDataUpdate");*/
+			URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/initService/sellerDataUpdate");
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数
@@ -97,7 +117,7 @@ public class HttpInitServiceUtils {
 				buffer.append(strMessage);
 			}
 
-			System.out.println("接收返回值:" + buffer);
+			System.out.println("接收返回值:" + buffer.toString().replaceAll("\\\\",""));
 
 		} catch (java.net.ConnectException e) {
 			throw new Exception();
@@ -117,5 +137,10 @@ public class HttpInitServiceUtils {
 	public static void main(String args[]) throws Exception{
 		HttpInitServiceUtils tt = new HttpInitServiceUtils();
 		tt.sendMessage() ;
+		String signSourceData = "data={\"identifier\":\"fdrtgfghty01531\",\"name\":\"2112\",\"address\":\"12\",\"telephoneNo\":\"15021233087\",\"bank\":\"1212\",\"bankAcc\":\"322323\",\"yidentifier\":\"887776776556689\"}&key=b3f6e805c65f39a2c25e604eb1b08740";
+		String newSign =  DigestUtils.md5Hex(signSourceData);
+
+		System.out.println(newSign);
+		System.out.println(getSign("{\"identifier\":\"fdrtgfghty01531\",\"name\":\"2112\",\"address\":\"12\",\"telephoneNo\":\"15021233087\",\"bank\":\"1212\",\"bankAcc\":\"322323\",\"yidentifier\":\"887776776556689\"}","b3f6e805c65f39a2c25e604eb1b08740"));
 	}
 }

@@ -367,7 +367,7 @@ public class DealOrder01 implements IDealOrder {
                 }
 
                 // 征税方式
-                String chargeTaxWay = "";
+                String chargeTaxWay = "0";
                 if (null != orderMainMap.selectSingleNode("ChargeTaxWay")
                         && !orderMainMap.selectSingleNode("ChargeTaxWay").equals("")) {
                     chargeTaxWay = orderMainMap.selectSingleNode("ChargeTaxWay").getText();
