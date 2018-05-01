@@ -52,7 +52,7 @@ public class HttpInitServiceUtils {
 				"  }\n" +
 				"}\n";
 
-		String seller ="{\"appId\":\"RJ9015cfe90f14\",\"seller\":{\"identifier\":\"fdrtgfghty01531\",\"name\":\"2112\",\"address\":\"12\",\"telephoneNo\":\"15021233087\",\"bank\":\"1212\",\"bankAcc\":\"322323\",\"yidentifier\":\"887776776556689\"},\"sign\":\"144b60669c79e1218eaef4ab2390e5c7\"}";
+		String seller ="{\"appId\":\"RJ9015cfe90f14\",\"seller\":{\"identifier\":\"876478787232988\",\"name\":\"的方式当2\",\"address\":\"18738727123\",\"telephoneNo\":\"房贷\",\"bank\":\"f韩国国会\",\"bankAcc\":\"韩国国会\",\"issueType\":\"01\",\"drawer\":\"的方式当\",\"yidentifier\":\"876478787232988\"},\"sign\":\"0e731036a3bb3dbd1071e9867f77f712\"}";
 
 		String client ="{\n" +
 				"  \"appId\":\"RJf046355349b8\",\n" +
@@ -69,12 +69,12 @@ public class HttpInitServiceUtils {
 				"      \"certiCipher\": \"证书密码\"\n" +
 				"    }\n" +
 				"}\n";
-		HashMap<String, JSONObject> jsonObject = JSON.parseObject(seller,LinkedHashMap.class, Feature.OrderedField);
-		JSONObject Seller =  jsonObject.get("seller");
+		HashMap<String, Object> jsonObject = JSON.parseObject(seller,LinkedHashMap.class, Feature.OrderedField);
+		JSONObject Seller =  (JSONObject)jsonObject.get("seller");
 		 //Seller = jsonObject.getJSONObject("seller");
 		String Sign = getSign( Seller.toString(),"b3f6e805c65f39a2c25e604eb1b08740");
-		JSONObject jsonObject1 = JSON.parseObject(seller);
-		jsonObject1.put("sign", Sign);
+		//JSONObject jsonObject1 = JSON.parseObject(seller);
+		jsonObject.put("sign", Sign);
 		String s = JSON.toJSONString(jsonObject);
 		Map param = new HashMap();
 		ObjectMapper mapper = new ObjectMapper();
@@ -89,10 +89,10 @@ public class HttpInitServiceUtils {
 			StringBuffer buffer = new StringBuffer();
 
 			// 接报文的地址
-			URL uploadServlet = new URL(
-					"http://localhost:8080/initService/sellerDataUpdate");
 			/*URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/initService/sellerDataUpdate");*/
+					"http://localhost:8080/initService/sellerDataUpdate");*/
+			URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/initService/sellerDataUpdate");
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数
