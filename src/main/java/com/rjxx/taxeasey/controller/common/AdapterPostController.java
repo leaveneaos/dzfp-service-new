@@ -10,6 +10,8 @@ import com.rjxx.utils.RJCheckUtil;
 import com.rjxx.utils.yjapi.Result;
 import com.rjxx.utils.yjapi.ResultUtil;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +35,12 @@ public class AdapterPostController {
     @Autowired
     private JkpzService jkpzService;
 
+    private static Logger logger = LoggerFactory.getLogger(AdapterPostController.class);
+
     @ApiOperation(value = "交易数据上传/开票/红冲")
     @RequestMapping(method = RequestMethod.POST)
     public Result post(@RequestBody String str) {
+        logger.info("源数据："+str);
         HashMap<String, Object> map = null;
         try {
             map = JSON.parseObject(str,LinkedHashMap.class, Feature.OrderedField);
