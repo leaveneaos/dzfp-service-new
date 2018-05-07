@@ -254,6 +254,9 @@ public class DealCommData {
             Yh yh = new Yh();
             String dlyhid = xf.getGsdm()+"_"+xf.getXfsh().substring(xf.getXfsh().length()-5,xf.getXfsh().length()).toLowerCase();
             yh.setDlyhid(dlyhid);
+            if("crestv".equals(xf.getGsdm())){
+                yh.setDlyhid(xf.getXfsh());
+            }
             yh.setSjhm(null);
             yh.setYx(null);
             yh.setXb("1");
