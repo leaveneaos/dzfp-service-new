@@ -548,6 +548,8 @@ public class DealCommData {
             skpvo.setLxdz(xfBo.getXfdz());
             skpvo.setSkpmm(clientData.getTaxDiskPass());
             skpvo.setZsmm(clientData.getCertiCipher());
+            skpvo.setDevicesn(clientData.getDeviceSN());
+            skpvo.setDevicepassword(clientData.getDevicePSWD());
             skpvo.setLxdh(xfBo.getXfdh());
             skpvo.setKhyh(xfBo.getXfyh());
             skpvo.setYhzh(xfBo.getXfyhzh());
@@ -724,6 +726,8 @@ public class DealCommData {
                     skpvo.setLxdz(clientData.getKpdz());
                     skpvo.setSkpmm(clientData.getTaxDiskPass());
                     skpvo.setZsmm(clientData.getCertiCipher());
+                    skpvo.setDevicesn(clientData.getDeviceSN());
+                    skpvo.setDevicepassword(clientData.getDevicePSWD());
                     skpvo.setLxdh(clientData.getKpdh());
                     skpvo.setKhyh(clientData.getKpyh());
                     skpvo.setYhzh(clientData.getKpyhzh());
