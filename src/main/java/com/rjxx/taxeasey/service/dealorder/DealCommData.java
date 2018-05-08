@@ -299,6 +299,9 @@ public class DealCommData {
                     skpvo.setXgsj(lrsj);
                     skpvo.setGsdm(xf.getGsdm());
                     skpvo.setPid(pid);
+                    if("crestv".equals(xf.getGsdm())){
+                        skpvo.setPid(0);
+                    }
                     Skp skp = new Skp(skpvo);
                     skpList.add(skp);
                 }
@@ -540,6 +543,8 @@ public class DealCommData {
         xfBo.setZpfpje(Double.valueOf(sellerData.getSpecialticketLim()) ==null?null:sellerData.getSpecialticketLim());
         xfBo.setPpzdje(Double.valueOf(sellerData.getOrdinaryticketLim()) ==null?null:sellerData.getOrdinaryticketLim());
         xfBo.setPpfpje(Double.valueOf(sellerData.getOrdinaryticketLim()) ==null?null:sellerData.getOrdinaryticketLim());
+        xfBo.setJpzdje(Double.valueOf(sellerData.getRollticketLim()) ==null?null:sellerData.getRollticketLim());
+        xfBo.setJpfpje(Double.valueOf(sellerData.getRollticketLim()) ==null?null:sellerData.getRollticketLim());
         List<ClientData> clientDataList = sellerData.getClient();
         for(int i=0;i<clientDataList.size();i++){
             ClientData clientData = clientDataList.get(i);
@@ -565,6 +570,8 @@ public class DealCommData {
             skpvo.setZpfz(xfBo.getZpfpje());
             skpvo.setPpmax(xfBo.getPpzdje());
             skpvo.setPpfz(xfBo.getPpfpje());
+            skpvo.setJpfz(xfBo.getJpfpje());
+            skpvo.setJpmax(xfBo.getJpzdje());
             skpvo.setLrry(1);
             skpvo.setLrsj(new Date());
             skpvo.setXgry(1);
