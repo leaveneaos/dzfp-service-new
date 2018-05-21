@@ -195,9 +195,9 @@ public class DealOrder04 implements IDealOrder{
         Map result = new HashMap();
         Kpls kpls = kplsService.findOne(kplsh);
         Jyxxsq jyxxsq = new Jyxxsq();
-        String jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
-        jyxxsq.setJylsh(tqm);
-        jyxxsq.setDdh(tqm);
+//        String jylsh = "JY" + new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date());
+        jyxxsq.setJylsh(jyls.getJylsh());
+        jyxxsq.setDdh(jyls.getDdh());
         jyxxsq.setGflxr(kpls.getGflxr());
         jyxxsq.setGfyb(kpls.getGfyb());
         jyxxsq.setBz(kpls.getBz());
