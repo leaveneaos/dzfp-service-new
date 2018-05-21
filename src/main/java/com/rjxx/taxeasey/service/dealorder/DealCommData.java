@@ -254,6 +254,9 @@ public class DealCommData {
             Yh yh = new Yh();
             String dlyhid = xf.getGsdm()+"_"+xf.getXfsh().substring(xf.getXfsh().length()-5,xf.getXfsh().length()).toLowerCase();
             yh.setDlyhid(dlyhid);
+            if("crestv".equals(xf.getGsdm())){
+                yh.setDlyhid(xf.getXfsh());
+            }
             yh.setSjhm(null);
             yh.setYx(null);
             yh.setXb("1");
@@ -296,6 +299,9 @@ public class DealCommData {
                     skpvo.setXgsj(lrsj);
                     skpvo.setGsdm(xf.getGsdm());
                     skpvo.setPid(pid);
+                    if("crestv".equals(xf.getGsdm())){
+                        skpvo.setPid(0);
+                    }
                     Skp skp = new Skp(skpvo);
                     skpList.add(skp);
                 }
@@ -537,6 +543,8 @@ public class DealCommData {
         xfBo.setZpfpje(Double.valueOf(sellerData.getSpecialticketLim()) ==null?null:sellerData.getSpecialticketLim());
         xfBo.setPpzdje(Double.valueOf(sellerData.getOrdinaryticketLim()) ==null?null:sellerData.getOrdinaryticketLim());
         xfBo.setPpfpje(Double.valueOf(sellerData.getOrdinaryticketLim()) ==null?null:sellerData.getOrdinaryticketLim());
+        xfBo.setJpzdje(Double.valueOf(sellerData.getRollticketLim()) ==null?null:sellerData.getRollticketLim());
+        xfBo.setJpfpje(Double.valueOf(sellerData.getRollticketLim()) ==null?null:sellerData.getRollticketLim());
         List<ClientData> clientDataList = sellerData.getClient();
         for(int i=0;i<clientDataList.size();i++){
             ClientData clientData = clientDataList.get(i);
@@ -548,6 +556,9 @@ public class DealCommData {
             skpvo.setLxdz(xfBo.getXfdz());
             skpvo.setSkpmm(clientData.getTaxDiskPass());
             skpvo.setZsmm(clientData.getCertiCipher());
+            skpvo.setDevicesn(clientData.getDeviceSN());
+            skpvo.setDevicepassword(clientData.getDevicePSWD());
+            skpvo.setDevicekey(clientData.getDeviceKEY());
             skpvo.setLxdh(xfBo.getXfdh());
             skpvo.setKhyh(xfBo.getXfyh());
             skpvo.setYhzh(xfBo.getXfyhzh());
@@ -560,6 +571,8 @@ public class DealCommData {
             skpvo.setZpfz(xfBo.getZpfpje());
             skpvo.setPpmax(xfBo.getPpzdje());
             skpvo.setPpfz(xfBo.getPpfpje());
+            skpvo.setJpfz(xfBo.getJpfpje());
+            skpvo.setJpmax(xfBo.getJpzdje());
             skpvo.setLrry(1);
             skpvo.setLrsj(new Date());
             skpvo.setXgry(1);
@@ -724,6 +737,9 @@ public class DealCommData {
                     skpvo.setLxdz(clientData.getKpdz());
                     skpvo.setSkpmm(clientData.getTaxDiskPass());
                     skpvo.setZsmm(clientData.getCertiCipher());
+                    skpvo.setDevicesn(clientData.getDeviceSN());
+                    skpvo.setDevicepassword(clientData.getDevicePSWD());
+                    skpvo.setDevicekey(clientData.getDeviceKEY());
                     skpvo.setLxdh(clientData.getKpdh());
                     skpvo.setKhyh(clientData.getKpyh());
                     skpvo.setYhzh(clientData.getKpyhzh());
@@ -774,6 +790,9 @@ public class DealCommData {
                     skpvo.setSkph(clientData.getEquipNum());
                     skpvo.setSbcs(clientData.getTaxEquip());
                     skpvo.setLxdz(clientData.getKpdz());
+                    skpvo.setDevicesn(clientData.getDeviceSN());
+                    skpvo.setDevicepassword(clientData.getDevicePSWD());
+                    skpvo.setDevicekey(clientData.getDeviceKEY());
                     skpvo.setSkpmm(clientData.getTaxDiskPass());
                     skpvo.setZsmm(clientData.getCertiCipher());
                     skpvo.setLxdh(clientData.getKpdh());
@@ -852,6 +871,15 @@ public class DealCommData {
                         }
                         if(null !=skpvo.getZsmm() && !skpvo.getZsmm().equals("")){
                             skptmp.setZsmm(skpvo.getZsmm());
+                        }
+                        if(null !=skpvo.getDevicesn() && !skpvo.getDevicesn().equals("")){
+                            skptmp.setDevicesn(skpvo.getDevicesn());
+                        }
+                        if(null !=skpvo.getDevicepassword() && !skpvo.getDevicepassword().equals("")){
+                            skptmp.setDevicepassword(skpvo.getDevicepassword());
+                        }
+                        if(null !=skpvo.getDevicekey() && !skpvo.getDevicekey().equals("")){
+                            skptmp.setDevicekey(skpvo.getDevicekey());
                         }
                         skptmp.setXgsj(new Date());
                         skpJpaDao.save(skptmp);
