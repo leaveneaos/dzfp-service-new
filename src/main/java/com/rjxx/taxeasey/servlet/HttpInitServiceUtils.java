@@ -21,36 +21,14 @@ public class HttpInitServiceUtils {
 	public void sendMessage() throws Exception {
 		System.out.println("调用servlet开始=================");
 		String data ="{\n" +
-				"  \"appId\":\"RJf046355349b8\",\n" +
-				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
-				"  \"seller\": {\n" +
-				"    \"identifier\": \"310101123456792\",\n" +
-				"    \"name\": \"发票开具方名称\",\n" +
-				"    \"address\": \"某某路10号1203室\",\n" +
-				"    \"telephoneNo\": \"021-55555555\",\n" +
-				"    \"bank\": \"中国建设银行打浦桥支行\",\n" +
-				"    \"bankAcc\": \"123456789-0\",\n" +
-				"    \"ybnsrqssj\": \"201803\",\n" +
-				"    \"ybnsrlx\": \"2\",\n" +
-				"    \"drawer\": \"开票人\",\n" +
-				"    \"payee\": \"收款人\",\n" +
-				"    \"reviewer\": \"复核人\",\n" +
-				"    \"issueType\": \"01\",\n" +
-				"    \"eticketLim\": \"9999.99\",\n" +
-				"    \"specialticketLim\": \"9999.99\",\n" +
-				"    \"ordinaryticketLim\": \"9999.99\",\n" +
-				"    \"client\": [{\n" +
-				"      \"clientNO\": \"KP002\",\n" +
-				"      \"name\": \"陆家嘴1店\",\n" +
-				"      \"brandCode\": \"pp06\",\n" +
-				"      \"brandName\": \"火狐01\",\n" +
-				"      \"taxEquip\": \"1\",\n" +
-				"      \"equipNum\": \"499000135091\",\n" +
-				"      \"taxDiskPass\": \"税控盘密码\",\n" +
-				"      \"certiCipher\": \"证书密码\"\n" +
-				"    }]\n" +
-				"  }\n" +
-				"}\n";
+				"\t\"appId\": \"RJ2673f9e77a35\",\n" +
+				"\t\"reqType\": \"03\",\n" +
+				"\t\"sign\": \"afafddaf2eweddew\",\n" +
+				"\t\"data\": {\n" +
+				"\t\t\"oderNo\": \"0510DDH1525936502949\",\n" +
+				"\t\t\"totalAmount\": 10\n" +
+				"\t}\n" +
+				"}";
 
 		String seller ="{\"appId\":\"RJ9015cfe90f14\",\"seller\":{\"identifier\":\"876478787232988\",\"name\":\"的方式当2\",\"address\":\"18738727123\",\"telephoneNo\":\"房贷\",\"bank\":\"f韩国国会\",\"bankAcc\":\"韩国国会\",\"issueType\":\"01\",\"drawer\":\"的方式当\",\"yidentifier\":\"876478787232988\"},\"sign\":\"0e731036a3bb3dbd1071e9867f77f712\"}";
 
@@ -69,10 +47,10 @@ public class HttpInitServiceUtils {
 				"      \"certiCipher\": \"证书密码\"\n" +
 				"    }\n" +
 				"}\n";
-		HashMap<String, Object> jsonObject = JSON.parseObject(seller,LinkedHashMap.class, Feature.OrderedField);
-		JSONObject Seller =  (JSONObject)jsonObject.get("seller");
+		HashMap<String, Object> jsonObject = JSON.parseObject(data,LinkedHashMap.class, Feature.OrderedField);
+		JSONObject Seller =  (JSONObject)jsonObject.get("data");
 		 //Seller = jsonObject.getJSONObject("seller");
-		String Sign = getSign( Seller.toString(),"b3f6e805c65f39a2c25e604eb1b08740");
+		String Sign = getSign( Seller.toString(),"f2a825b110d445f9b7dcc032e2b702f0");
 		//JSONObject jsonObject1 = JSON.parseObject(seller);
 		jsonObject.put("sign", Sign);
 		String s = JSON.toJSONString(jsonObject);
@@ -89,10 +67,10 @@ public class HttpInitServiceUtils {
 			StringBuffer buffer = new StringBuffer();
 
 			// 接报文的地址
-			/*URL uploadServlet = new URL(
-					"http://localhost:8080/initService/sellerDataUpdate");*/
 			URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/initService/sellerDataUpdate");
+					"http://localhost:8080/kptService");
+			/*URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/kptService");*/
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数
@@ -137,10 +115,8 @@ public class HttpInitServiceUtils {
 	public static void main(String args[]) throws Exception{
 		HttpInitServiceUtils tt = new HttpInitServiceUtils();
 		tt.sendMessage() ;
-		String signSourceData = "data={\"identifier\":\"fdrtgfghty01531\",\"name\":\"2112\",\"address\":\"12\",\"telephoneNo\":\"15021233087\",\"bank\":\"1212\",\"bankAcc\":\"322323\",\"yidentifier\":\"887776776556689\"}&key=b3f6e805c65f39a2c25e604eb1b08740";
-		String newSign =  DigestUtils.md5Hex(signSourceData);
 
-		System.out.println(newSign);
+		//System.out.println(newSign);
 		System.out.println(getSign("{\"identifier\":\"fdrtgfghty01531\",\"name\":\"2112\",\"address\":\"12\",\"telephoneNo\":\"15021233087\",\"bank\":\"1212\",\"bankAcc\":\"322323\",\"yidentifier\":\"887776776556689\"}","b3f6e805c65f39a2c25e604eb1b08740"));
 	}
 }
