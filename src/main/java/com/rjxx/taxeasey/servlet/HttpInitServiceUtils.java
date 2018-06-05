@@ -25,8 +25,8 @@ public class HttpInitServiceUtils {
 				"\t\"reqType\": \"03\",\n" +
 				"\t\"sign\": \"afafddaf2eweddew\",\n" +
 				"\t\"data\": {\n" +
-				"\t\t\"oderNo\": \"0510DDH1525936502949\",\n" +
-				"\t\t\"totalAmount\": 10\n" +
+				"\t\t\"orderNo\": \"22222cc\",\n" +
+				"\t\t\"totalAmount\": 5000\n" +
 				"\t}\n" +
 				"}";
 
@@ -67,10 +67,10 @@ public class HttpInitServiceUtils {
 			StringBuffer buffer = new StringBuffer();
 
 			// 接报文的地址
-			URL uploadServlet = new URL(
-					"http://localhost:8080/kptService");
 			/*URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/kptService");*/
+					"http://localhost:8080/kptService");*/
+			URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/kptService");
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数
