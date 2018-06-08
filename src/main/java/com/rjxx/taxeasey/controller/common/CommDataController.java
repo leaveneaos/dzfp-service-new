@@ -1,6 +1,7 @@
 package com.rjxx.taxeasey.controller.common;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasey.service.dealorder.DealCommData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +84,7 @@ public class CommDataController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		out.println(JSONUtils.toJSONString(result));
+		out.println(JSON.parseObject(result));
 		out.flush();
 		out.close();
 
