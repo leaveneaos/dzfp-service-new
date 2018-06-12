@@ -1,28 +1,23 @@
-import com.alibaba.fastjson.JSONObject;
 import com.rjxx.Application;
 import com.rjxx.taxeasy.bizcomm.utils.FpclService;
 import com.rjxx.taxeasy.bizcomm.utils.FphcService;
-import com.rjxx.taxeasy.bizcomm.utils.GetXmlUtil;
-import com.rjxx.taxeasy.bizcomm.utils.HttpUtils;
+import com.rjxx.taxeasy.dao.KplsJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.service.CszbService;
 import com.rjxx.taxeasy.service.JylsService;
 import com.rjxx.taxeasy.service.KplsService;
 import com.rjxx.taxeasy.service.KpspmxService;
-import com.rjxx.taxeasy.vo.KplsVO5;
-import com.rjxx.utils.TemplateUtils;
+import com.rjxx.utils.alipay.AlipaySignUtil;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -48,6 +43,7 @@ public class FphcTest {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Test
+    @Ignore
     public void fphc() {
 
         Map parms = new HashMap();
@@ -72,6 +68,31 @@ public class FphcTest {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Autowired
+    private KplsJpaDao kplsJpaDao;
+    @Autowired
+    private AlipaySignUtil alipaySignUtil;
+
+    @Test
+    public void testSyncAlipay() {
+        Kpls kpls = kplsJpaDao.findOneByDjh(1238339);
+        Map paramsMap=new HashMap();
+        paramsMap.put("kplsh",kpls.getKplsh());
+        List<Kpspmx> kpspmxList=  kpspmxService.findMxList(paramsMap);
+        try {
+            String s = AlipaySignUtil.syncInvoiceAlipay("2018052800152005720000005511", kpls, kpspmxList, "STANDARD_INVOICE", "STANDARD_INVOICE");
+            System.out.println(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testRefuse() {
+        alipaySignUtil.refuse("ddh123","2018052800152005720000005511","税号位数错误！");
+        System.out.println();
     }
 
 }
