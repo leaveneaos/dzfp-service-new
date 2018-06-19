@@ -53,7 +53,7 @@ public class CommDataController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		out.println(JSONUtils.toJSONString(result));
+		out.println(JSON.parseObject(result));
 		out.flush();
 		out.close();
 
@@ -114,7 +114,7 @@ public class CommDataController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		out.println(JSONUtils.toJSONString(result));
+		out.println(JSON.parseObject(result));
 		out.flush();
 		out.close();
 
