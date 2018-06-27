@@ -273,7 +273,7 @@ public class DealCommData {
                 String xfsh = data.getString("identifier");
                 String skph = data.getString("equipNum");
                 Map params = new HashMap();
-                params.put("gsdm",gsxx.getGsdm());
+//                params.put("gsdm",gsxx.getGsdm());
                 params.put("skph",skph);
                 params.put("xfsh",xfsh);
                 params.put("csz","04");
@@ -1080,8 +1080,8 @@ public class DealCommData {
         String result = "";
         if(null == xf.getXfsh() || xf.getXfsh().equals("")){
             result +=  "Identifier销方税号不能为空;";
-        }else if(!(xf.getXfsh().length() == 15 || xf.getXfsh().length() == 18 || xf.getXfsh().length() == 20 )){
-            result +=  "Identifier销方税号"+xf.getXfsh()+"只能为15,18,20位;";
+        }else if(!(xf.getXfsh().length() == 15 ||xf.getXfsh().length() == 178|| xf.getXfsh().length() == 18 || xf.getXfsh().length() == 20 )){
+            result +=  "Identifier销方税号"+xf.getXfsh()+"只能为15,17,18,20位;";
         }
         if(null == xf.getXfmc() || xf.getXfmc().equals("")){
             result +=  "Name销方名称不能为空;";
