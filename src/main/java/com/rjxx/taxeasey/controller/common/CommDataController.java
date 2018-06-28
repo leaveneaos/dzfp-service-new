@@ -1,9 +1,10 @@
 package com.rjxx.taxeasey.controller.common;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.rjxx.taxeasey.service.dealorder.DealCommData;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,38 @@ public class CommDataController {
 	@Autowired
 	protected DealCommData dealCommData;
 
+	private static Logger logger = LoggerFactory.getLogger(CommDataController.class);
+
+
+	/**
+	 * 销货方，开票点信息查询接口
+	 * @param str
+	 * @return String
+	 */
+	@RequestMapping(value ="/commDataQuery",method = RequestMethod.POST)
+	@ApiOperation(value ="销货方，开票点信息查询接口" )
+	@ResponseBody
+	public String commDataQuery(@RequestBody String str){
+		logger.info("销货方，开票点--查询接口传入报文："+str);
+		String result = dealCommData.execute5(str);
+
+		// 设置返回报文的格式
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		out.println(JSON.parseObject(result));
+		out.flush();
+		out.close();
+
+		return null;
+
+	}
 
 
 	/**
@@ -53,7 +86,7 @@ public class CommDataController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		out.println(JSONUtils.toJSONString(result));
+		out.println(JSON.parseObject(result));
 		out.flush();
 		out.close();
 
@@ -114,7 +147,7 @@ public class CommDataController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		out.println(JSONUtils.toJSONString(result));
+		out.println(JSON.parseObject(result));
 		out.flush();
 		out.close();
 
