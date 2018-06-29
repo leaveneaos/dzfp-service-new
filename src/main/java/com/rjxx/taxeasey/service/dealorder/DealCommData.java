@@ -1080,7 +1080,7 @@ public class DealCommData {
         String result = "";
         if(null == xf.getXfsh() || xf.getXfsh().equals("")){
             result +=  "Identifier销方税号不能为空;";
-        }else if(!(xf.getXfsh().length() == 15 ||xf.getXfsh().length() == 178|| xf.getXfsh().length() == 18 || xf.getXfsh().length() == 20 )){
+        }else if(!(xf.getXfsh().length() == 15 ||xf.getXfsh().length() == 17|| xf.getXfsh().length() == 18 || xf.getXfsh().length() == 20 )){
             result +=  "Identifier销方税号"+xf.getXfsh()+"只能为15,17,18,20位;";
         }
         if(null == xf.getXfmc() || xf.getXfmc().equals("")){
