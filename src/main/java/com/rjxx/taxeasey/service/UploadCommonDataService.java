@@ -1,5 +1,6 @@
 package com.rjxx.taxeasey.service;
 
+import com.rjxx.taxeasey.service.result.CommData;
 import com.rjxx.taxeasy.service.GsxxService;
 import com.rjxx.taxeasey.service.dealorder.DealCommData;
 import com.rjxx.taxeasey.utils.ResponeseUtils;
@@ -33,7 +34,7 @@ public class UploadCommonDataService {
             Gsxx gsxxBean = gsxxservice.findOneByParams(tempMap);
             //查询公司是否存在。不存在则提示校验不通过
             if (gsxxBean == null) {
-                return ResponeseUtils.printCommDataResult("9999","9060:" + AppId + "," + Sign+"公司信息未维护","","","","");
+                return ResponeseUtils.printCommDataResult("9999","9060:" + AppId + "," + Sign+"公司信息未维护",new HashMap());
             }else{
                 // 校验数据是否被篡改过
                 String key = gsxxBean.getSecretKey();
@@ -41,7 +42,7 @@ public class UploadCommonDataService {
                 String newSign = DigestUtils.md5Hex(signSourceData);
                 //签名没有通过
                 if (!Sign.equals(newSign)) {
-                    return ResponeseUtils.printCommDataResult("9999","9060:" + AppId + "," + Sign+"签名不通过","","","","");
+                    return ResponeseUtils.printCommDataResult("9999","9060:" + AppId + "," + Sign+"签名不通过",new HashMap());
                 }else{
                     //调用公共初始化接口数据方法
                     result = dealCommData.execute(gsxxBean,OrderData);

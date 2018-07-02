@@ -7,11 +7,13 @@ import com.alibaba.fastjson.parser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.taxeasey.service.result.CommQueryClientData;
 import com.rjxx.taxeasey.service.result.CommQueryData;
+import com.rjxx.taxeasey.utils.InitialCheckUtil;
 import com.rjxx.taxeasey.utils.ResponeseUtils;
 import com.rjxx.taxeasey.utils.XmlMapUtils;
 import com.rjxx.taxeasy.dao.GsxxJpaDao;
 import com.rjxx.taxeasy.dao.PpJpaDao;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
+import com.rjxx.taxeasy.dao.XfJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.ClientData;
 import com.rjxx.taxeasy.dto.CommonData;
@@ -21,7 +23,6 @@ import com.rjxx.taxeasy.vo.SkpVo;
 import com.rjxx.time.TimeUtil;
 import com.rjxx.utils.PasswordUtils;
 import com.rjxx.utils.RJCheckUtil;
-import com.rjxx.utils.StringUtils;
 import org.apache.axiom.om.OMElement;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -54,6 +55,15 @@ public class DealCommData {
     @Autowired
     protected GsxxJpaDao gsxxJpaDao ;
 
+    @Autowired
+    protected XfJpaDao xfJpaDao;
+
+    @Autowired
+    private InitialCheckUtil initialCheckUtil;
+
+    @Autowired
+    protected InitialData initialData;
+
     public String execute(Gsxx gsxx, String OrderData) {
         Map resultMap = new HashMap();
         String result = "";//处理返回后的结果信息
@@ -63,21 +73,21 @@ public class DealCommData {
         List<SkpVo> skpList = (List)resultMap.get("skpList");
         String issueType = (String)resultMap.get("issueType");
         //调用校验数据是否符合规则方法。
-        result = checkCommData(xf,skpList,issueType);
+        result = initialCheckUtil.checkCommData(xf,skpList,issueType,false);
         if(null != result && !result.equals("")){
-            return ResponeseUtils.printCommDataResult("9999",result,"","","","");
+            return ResponeseUtils.printCommDataResult("9999",result,new HashMap());
         }else{
             //保存待处理数据。
-            resultMap = saveXfAndSkp(xf,skpList,issueType);
+            resultMap = saveXfAndSkp(xf,skpList,issueType,gsxx);
             //保存失败
             if(null == resultMap || resultMap.isEmpty()){
-                return ResponeseUtils.printCommDataResult("9999","保存信息出错","","","","");
+                return ResponeseUtils.printCommDataResult("9999","保存信息出错",new HashMap());
             }else{
-                String dlyhid = (String)resultMap.get("dlyhid");
+                /*String dlyhid = (String)resultMap.get("dlyhid");
                 String yhmm = (String)resultMap.get("yhmm");
                 String xfsh = (String)resultMap.get("xfsh");
-                String xfmc = (String)resultMap.get("xfmc");
-                return ResponeseUtils.printCommDataResult("0000","成功",xfsh,xfmc,dlyhid,yhmm);
+                String xfmc = (String)resultMap.get("xfmc");*/
+                return ResponeseUtils.printCommDataResult("0000","成功",resultMap);
             }
         }
         //return result;
@@ -95,10 +105,10 @@ public class DealCommData {
         HashMap<String, Object> jsonObject = null;
         try {
             //jsonObject = JSON.parseObject(OrderData);
-             jsonObject = JSON.parseObject(OrderData,LinkedHashMap.class, Feature.OrderedField);
+            jsonObject = JSON.parseObject(OrderData,LinkedHashMap.class, Feature.OrderedField);
 
         }catch (Exception e){
-            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！","","","","");
+            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！",new HashMap());
         }
         try {
             String sign = String.valueOf(jsonObject.get("sign"));
@@ -106,11 +116,11 @@ public class DealCommData {
             JSONObject data = (JSONObject)jsonObject.get("seller");
             Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
             if(null == gsxx){
-                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护","","","","");
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护",new HashMap());
             }
             String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
             if ("0".equals(check)) {
-                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过","","","","");
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过",new HashMap());
             }else{
                 //调用解析Json的公共方法。
                 ObjectMapper mapper = new ObjectMapper();
@@ -120,34 +130,39 @@ public class DealCommData {
                 List<SkpVo> skpList = (List)resultMap.get("skpList");
                 String issueType = String.valueOf(resultMap.get("issueType"));
                 //调用校验数据是否符合规则方法。
-                result = checkCommData(xf,skpList,issueType);
+                boolean isCrestv = false;
+                //凯盈盒子不校验销方是否已存在，只做盘的新增操作。
+                if(gsxx.getGsdm().equals("crestv") || gsxx.getGsdm().equals("rjxx")){
+                    isCrestv = true;
+                }
+                result = initialCheckUtil.checkCommData(xf,skpList,issueType,isCrestv);
                 if(null != result && !result.equals("")){
-                    return ResponeseUtils.printResultToJson("9999",result,"","","","");
+                    return ResponeseUtils.printResultToJson("9999",result,new HashMap());
                 }else{
                     //保存待处理数据。
-                    resultMap = saveXfAndSkp(xf,skpList,issueType);
+                    resultMap = saveXfAndSkp(xf,skpList,issueType,gsxx);
                     //保存失败
                     if(null == resultMap || resultMap.isEmpty()){
-                        return ResponeseUtils.printResultToJson("9999","保存信息出错","","","","");
+                        return ResponeseUtils.printResultToJson("9999","保存信息出错",new HashMap());
                     }else{
-                        String dlyhid = (String)resultMap.get("dlyhid");
+                        /*String dlyhid = (String)resultMap.get("dlyhid");
                         String yhmm = (String)resultMap.get("yhmm");
                         String xfsh = (String)resultMap.get("xfsh");
-                        String xfmc = (String)resultMap.get("xfmc");
-                        return ResponeseUtils.printResultToJson("0000","成功",xfsh,xfmc,dlyhid,yhmm);
+                        String xfmc = (String)resultMap.get("xfmc");*/
+                        return ResponeseUtils.printResultToJson("0000","成功",resultMap);
                     }
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
-            return ResponeseUtils.printResultToJson("9999","公共信息初始化失败！","","","","");
+            return ResponeseUtils.printResultToJson("9999","公共信息初始化失败！",new HashMap());
         }
 
     }
 
 
     /**
-     *  门店信息新增和更新接口方法
+     *  门店信息新增和更新接口方法（凯盈使用）
      * @param clientStr
      * @return
      */
@@ -161,7 +176,7 @@ public class DealCommData {
             jsonObject = JSON.parseObject(clientStr,LinkedHashMap.class, Feature.OrderedField);
 
         }catch (Exception e){
-            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！","","","","");
+            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！",new HashMap());
         }
         try {
             String sign = String.valueOf(jsonObject.get("sign"));
@@ -169,11 +184,11 @@ public class DealCommData {
             JSONObject data = (JSONObject)jsonObject.get("client");
             Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
             if(null == gsxx){
-                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护","","","","");
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护",new HashMap());
             }
             String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
             if ("0".equals(check)) {
-                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过","","","","");
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过",new HashMap());
             }else{
                 //调用解析Json的公共方法。
                 ObjectMapper mapper = new ObjectMapper();
@@ -181,14 +196,63 @@ public class DealCommData {
                 resultMap = updateclientData(gsxx, clientData);
                 reCode = String.valueOf(resultMap.get("reCode"));
                 if(null != reCode && !reCode.equals("0000")){
-                    return ResponeseUtils.printResultToJson("9999",String.valueOf(resultMap.get("reMessage")),"","","","");
+                    return ResponeseUtils.printResultToJson("9999",String.valueOf(resultMap.get("reMessage")),new HashMap());
                 }else{
-                    return ResponeseUtils.printResultToJson("0000",String.valueOf(resultMap.get("reMessage")),"","","","");
+                    //需要调整
+                    return ResponeseUtils.printResultToJson("0000",String.valueOf(resultMap.get("reMessage")),resultMap);
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
-            return ResponeseUtils.printResultToJson("9999","门店信息更新失败！","","","","");
+            return ResponeseUtils.printResultToJson("9999","门店信息更新失败！",new HashMap());
+        }
+
+    }
+
+
+    /**
+     *  门店信息新增和更新接口方法（渠道使用）
+     * @param clientStr
+     * @return
+     */
+    public String initialClient(String clientStr) {
+        Map resultMap = new HashMap();
+        String reCode = "";//处理返回后的结果信息
+        //JSONObject jsonObject = null;
+        HashMap<String, Object> jsonObject = null;
+        try {
+            //jsonObject = JSON.parseObject(clientStr);
+            jsonObject = JSON.parseObject(clientStr,LinkedHashMap.class, Feature.OrderedField);
+
+        }catch (Exception e){
+            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！",new HashMap());
+        }
+        try {
+            String sign = String.valueOf(jsonObject.get("sign"));
+            String appId = String.valueOf(jsonObject.get("appId"));
+            JSONObject data = (JSONObject)jsonObject.get("client");
+            Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
+            if(null == gsxx){
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护",new HashMap());
+            }
+            String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
+            if ("0".equals(check)) {
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过",new HashMap());
+            }else{
+                //调用解析Json的公共方法。
+                ObjectMapper mapper = new ObjectMapper();
+                ClientData clientData=mapper.readValue(data.toJSONString(), ClientData.class);
+                resultMap = initialData.initialClientData(gsxx, clientData);
+                reCode = String.valueOf(resultMap.get("reCode"));
+                if(null != reCode && !reCode.equals("0000")){
+                    return ResponeseUtils.printResultToJson("9999",String.valueOf(resultMap.get("reMessage")),new HashMap());
+                }else{
+                    return ResponeseUtils.printResultToJson("0000",String.valueOf(resultMap.get("reMessage")),resultMap);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponeseUtils.printResultToJson("9999","门店信息更新失败！",new HashMap());
         }
 
     }
@@ -207,7 +271,7 @@ public class DealCommData {
             //jsonObject = JSON.parseObject(sellerStr);
             jsonObject = JSON.parseObject(sellerStr,LinkedHashMap.class, Feature.OrderedField);
         }catch (Exception e){
-            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！","","","","");
+            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！",new HashMap());
         }
         try {
             String sign = String.valueOf(jsonObject.get("sign"));
@@ -215,11 +279,11 @@ public class DealCommData {
             JSONObject data = (JSONObject)jsonObject.get("seller");
             Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId.toString());
             if(null == gsxx){
-                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护","","","","");
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护",new HashMap());
             }
             String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
             if ("0".equals(check)) {
-                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过","","","","");
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过",new HashMap());
             }else{
                 //调用解析Json的公共方法。
                 ObjectMapper mapper = new ObjectMapper();
@@ -227,21 +291,21 @@ public class DealCommData {
                 resultMap = updateSellerData(gsxx, sellerData);
                 reCode = String.valueOf(resultMap.get("reCode"));
                 if(null != reCode && !reCode.equals("0000")){
-                    return ResponeseUtils.printResultToJson("9999",String.valueOf(resultMap.get("reMessage")),"","","","");
+                    return ResponeseUtils.printResultToJson("9999",String.valueOf(resultMap.get("reMessage")),new HashMap());
                 }else{
-                    return ResponeseUtils.printResultToJson("0000",String.valueOf(resultMap.get("reMessage")),"","","","");
+                    //需要调整
+                    return ResponeseUtils.printResultToJson("0000",String.valueOf(resultMap.get("reMessage")),resultMap);
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
-            return ResponeseUtils.printResultToJson("9999","销货方信息更新失败！","","","","");
+            return ResponeseUtils.printResultToJson("9999","销货方信息更新失败！",new HashMap());
         }
 
     }
 
-
     /**
-     * post Json 销售方及门店信息  查询接口
+     * post Json 销售方及门店信息  查询接口（供凯盈使用）
      * @param OrderData
      * @return
      */
@@ -252,7 +316,7 @@ public class DealCommData {
             jsonObject = JSON.parseObject(OrderData,LinkedHashMap.class, Feature.OrderedField);
 
         }catch (Exception e){
-            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！","","","","");
+            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！",new HashMap());
         }
         try {
             String sign = String.valueOf(jsonObject.get("sign"));
@@ -260,26 +324,26 @@ public class DealCommData {
             JSONObject data = (JSONObject)jsonObject.get("data");
             Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
             if(null == gsxx){
-                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护","","","","");
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护",new HashMap());
             }
             String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(data), sign);
             if ("0".equals(check)) {
-                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过","","","","");
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过",new HashMap());
             }else{
                 //校验数据是否符合规则
                 if(data.getString("identifier")==null || "".equals(data.getString("identifier"))){
-                    return ResponeseUtils.printResultToJson("9999","数据格式不正确，销货方税号identifier：不能为空","","","","");
+                    return ResponeseUtils.printResultToJson("9999","数据格式不正确，销货方税号identifier：不能为空",new HashMap());
                 }
                 String xfsh = data.getString("identifier");
                 String skph = data.getString("equipNum");
                 Map params = new HashMap();
-//                params.put("gsdm",gsxx.getGsdm());
+                //params.put("gsdm",gsxx.getGsdm());
                 params.put("skph",skph);
                 params.put("xfsh",xfsh);
                 params.put("csz","04");
                 List<Map> list1 = xfService.findByxfshAndSkph(params);
                 if(list1.isEmpty()){
-                    return ResponeseUtils.printResultToJson("9999","根据销货方税号identifier"+xfsh+"未查询到数据","","","","");
+                    return ResponeseUtils.printResultToJson("9999","根据销货方税号identifier"+xfsh+"未查询到数据",new HashMap());
                 }
                 CommQueryData commQueryData = new CommQueryData();
                 commQueryData.setIdentifier(list1.get(0).get("xfsh")==null?"":String.valueOf(list1.get(0).get("xfsh")));
@@ -310,7 +374,7 @@ public class DealCommData {
             }
         }catch (Exception e){
             e.printStackTrace();
-            return ResponeseUtils.printResultToJson("9999","销售方及门店信息查询失败！","","","","");
+            return ResponeseUtils.printResultToJson("9999","销售方及门店信息查询失败！",new HashMap());
         }
     }
 
@@ -322,96 +386,123 @@ public class DealCommData {
      * @return  Map
      */
     @Transactional
-    public Map saveXfAndSkp(Xf xf, List<SkpVo> skpVoList, String issueType){
+    public Map saveXfAndSkp(Xf xf, List<SkpVo> skpVoList, String issueType,Gsxx gsxx){
         Map resultMap = new HashMap();
         Roles roles = rolesService.findDefaultOneByParams(null);
         Date lrsj = TimeUtil.getSysDate();
-        if(null == roles || roles.equals("")){
-            return resultMap;
-        }else{
-            Yh yh = new Yh();
-            String dlyhid = xf.getGsdm()+"_"+xf.getXfsh().substring(xf.getXfsh().length()-5,xf.getXfsh().length()).toLowerCase();
-            yh.setDlyhid(dlyhid);
-            if("crestv".equals(xf.getGsdm())){
-                yh.setDlyhid(xf.getXfsh());
-            }
-            yh.setSjhm(null);
-            yh.setYx(null);
-            yh.setXb("1");
-            yh.setYhmc("开票用户"+xf.getXfsh().substring(xf.getXfsh().length()-5,xf.getXfsh().length()).toLowerCase());
-            yh.setGsdm(xf.getGsdm());
-            yh.setYhmm(PasswordUtils.encrypt("12345678"));
-            yh.setRoleids(roles.getId().toString());
-            yh.setSjhm(null);
-            yh.setYx(null);
-            yh.setYxbz("1");
-            yh.setLrry(1);
-            yh.setXgry(1);
-            yh.setLrsj(lrsj);
-            yh.setXgsj(lrsj);
-            try {
-                yhService.save(yh);
-                xf.setLrry(yh.getId());
-                xf.setXgry(yh.getId());
-                xfService.saveNew(xf);
-                List<Skp> skpList = new ArrayList<>();
-                for(int i =0;i<skpVoList.size();i++){
-                    SkpVo skpvo = skpVoList.get(i);
-                    int pid = 0;
-                    if(null!=skpvo.getPpdm() && !skpvo.getPpdm().equals("")){
-                        Pp pp = new Pp();
-                        pp.setPpdm(skpvo.getPpdm());
-                        pp.setPpmc(skpvo.getPpmc());
-                        pp.setYxbz("1");
-                        pp.setLrry(yh.getId());
-                        pp.setXgry(yh.getId());
-                        pp.setLrsj(lrsj);
-                        pp.setXgsj(lrsj);
-                        pp.setGsdm(skpvo.getGsdm());
-                        pid = ppJpaDao.save(pp).getId();
+        Integer skpid = 0;
+        try {
+            if(null == roles || roles.equals("")){
+                return resultMap;
+            }else {
+                //渠道调用新增销方接口。
+                if (null == skpVoList || skpVoList.isEmpty()) {
+                    Yh yh = new Yh();
+                    yh.setDlyhid(xf.getXfsh());
+                    yh.setSjhm(null);
+                    yh.setYx(null);
+                    yh.setXb("1");
+                    yh.setYhmc("开票用户" + xf.getXfsh());
+                    yh.setGsdm(xf.getGsdm());
+                    yh.setYhmm(PasswordUtils.encrypt("12345678"));
+                    yh.setRoleids(roles.getId().toString());
+                    yh.setSjhm(null);
+                    yh.setYx(null);
+                    yh.setYxbz("1");
+                    yh.setLrry(1);
+                    yh.setXgry(1);
+                    yh.setLrsj(lrsj);
+                    yh.setXgsj(lrsj);
+                    yhService.save(yh);
+                    xf.setLrry(yh.getId());
+                    xf.setXgry(yh.getId());
+                    xfService.saveNew(xf);
+                    resultMap.put("dlyhid", yh.getDlyhid());
+                    resultMap.put("yhmm", "12345678");
+                    resultMap.put("xfsh", xf.getXfsh());
+                    resultMap.put("xfmc", xf.getXfmc());
+                    resultMap.put("skph",null);
+                    //return resultMap;
+                } else {
+                    Yh yh = new Yh();
+                    yh.setDlyhid(skpVoList.get(0).getSkph());
+                    yh.setSjhm(null);
+                    yh.setYx(null);
+                    yh.setXb("1");
+                    yh.setYhmc("开票用户" + yh.getDlyhid());
+                    yh.setGsdm(xf.getGsdm());
+                    yh.setYhmm(PasswordUtils.encrypt("12345678"));
+                    yh.setRoleids(roles.getId().toString());
+                    yh.setSjhm(null);
+                    yh.setYx(null);
+                    yh.setYxbz("1");
+                    yh.setLrry(1);
+                    yh.setXgry(1);
+                    yh.setLrsj(lrsj);
+                    yh.setXgsj(lrsj);
+                    yhService.save(yh);
+                    xf.setLrry(yh.getId());
+                    xf.setXgry(yh.getId());
+                    xfJpaDao.save(xf);
+                    List<Skp> skpList = new ArrayList<>();
+                    for (int i = 0; i < skpVoList.size(); i++) {
+                        SkpVo skpvo = skpVoList.get(i);
+                        int pid = 33;
+                        if (null != skpvo.getPpdm() && !skpvo.getPpdm().equals("")) {
+                            Pp pp = new Pp();
+                            pp.setPpdm(skpvo.getPpdm());
+                            pp.setPpmc(skpvo.getPpmc());
+                            pp.setYxbz("1");
+                            pp.setLrry(yh.getId());
+                            pp.setXgry(yh.getId());
+                            pp.setLrsj(lrsj);
+                            pp.setXgsj(lrsj);
+                            pp.setGsdm(skpvo.getGsdm());
+                            pid = ppJpaDao.save(pp).getId();
+                        }
+                        skpvo.setXfid(xf.getId());
+                        skpvo.setLrry(yh.getId());
+                        skpvo.setXgry(yh.getId());
+                        skpvo.setLrsj(lrsj);
+                        skpvo.setXgsj(lrsj);
+                        skpvo.setGsdm(xf.getGsdm());
+                        skpvo.setPid(pid);
+                        Skp skp = new Skp(skpvo);
+                        skpList.add(skp);
                     }
-                    skpvo.setXfid(xf.getId());
-                    skpvo.setLrry(yh.getId());
-                    skpvo.setXgry(yh.getId());
-                    skpvo.setLrsj(lrsj);
-                    skpvo.setXgsj(lrsj);
-                    skpvo.setGsdm(xf.getGsdm());
-                    skpvo.setPid(pid);
-                    if("crestv".equals(xf.getGsdm())){
-                        skpvo.setPid(0);
-                    }
-                    Skp skp = new Skp(skpvo);
-                    skpList.add(skp);
-                }
 
-                skpJpaDao.save(skpList);
-                if(issueType.equals("03") || issueType.equals("04")){
+                    skpService.save(skpList);
+                    skpid = skpList.get(0).getId();
+                    resultMap.put("dlyhid", yh.getDlyhid());
+                    resultMap.put("yhmm", "12345678");
+                    resultMap.put("xfsh", xf.getXfsh());
+                    resultMap.put("xfmc", xf.getXfmc());
+                    resultMap.put("skph",yh.getDlyhid());
+                }
+                if (issueType.equals("03") || issueType.equals("04")) {
                     Cszb cszb = new Cszb();
-                    Cszb tmp = cszbService.getSpbmbbh(xf.getGsdm(),null,null,"kpfs");
+                    Cszb tmp = cszbService.getSpbmbbh(xf.getGsdm(), null, null, "kpfs");
                     cszb.setCsid(tmp.getCsid());
                     cszb.setGsdm(xf.getGsdm());
                     cszb.setXfid(xf.getId());
                     cszb.setYxbz("1");
-                    cszb.setLrry(yh.getId());
-                    cszb.setXgry(yh.getId());
+                    cszb.setLrry(xf.getLrry());
+                    cszb.setXgry(xf.getLrry());
+                    cszb.setKpdid(skpid.compareTo(0)>0?skpid:null);
                     cszb.setLrsj(TimeUtil.getSysDate());
                     cszb.setXgsj(TimeUtil.getSysDate());
                     cszb.setCsz(issueType);
                     cszbService.save(cszb);
                 }
-                resultMap.put("dlyhid",yh.getDlyhid());
-                resultMap.put("yhmm","12345678");
-                resultMap.put("xfsh",xf.getXfsh());
-                resultMap.put("xfmc",xf.getXfmc());
-            }catch (Exception e){
-                e.printStackTrace();
             }
 
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
         return resultMap;
 
     }
-
 
     public static void main(String args[]){
         String t ="1234567R43312";
@@ -691,102 +782,220 @@ public class DealCommData {
     private Map updateSellerData(Gsxx gsxx, SellerData sellerData) {
         Map resultMap = new HashMap();
         String yxfsh = sellerData.getYidentifier();
-        if(null !=yxfsh && !yxfsh.equals("")){
-            try {
-                Xf xfParm = new Xf();
-                xfParm.setGsdm(gsxx.getGsdm());
-                xfParm.setXfsh(yxfsh);
-                Xf xf = xfService.findOneByParams(xfParm);
-                if(null ==xf){
-                    resultMap.put("reCode","9999");
-                    resultMap.put("reMessage","原销货方税号"+yxfsh+"未查到需要修改的销货方！");
-                    return resultMap;
-                }else{
-                    if(null !=sellerData.getIdentifier() && !sellerData.getIdentifier().equals("")){
-                        xf.setXfsh(sellerData.getIdentifier());
-                        Xf xfParm2 = new Xf();
-                        xfParm2.setGsdm(gsxx.getGsdm());
-                        xfParm2.setXfsh(sellerData.getIdentifier());
-                        Xf xf2 = xfService.findOneByParams(xfParm2);
-                        if(null !=xf2 && !sellerData.getYidentifier().equals(sellerData.getIdentifier())){
+        String type = sellerData.getType();
+        if((null == type || type.equals("")) || (!type.equals("01") && !type.equals("02"))){
+            resultMap.put("reCode","9999");
+            resultMap.put("reMessage","type更新类型不能为空且只能为01或02！");
+            return resultMap;
+        }else{
+            boolean isupdate = false;//判断是否是更新销方，true表示是
+            boolean isCrestv = false;//判断是否是凯盈初始化销货方，true表示是
+            if(gsxx.getGsdm().equals("crestv") || gsxx.getGsdm().equals("rjxx")){
+                isCrestv = true;
+            }
+            if(null !=yxfsh && !yxfsh.equals("")){
+                try {
+                    if(type.equals("01")){
+                        Xf addXf = new Xf();
+                        if(null != sellerData.getIdentifier() && !sellerData.getIdentifier().equals("")){
+                            addXf.setXfsh(sellerData.getIdentifier());
+                        }
+                        if(null != sellerData.getName() && !sellerData.getName().equals("")){
+                            addXf.setXfmc(sellerData.getName());
+                        }
+                        if(null != sellerData.getAddress() && !sellerData.getAddress().equals("")){
+                            addXf.setXfdz(sellerData.getAddress());
+                        }
+                        if(null != sellerData.getTelephoneNo() && !sellerData.getTelephoneNo().equals("")){
+                            addXf.setXfdh(sellerData.getTelephoneNo());
+                        }
+                        if(null != sellerData.getBank() && !sellerData.getBank().equals("")){
+                            addXf.setXfyh(sellerData.getBank());
+                        }
+                        if(null != sellerData.getBankAcc() && !sellerData.getBankAcc().equals("")){
+                            addXf.setXfyhzh(sellerData.getBankAcc());
+                        }
+                        if(null != sellerData.getYbnsrqssj() && !sellerData.getYbnsrqssj().equals("")){
+                            addXf.setYbnsrqssj(sellerData.getYbnsrqssj());
+                        }
+                        if(null != sellerData.getYbnsrlx() && !sellerData.getYbnsrlx().equals("")){
+                            addXf.setYbnsrjyzs(sellerData.getYbnsrlx());
+                        }
+                        if(null != sellerData.getDrawer() && !sellerData.getDrawer().equals("")){
+                            addXf.setKpr(sellerData.getDrawer());
+                        }
+                        if(null != sellerData.getPayee() && !sellerData.getPayee().equals("")){
+                            addXf.setSkr(sellerData.getPayee());
+                        }
+                        if(null != sellerData.getReviewer() && !sellerData.getReviewer().equals("")){
+                            addXf.setFhr(sellerData.getReviewer());
+                        }
+                        if(sellerData.getEticketLim()>0d){
+                            addXf.setDzpzdje(sellerData.getEticketLim());
+                            addXf.setDzpfpje(sellerData.getEticketLim());
+                        }
+                        if(sellerData.getSpecialticketLim()>0d){
+                            addXf.setZpzdje(sellerData.getSpecialticketLim());
+                            addXf.setZpfpje(sellerData.getSpecialticketLim());
+                        }
+                        if(sellerData.getOrdinaryticketLim()>0d){
+                            addXf.setPpzdje(sellerData.getOrdinaryticketLim());
+                            addXf.setPpfpje(sellerData.getOrdinaryticketLim());
+                        }
+                        String issueType = "";
+                        if(null != sellerData.getIssueType() && !sellerData.getIssueType().equals("")){
+                            issueType = sellerData.getIssueType();
+                        }
+                        String res = initialCheckUtil.checkSeller(addXf,issueType,isupdate,isCrestv);
+                        if(null != res && !res.equals("")){
                             resultMap.put("reCode","9999");
-                            resultMap.put("reMessage","销货方税号"+sellerData.getIdentifier()+"对应销货方已存在！");
+                            resultMap.put("reMessage",res);
                             return resultMap;
+                        }else{
+                            Roles roles = rolesService.findDefaultOneByParams(null);
+                            Yh yh = new Yh();
+                            yh.setDlyhid(addXf.getXfsh());
+                            yh.setSjhm(null);
+                            yh.setYx(null);
+                            yh.setXb("1");
+                            yh.setYhmc("开票用户" + yh.getDlyhid());
+                            yh.setGsdm(gsxx.getGsdm());
+                            yh.setYhmm(PasswordUtils.encrypt("12345678"));
+                            yh.setRoleids(roles.getId().toString());
+                            yh.setSjhm(null);
+                            yh.setYx(null);
+                            yh.setYxbz("1");
+                            yh.setLrry(1);
+                            yh.setXgry(1);
+                            yh.setLrsj(new Date());
+                            yh.setXgsj(new Date());
+                            yhService.save(yh);
+                            addXf.setLrry(yh.getId());
+                            addXf.setXgry(yh.getId());
+                            addXf.setLrsj(new Date());
+                            addXf.setXgsj(new Date());
+                            addXf.setGsdm(gsxx.getGsdm());
+                            xfService.saveNew(addXf);
+                            resultMap.put("reCode","0000");
+                            resultMap.put("reMessage","销货方新增成功！");
+                            resultMap.put("dlyhid", yh.getDlyhid());
+                            resultMap.put("yhmm", "12345678");
+                            resultMap.put("xfsh", addXf.getXfsh());
+                            resultMap.put("xfmc", addXf.getXfmc());
+                        }
+                    }else{
+                        //更新銷貨方信息
+                        Xf xf =null;
+                        isupdate =true;
+                        if(isCrestv){
+                            Xf xfParm = new Xf();
+                            //xfParm.setGsdm(gsxx.getGsdm());
+                            xfParm.setXfsh(yxfsh);
+                            xf = xfService.findOneByParams(xfParm);
+                        }else{
+                            Xf xfParm = new Xf();
+                            xfParm.setGsdm(gsxx.getGsdm());
+                            xfParm.setXfsh(yxfsh);
+                            xf = xfService.findOneByParams(xfParm);
+                        }
+                        if(null ==xf){
+                            resultMap.put("reCode","9999");
+                            resultMap.put("reMessage","原销货方税号"+yxfsh+"未查到需要修改的销货方！");
+                            return resultMap;
+                        }else{
+                            if(null !=sellerData.getIdentifier() && !sellerData.getIdentifier().equals("")){
+                                xf.setXfsh(sellerData.getIdentifier());
+                                Xf xfParm2 = new Xf();
+                                if(!isCrestv){
+                                    xfParm2.setGsdm(gsxx.getGsdm());
+                                }
+                                xfParm2.setXfsh(sellerData.getIdentifier());
+                                Xf xf2 = xfService.findOneByParams(xfParm2);
+                                if(null !=xf2 && !sellerData.getYidentifier().equals(sellerData.getIdentifier())){
+                                    resultMap.put("reCode","9999");
+                                    resultMap.put("reMessage","新销货方税号"+sellerData.getIdentifier()+"对应销货方已存在！");
+                                    return resultMap;
+                                }
+                            }
+                            if(null != sellerData.getName() && !sellerData.getName().equals("")){
+                                xf.setXfmc(sellerData.getName());
+                            }
+                            if(null != sellerData.getAddress() && !sellerData.getAddress().equals("")){
+                                xf.setXfdz(sellerData.getAddress());
+                            }
+                            if(null != sellerData.getTelephoneNo() && !sellerData.getTelephoneNo().equals("")){
+                                xf.setXfdh(sellerData.getTelephoneNo());
+                            }
+                            if(null != sellerData.getBank() && !sellerData.getBank().equals("")){
+                                xf.setXfyh(sellerData.getBank());
+                            }
+                            if(null != sellerData.getBankAcc() && !sellerData.getBankAcc().equals("")){
+                                xf.setXfyhzh(sellerData.getBankAcc());
+                            }
+                            if(null != sellerData.getYbnsrqssj() && !sellerData.getYbnsrqssj().equals("")){
+                                xf.setYbnsrqssj(sellerData.getYbnsrqssj());
+                            }
+                            if(null != sellerData.getYbnsrlx() && !sellerData.getYbnsrlx().equals("")){
+                                xf.setYbnsrjyzs(sellerData.getYbnsrlx());
+                            }
+                            if(null != sellerData.getDrawer() && !sellerData.getDrawer().equals("")){
+                                xf.setKpr(sellerData.getDrawer());
+                            }
+                            if(null != sellerData.getPayee() && !sellerData.getPayee().equals("")){
+                                xf.setSkr(sellerData.getPayee());
+                            }
+                            if(null != sellerData.getReviewer() && !sellerData.getReviewer().equals("")){
+                                xf.setFhr(sellerData.getReviewer());
+                            }
+                            if(sellerData.getEticketLim()>0d){
+                                xf.setDzpzdje(sellerData.getEticketLim());
+                                xf.setDzpfpje(sellerData.getEticketLim());
+                            }
+                            if(sellerData.getSpecialticketLim()>0d){
+                                xf.setZpzdje(sellerData.getSpecialticketLim());
+                                xf.setZpfpje(sellerData.getSpecialticketLim());
+                            }
+                            if(sellerData.getOrdinaryticketLim()>0d){
+                                xf.setPpzdje(sellerData.getOrdinaryticketLim());
+                                xf.setPpfpje(sellerData.getOrdinaryticketLim());
+                            }
+                        }
+                        String res = initialCheckUtil.checkSeller(xf,"04",isupdate,isCrestv);
+                        if(null != res && !res.equals("")){
+                            resultMap.put("reCode","9999");
+                            resultMap.put("reMessage",res);
+                            return resultMap;
+                        }else{
+                            xfService.update(xf);
+                            resultMap.put("reCode","0000");
+                            resultMap.put("reMessage","销货方更新成功！");
                         }
                     }
-                    if(null != sellerData.getName() && !sellerData.getName().equals("")){
-                        xf.setXfmc(sellerData.getName());
-                    }
-                    if(null != sellerData.getAddress() && !sellerData.getAddress().equals("")){
-                        xf.setXfdz(sellerData.getAddress());
-                    }
-                    if(null != sellerData.getTelephoneNo() && !sellerData.getTelephoneNo().equals("")){
-                        xf.setXfdh(sellerData.getTelephoneNo());
-                    }
-                    if(null != sellerData.getBank() && !sellerData.getBank().equals("")){
-                        xf.setXfyh(sellerData.getBank());
-                    }
-                    if(null != sellerData.getBankAcc() && !sellerData.getBankAcc().equals("")){
-                        xf.setXfyhzh(sellerData.getBankAcc());
-                    }
-                    if(null != sellerData.getYbnsrqssj() && !sellerData.getYbnsrqssj().equals("")){
-                        xf.setYbnsrqssj(sellerData.getYbnsrqssj());
-                    }
-                    if(null != sellerData.getYbnsrlx() && !sellerData.getYbnsrlx().equals("")){
-                        xf.setYbnsrjyzs(sellerData.getYbnsrlx());
-                    }
-                    if(null != sellerData.getDrawer() && !sellerData.getDrawer().equals("")){
-                        xf.setKpr(sellerData.getDrawer());
-                    }
-                    if(null != sellerData.getPayee() && !sellerData.getPayee().equals("")){
-                        xf.setSkr(sellerData.getPayee());
-                    }
-                    if(null != sellerData.getReviewer() && !sellerData.getReviewer().equals("")){
-                        xf.setFhr(sellerData.getReviewer());
-                    }
-                    if(sellerData.getEticketLim()>0d){
-                        xf.setDzpzdje(sellerData.getEticketLim());
-                        xf.setDzpfpje(sellerData.getEticketLim());
-                    }
-                    if(sellerData.getSpecialticketLim()>0d){
-                        xf.setZpzdje(sellerData.getSpecialticketLim());
-                        xf.setZpfpje(sellerData.getSpecialticketLim());
-                    }
-                    if(sellerData.getOrdinaryticketLim()>0d){
-                        xf.setPpzdje(sellerData.getOrdinaryticketLim());
-                        xf.setPpfpje(sellerData.getOrdinaryticketLim());
-                    }
-                }
-                String res = checkSeller(xf,"04",true);
-                if(null != res && !res.equals("")){
+                }catch (Exception e){
+                    e.printStackTrace();
                     resultMap.put("reCode","9999");
-                    resultMap.put("reMessage",res);
+                    if(type.equals("01")){
+                        resultMap.put("reMessage","销货方新增失败！");
+                    }else{
+                        resultMap.put("reMessage","销货方更新失败！");
+                    }
                     return resultMap;
-                }else{
-                    xfService.update(xf);
-                    resultMap.put("reCode","0000");
-                    resultMap.put("reMessage","销货方更新成功！");
                 }
 
-            }catch (Exception e){
-                e.printStackTrace();
+            }else{
                 resultMap.put("reCode","9999");
-                resultMap.put("reMessage","销货方更新失败！");
+                resultMap.put("reMessage","原销货方税号(yidentifier)不能为空！");
                 return resultMap;
             }
-
-        }else{
-            resultMap.put("reCode","9999");
-            resultMap.put("reMessage","原销货方税号(yidentifier)不能为空！");
-            return resultMap;
         }
+
 
         return resultMap;
     }
 
 
     /**
-     * 校验门店信息新增或更新数据方法。
+     * 校验门店信息新增或更新数据方法。（供凯盈使用）
      *
      * @param gsxx
      * @param clientData
@@ -798,7 +1007,7 @@ public class DealCommData {
         try {
             String xfsh = clientData.getIdentifier();
             Xf xfParm = new Xf();
-            xfParm.setGsdm(gsxx.getGsdm());
+            //xfParm.setGsdm(gsxx.getGsdm());
             xfParm.setXfsh(xfsh);
             Xf xfBo = xfService.findOneByParams(xfParm);
             if(null ==xfBo){
@@ -807,6 +1016,7 @@ public class DealCommData {
                 return resultMap;
             }else{
                 SkpVo skpvo = new SkpVo();
+                //新增开票点。
                 if(null !=clientData.getType() && clientData.getType().equals("01")){
                     skpvo.setKpddm(clientData.getClientNO());
                     skpvo.setKpdmc(clientData.getName());
@@ -830,9 +1040,9 @@ public class DealCommData {
                     skpvo.setZpfz(xfBo.getZpfpje());
                     skpvo.setPpmax(xfBo.getPpzdje());
                     skpvo.setPpfz(xfBo.getPpfpje());
-                    skpvo.setLrry(1);
+                    skpvo.setLrry(xfParm.getLrry());
                     skpvo.setLrsj(new Date());
-                    skpvo.setXgry(1);
+                    skpvo.setXgry(xfParm.getLrry());
                     skpvo.setXgsj(new Date());
                     skpvo.setYxbz("1");
                     skpvo.setPpdm(clientData.getBrandCode());
@@ -849,17 +1059,41 @@ public class DealCommData {
                     }
                     skpvo.setKplx(fplx.equals("")?null:fplx);
                     skpvo.setWrzs("1");//无人值守 ：默认1
-                    skpvo.setGsdm(gsxx.getGsdm());
+                    skpvo.setGsdm(xfBo.getGsdm());
                     skpvo.setXfid(xfBo.getId());
-                    result = checkClient(skpvo,clientData.getType());
+                    result = initialCheckUtil.checkClient(skpvo,clientData.getType(),true);
                     if(!result.equals("")){
                         resultMap.put("reCode","9999");
                         resultMap.put("reMessage",result);
                         return resultMap;
                     }else{
-                        skpJpaDao.save(new Skp(skpvo));
+                        Roles roles = rolesService.findDefaultOneByParams(null);
+                        Yh yh = new Yh();
+                        yh.setDlyhid(skpvo.getSkph());
+                        yh.setSjhm(null);
+                        yh.setYx(null);
+                        yh.setXb("1");
+                        yh.setYhmc("开票用户" + yh.getDlyhid());
+                        yh.setGsdm(xfBo.getGsdm());
+                        yh.setYhmm(PasswordUtils.encrypt("12345678"));
+                        yh.setRoleids(roles.getId().toString());
+                        yh.setSjhm(null);
+                        yh.setYx(null);
+                        yh.setYxbz("1");
+                        yh.setLrry(1);
+                        yh.setXgry(1);
+                        yh.setLrsj(new Date());
+                        yh.setXgsj(new Date());
+                        yhService.save(yh);
+                        skpvo.setLrry(yh.getId());
+                        skpvo.setXgry(yh.getId());
+                        skpService.saveNew(new Skp(skpvo));
                         resultMap.put("reCode","0000");
                         resultMap.put("reMessage","门店信息新增成功！");
+                        resultMap.put("dlyhid", yh.getDlyhid());
+                        resultMap.put("yhmm", "12345678");
+                        resultMap.put("xfsh", xfBo.getXfsh());
+                        resultMap.put("xfmc", xfBo.getXfmc());
                         return resultMap;
                     }
                 }else if(null !=clientData.getType() && clientData.getType().equals("02")){
@@ -879,88 +1113,75 @@ public class DealCommData {
                     skpvo.setSkr(clientData.getPayee());
                     skpvo.setFhr(clientData.getReviewer());
                     skpvo.setKpr(clientData.getDrawer());
-                    //skpvo.setDpmax(xfBo.getDzpzdje());
-                    //skpvo.setFpfz(xfBo.getDzpfpje());
-                    //skpvo.setZpmax(xfBo.getZpzdje());
-                    //skpvo.setZpfz(xfBo.getZpfpje());
-                    //skpvo.setPpmax(xfBo.getPpzdje());
-                    //skpvo.setPpfz(xfBo.getPpfpje());
                     skpvo.setPpdm(clientData.getBrandCode());
                     skpvo.setPpmc(clientData.getBrandName());
-                    /*String fplx = "";
-                    if(null !=skpvo.getDpmax()&& !skpvo.getDpmax().equals("")){
-                        fplx = "12";
-                    }
-                    if(null !=skpvo.getZpmax()&& !skpvo.getZpmax().equals("")) {
-                        fplx = fplx.equals("")?"01":fplx+",01";
-                    }
-                    if(null !=skpvo.getPpmax()&& !skpvo.getPpmax().equals("")) {
-                        fplx = fplx.equals("")?"02":fplx+",02";
-                    }
-                    skpvo.setKplx(fplx.equals("")?null:fplx);
-                    skpvo.setWrzs("1");//无人值守 ：默认1*/
-                    skpvo.setGsdm(gsxx.getGsdm());
+                    skpvo.setGsdm(xfBo.getGsdm());
                     skpvo.setXfid(xfBo.getId());
-                    result = checkClient(skpvo,clientData.getType());
+                    result = initialCheckUtil.checkClient(skpvo,clientData.getType(),true);
                     if(!result.equals("")){
                         resultMap.put("reCode","9999");
                         resultMap.put("reMessage",result);
                         return resultMap;
                     }else{
-                        Map params = new HashMap();
-                        params.put("gsdm",skpvo.getGsdm());
-                        params.put("kpddm",skpvo.getKpddm());
-                        Skp skptmp = skpService.findOneByParams(params);
-                        if(null !=skpvo.getKpdmc() && !skpvo.getKpdmc().equals("")){
-                            skptmp.setKpdmc(skpvo.getKpdmc());
+                        //校验通过，进行修改处理
+                        Skp params = new Skp();
+                        params.setGsdm(skpvo.getGsdm());
+                        params.setXfid(skpvo.getXfid());
+                        params.setSkph(skpvo.getSkph());
+                        List<Skp> skptmpList = skpService.findAllByParams(params);
+                        for(int i=0;i<skptmpList.size();i++){
+                            Skp skptmp = skptmpList.get(i);
+                            if(null !=skpvo.getKpdmc() && !skpvo.getKpdmc().equals("") && skptmpList.size()==1){
+                                skptmp.setKpdmc(skpvo.getKpdmc());
+                            }
+                            if(null !=skpvo.getPpdm() && !skpvo.getPpdm().equals("")){
+                                skptmp.setPid(skpvo.getPid());
+                            }
+                            if(null !=skpvo.getSkr() && !skpvo.getSkr().equals("") && skptmpList.size()==1){
+                                skptmp.setSkr(skpvo.getSkr());
+                            }
+                            if(null !=skpvo.getFhr() && !skpvo.getFhr().equals("") && skptmpList.size()==1){
+                                skptmp.setFhr(skpvo.getFhr());
+                            }
+                            if(null !=skpvo.getKpr() && !skpvo.getKpr().equals("") && skptmpList.size()==1){
+                                skptmp.setKpr(skpvo.getKpr());
+                            }
+                            if(null !=skpvo.getLxdz() && !skpvo.getLxdz().equals("") && skptmpList.size()==1){
+                                skptmp.setLxdz(skpvo.getLxdz());
+                            }
+                            if(null !=skpvo.getLxdh() && !skpvo.getLxdh().equals("") && skptmpList.size()==1){
+                                skptmp.setLxdh(skpvo.getLxdh());
+                            }
+                            if(null !=skpvo.getKhyh() && !skpvo.getKhyh().equals("") && skptmpList.size()==1){
+                                skptmp.setKhyh(skpvo.getKhyh());
+                            }
+                            if(null !=skpvo.getYhzh() && !skpvo.getYhzh().equals("") && skptmpList.size()==1){
+                                skptmp.setYhzh(skpvo.getYhzh());
+                            }
+                            if(null !=skpvo.getSbcs() && !skpvo.getSbcs().equals("")){
+                                skptmp.setSbcs(skpvo.getSbcs());
+                            }
+                            if(null !=skpvo.getSkph() && !skpvo.getSkph().equals("")){
+                                skptmp.setSkph(skpvo.getSkph());
+                            }
+                            if(null !=skpvo.getSkpmm() && !skpvo.getSkpmm().equals("")){
+                                skptmp.setSkpmm(skpvo.getSkpmm());
+                            }
+                            if(null !=skpvo.getZsmm() && !skpvo.getZsmm().equals("")){
+                                skptmp.setZsmm(skpvo.getZsmm());
+                            }
+                            if(null !=skpvo.getDevicesn() && !skpvo.getDevicesn().equals("")){
+                                skptmp.setDevicesn(skpvo.getDevicesn());
+                            }
+                            if(null !=skpvo.getDevicepassword() && !skpvo.getDevicepassword().equals("")){
+                                skptmp.setDevicepassword(skpvo.getDevicepassword());
+                            }
+                            if(null !=skpvo.getDevicekey() && !skpvo.getDevicekey().equals("")){
+                                skptmp.setDevicekey(skpvo.getDevicekey());
+                            }
+                            skptmp.setXgsj(new Date());
                         }
-                        if(null !=skpvo.getPpdm() && !skpvo.getPpdm().equals("")){
-                            skptmp.setPid(skpvo.getPid());
-                        }
-                        if(null !=skpvo.getSkr() && !skpvo.getSkr().equals("")){
-                            skptmp.setSkr(skpvo.getSkr());
-                        }
-                        if(null !=skpvo.getFhr() && !skpvo.getFhr().equals("")){
-                            skptmp.setFhr(skpvo.getFhr());
-                        }
-                        if(null !=skpvo.getKpr() && !skpvo.getKpr().equals("")){
-                            skptmp.setKpr(skpvo.getKpr());
-                        }
-                        if(null !=skpvo.getLxdz() && !skpvo.getLxdz().equals("")){
-                            skptmp.setLxdz(skpvo.getLxdz());
-                        }
-                        if(null !=skpvo.getLxdh() && !skpvo.getLxdh().equals("")){
-                            skptmp.setLxdh(skpvo.getLxdh());
-                        }
-                        if(null !=skpvo.getKhyh() && !skpvo.getKhyh().equals("")){
-                            skptmp.setKhyh(skpvo.getKhyh());
-                        }
-                        if(null !=skpvo.getYhzh() && !skpvo.getYhzh().equals("")){
-                            skptmp.setYhzh(skpvo.getYhzh());
-                        }
-                        if(null !=skpvo.getSbcs() && !skpvo.getSbcs().equals("")){
-                            skptmp.setSbcs(skpvo.getSbcs());
-                        }
-                        if(null !=skpvo.getSkph() && !skpvo.getSkph().equals("")){
-                            skptmp.setSkph(skpvo.getSkph());
-                        }
-                        if(null !=skpvo.getSkpmm() && !skpvo.getSkpmm().equals("")){
-                            skptmp.setSkpmm(skpvo.getSkpmm());
-                        }
-                        if(null !=skpvo.getZsmm() && !skpvo.getZsmm().equals("")){
-                            skptmp.setZsmm(skpvo.getZsmm());
-                        }
-                        if(null !=skpvo.getDevicesn() && !skpvo.getDevicesn().equals("")){
-                            skptmp.setDevicesn(skpvo.getDevicesn());
-                        }
-                        if(null !=skpvo.getDevicepassword() && !skpvo.getDevicepassword().equals("")){
-                            skptmp.setDevicepassword(skpvo.getDevicepassword());
-                        }
-                        if(null !=skpvo.getDevicekey() && !skpvo.getDevicekey().equals("")){
-                            skptmp.setDevicekey(skpvo.getDevicekey());
-                        }
-                        skptmp.setXgsj(new Date());
-                        skpJpaDao.save(skptmp);
+                        skpJpaDao.save(skptmpList);
                         resultMap.put("reCode","0000");
                         resultMap.put("reMessage","门店信息更新成功！");
                         return resultMap;
@@ -980,156 +1201,5 @@ public class DealCommData {
 
     }
 
-    /**
-     * 校验待保存数据是否全部符合规则。
-     *
-     * @param xf
-     * @param list
-     * @param issueType
-     * @return
-     */
-    private String checkCommData(Xf xf,List<SkpVo> list,String issueType){
 
-        String result ="";
-        result=checkSeller(xf,issueType,false);
-        if(null == list || list.isEmpty()){
-            result +=  xf.getXfsh()+"Clients开票点节点不能为空;";
-        }else{
-            SkpVo skp = list.get(0);
-            String kplx = skp.getKplx();
-            if(null == kplx ||kplx.equals("")){
-                result +=  "开票限额必须填写一个;";
-            }
-            for(int i=0;i<list.size();i++){
-                SkpVo skp2 = list.get(i);
-                result += checkClient(skp2,"01");
-            }
-        }
-
-        return result;
-
-    }
-
-    /**
-     * 校验门店信息
-     * @param skp2
-     * @param type
-     * @return
-     */
-    private String checkClient(SkpVo skp2,String type){
-        String result = "";
-        Map params = new HashMap();
-        params.put("gsdm",skp2.getGsdm());
-        params.put("kpddm",skp2.getKpddm());
-        Skp skptmp = skpService.findOneByParams(params);
-        if(null != skptmp && !skptmp.equals("") && type.equals("01")){
-            result +=  "ClientNO开票点代码"+skp2.getKpddm()+"已存在;";
-        }
-        if(null ==  skp2.getKpddm() || skp2.getKpddm().equals("")){
-            result +=  "ClientNO开票点代码不能为空;";
-        }else if(skp2.getKpddm().length() >40){
-            result +=  "ClientNO开票点代码"+skp2.getKpddm()+"过长;";
-        }
-        if(null ==  skp2.getKpdmc() || skp2.getKpdmc().equals("")&& type.equals("01")){
-            result +=  "Name开票点名称不能为空;";
-        }else if(skp2.getKpdmc().length() >40){
-            result +=  "Name开票点名称"+skp2.getKpdmc()+"过长;";
-        }
-        if((null ==  skp2.getSbcs() || skp2.getSbcs().equals(""))&& type.equals("01")){
-            result +=  "TaxEquip税控设备厂商不能为空;";
-        }else if(!(skp2.getSbcs().equals("1") || skp2.getSbcs().equals("2"))&& type.equals("01")){
-            result +=  "TaxEquip税控设备厂商只能为1或2;";
-        }
-        if((null ==  skp2.getSkph() || skp2.getSkph().equals(""))&& type.equals("01")){
-            result +=  "EquipNum税控设备号不能为空;";
-        }else if(skp2.getSkph().length() !=12 && type.equals("01")){
-            result +=  "EquipNum税控设备号"+skp2.getSkph()+"只能为12位;";
-        }
-        if((null ==  skp2.getSkpmm() || skp2.getSkpmm().equals(""))&& type.equals("01")){
-            result +=  "TaxDiskPass税控盘密码不能为空;";
-        }
-        if((null !=skp2.getSbcs() && !skp2.getSbcs().equals("") && skp2.getSbcs().equals("1")
-                && (null == skp2.getZsmm() || skp2.getZsmm().equals("")))&& type.equals("01")){
-            result +=  "当TaxEquip为1时,CertiCipher证书密码不能为空;";
-        }
-        if(null != skp2.getPpdm() && !skp2.getPpdm().equals("")&& type.equals("01")){
-            List<Pp> pplist = ppJpaDao.findAllByPpdm(skp2.getPpdm(),skp2.getGsdm());
-            if(!pplist.isEmpty()){
-                result +=  "BrandCode品牌代码"+skp2.getPpdm()+"已存在";
-            }
-        }
-        if(null != skp2.getPpdm() && !skp2.getPpdm().equals("")&& type.equals("02")){
-            List<Pp> pplist = ppJpaDao.findAllByPpdm(skp2.getPpdm(),skp2.getGsdm());
-            if(pplist.isEmpty()){
-                result +=  "该BrandCode品牌代码"+skp2.getPpdm()+"不存在，无法修改";
-            }else{
-                skp2.setPid(pplist.get(0).getId());
-            }
-        }
-        return result;
-    }
-
-    /**
-     * 校验销货方信息是否合法
-     * @param xf
-     * @param issueType
-     * @return
-     */
-    private String checkSeller(Xf xf,String issueType,boolean isupdate){
-        List<Xf> xfList = xfService.findAllByParams(xf);
-        String result = "";
-        if(null == xf.getXfsh() || xf.getXfsh().equals("")){
-            result +=  "Identifier销方税号不能为空;";
-        }else if(!(xf.getXfsh().length() == 15 ||xf.getXfsh().length() == 17|| xf.getXfsh().length() == 18 || xf.getXfsh().length() == 20 )){
-            result +=  "Identifier销方税号"+xf.getXfsh()+"只能为15,17,18,20位;";
-        }
-        if(null == xf.getXfmc() || xf.getXfmc().equals("")){
-            result +=  "Name销方名称不能为空;";
-        }else if (xf.getXfmc().length() > 100) {
-            result += "Name销方名称"+xf.getXfmc()+"过长;";
-        }
-        if(null == xf.getXfdz() || xf.getXfdz().equals("")){
-            result +=  "Address销方地址不能为空;";
-        }else if (xf.getXfdz().length() > 100) {
-            result += "Address销方地址"+xf.getXfdz()+"过长;";
-        }
-        if(null == xf.getXfdh() || xf.getXfdh().equals("")){
-            result +=  "TelephoneNo销方电话不能为空;";
-        }else if (xf.getXfdh().length() > 20) {
-            result += "TelephoneNo销方电话"+xf.getXfdh()+"过长;";
-        }
-        if(null == xf.getXfyh() || xf.getXfyh().equals("")){
-            result +=  "Bank销方银行不能为空;";
-        }else if (xf.getXfyh().length() > 100) {
-            result += "Bank销方银行"+xf.getXfyh()+"过长;";
-        }
-        if(null == xf.getXfyhzh() || xf.getXfyhzh().equals("")){
-            result +=  "BankAcc销方银行账号不能为空;";
-        }else if (xf.getXfyhzh().length() > 30) {
-            result += "BankAcc销方银行账号"+xf.getXfyhzh()+"过长;";
-        }
-        if(null == xf.getKpr() || xf.getKpr().equals("")){
-            result +=  "Drawer开票人不能为空;";
-        }else if (xf.getKpr().length() > 4) {
-            result += "Drawer开票人"+xf.getKpr()+"过长;";
-        }
-        if(null != xfList && !xfList.isEmpty() && !isupdate){
-            result +=  xf.getXfsh()+"销方已存在;";
-        }
-        if(null == issueType || issueType.equals("") ){
-            result +=  "IssueType开票方式不能为空;";
-        }else if(!issueType.equals("01") && !issueType.equals("03") && !issueType.equals("04")){
-            result +=  "IssueType开票方式必须为01,03或04;";
-        }
-
-        if(null !=xf.getYbnsrqssj() && !xf.getYbnsrqssj().equals("")){
-            if(xf.getYbnsrqssj().length()>6){
-                result +=  "Ybnsrqssj一般纳税人起始时间必须为YYYYMM;";
-            }
-        }
-        if(null !=xf.getYbnsrjyzs() && (!xf.getYbnsrjyzs().equals("2") && !xf.getYbnsrjyzs().equals("3") && !xf.getYbnsrjyzs().equals("4"))){
-            result +=  "Ybnsrlx一般纳税人类型只能为（2，3，4）的一种;";
-        }
-        return result;
-    }
 }

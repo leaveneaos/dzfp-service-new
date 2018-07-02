@@ -21,36 +21,51 @@ public class HttpInitServiceUtils {
 	public void sendMessage() throws Exception {
 		System.out.println("调用servlet开始=================");
 		String data ="{\n" +
-				"\t\"appId\": \"RJ2673f9e77a35\",\n" +
-				"\t\"reqType\": \"03\",\n" +
-				"\t\"sign\": \"afafddaf2eweddew\",\n" +
-				"\t\"data\": {\n" +
-				"\t\t\"orderNo\": \"22222cc\",\n" +
-				"\t\t\"totalAmount\": 5000\n" +
-				"\t}\n" +
+				"\t\"appId\": \"RJf5d8acdbbbcf\",\n" +
+				"\t\"seller\": {\n" +
+				"\t\t\"address\": \"浙江省杭州市江干区兴庆路32号新罗商务酒店1层\",\n" +
+				"\t\t\"bank\": \"鞍山农村商业银行股份有限公司对炉分理处\",\n" +
+				"\t\t\"bankAcc\": \"3534534\",\n" +
+				"\t\t\"client\": [{\n" +
+				"\t\t\t\"certiCipher\": \"证书\",\n" +
+				"\t\t\t\"clientNO\": \"开票1\",\n" +
+				"\t\t\t\"equipNum\": \"145245456454\",\n" +
+				"\t\t\t\"name\": \"测试\",\n" +
+				"\t\t\t\"taxDiskPass\": \"密码\",\n" +
+				"\t\t\t\"taxEquip\": \"1\"\n" +
+				"\t\t}],\n" +
+				"\t\t\"drawer\": \"子默\",\n" +
+				"\t\t\"identifier\": \"123451524524515\",\n" +
+				"\t\t\"issueType\": \"01\",\n" +
+				"\t\t\"name\": \"测试\",\n" +
+				"\t\t\"payee\": \"收款人\",\n" +
+				"\t\t\"reviewer\": \"复核人\",\n" +
+				"\t\t\"telephoneNo\": \"18657134440\"\n" +
+				"\t},\n" +
+				"\t\"sign\": \"b2e5bae7a5f636ed0fa7a866db7bd3d6\"\n" +
 				"}";
 
-		String seller ="{\"appId\":\"RJ9015cfe90f14\",\"seller\":{\"identifier\":\"876478787232988\",\"name\":\"的方式当2\",\"address\":\"18738727123\",\"telephoneNo\":\"房贷\",\"bank\":\"f韩国国会\",\"bankAcc\":\"韩国国会\",\"issueType\":\"01\",\"drawer\":\"的方式当\",\"yidentifier\":\"876478787232988\"},\"sign\":\"0e731036a3bb3dbd1071e9867f77f712\"}";
+		String seller ="{\"appId\":\"RJf5d8acdbbbcf\",\"seller\":{\"identifier\":\"876478787232989\",\"type\":\"01\",\"name\":\"的方式当3\",\"address\":\"fand得到dd\",\"telephoneNo\":\"18738727124\",\"bank\":\"f韩国国会\",\"bankAcc\":\"韩国国会\",\"issueType\":\"01\",\"drawer\":\"的方式当\",\"yidentifier\":\"876478787232988\"},\"sign\":\"0e731036a3bb3dbd1071e9867f77f712\"}";
 
 		String client ="{\n" +
-				"  \"appId\":\"RJf046355349b8\",\n" +
+				"  \"appId\":\"RJf5d8acdbbbcf\",\n" +
 				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
 				"   \"client\": {\n" +
 				"\"identifier\": \"310101123456790\",\n" +
 				"\"type\": \"02\",\n" +
 				"      \"clientNO\": \"KP002\",\n" +
 				"      \"name\": \"陆家嘴3店\",\n" +
-				"      \"brandCode\": \"pp01\",\n" +
+				//"      \"brandCode\": \"pp01\",\n" +
 				"      \"taxEquip\": \"1\",\n" +
 				"      \"equipNum\": \"499000135091\",\n" +
 				"      \"taxDiskPass\": \"税控盘密码\",\n" +
 				"      \"certiCipher\": \"证书密码\"\n" +
 				"    }\n" +
 				"}\n";
-		HashMap<String, Object> jsonObject = JSON.parseObject(data,LinkedHashMap.class, Feature.OrderedField);
-		JSONObject Seller =  (JSONObject)jsonObject.get("data");
+		HashMap<String, Object> jsonObject = JSON.parseObject(client,LinkedHashMap.class, Feature.OrderedField);
+		JSONObject Seller =  (JSONObject)jsonObject.get("client");
 		 //Seller = jsonObject.getJSONObject("seller");
-		String Sign = getSign( Seller.toString(),"f2a825b110d445f9b7dcc032e2b702f0");
+		String Sign = getSign( Seller.toString(),"5aab6270b7042aef2098b8fbb005097e");
 		//JSONObject jsonObject1 = JSON.parseObject(seller);
 		jsonObject.put("sign", Sign);
 		String s = JSON.toJSONString(jsonObject);
@@ -67,10 +82,10 @@ public class HttpInitServiceUtils {
 			StringBuffer buffer = new StringBuffer();
 
 			// 接报文的地址
-			/*URL uploadServlet = new URL(
-					"http://localhost:8080/kptService");*/
 			URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/kptService");
+					"http://localhost:8080/initService/initialClientData");
+			/*URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/kptService");*/
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数
