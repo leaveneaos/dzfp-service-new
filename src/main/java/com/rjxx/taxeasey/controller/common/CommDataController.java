@@ -170,7 +170,7 @@ public class CommDataController {
 	@ApiOperation(value = "门店信息新增或更新接口")
 	public String initialClient(@RequestBody String str){
 		logger.info("门店信息更新接口传入报文："+str);
-		String result = dealCommData.execute4(str);
+		String result = dealCommData.initialClient(str);
 
 		// 设置返回报文的格式
 		response.setContentType("application/json");

@@ -875,6 +875,7 @@ public class DealCommData {
                             addXf.setLrsj(new Date());
                             addXf.setXgsj(new Date());
                             addXf.setGsdm(gsxx.getGsdm());
+                            addXf.setYxbz("1");
                             xfService.saveNew(addXf);
                             resultMap.put("reCode","0000");
                             resultMap.put("reMessage","销货方新增成功！");
@@ -1006,190 +1007,196 @@ public class DealCommData {
         Map resultMap = new HashMap();
         try {
             String xfsh = clientData.getIdentifier();
-            Xf xfParm = new Xf();
-            //xfParm.setGsdm(gsxx.getGsdm());
-            xfParm.setXfsh(xfsh);
-            Xf xfBo = xfService.findOneByParams(xfParm);
-            if(null ==xfBo){
+            if(null == xfsh || xfsh.equals("")){
                 resultMap.put("reCode","9999");
-                resultMap.put("reMessage","销方信息identifier"+xfsh+"不存在;");
+                resultMap.put("reMessage","销方信息identifier销方税号必传;");
                 return resultMap;
             }else{
-                SkpVo skpvo = new SkpVo();
-                //新增开票点。
-                if(null !=clientData.getType() && clientData.getType().equals("01")){
-                    skpvo.setKpddm(clientData.getClientNO());
-                    skpvo.setKpdmc(clientData.getName());
-                    skpvo.setSkph(clientData.getEquipNum());
-                    skpvo.setSbcs(clientData.getTaxEquip());
-                    skpvo.setLxdz(clientData.getKpdz());
-                    skpvo.setSkpmm(clientData.getTaxDiskPass());
-                    skpvo.setZsmm(clientData.getCertiCipher());
-                    skpvo.setDevicesn(clientData.getDeviceSN());
-                    skpvo.setDevicepassword(clientData.getDevicePSWD());
-                    skpvo.setDevicekey(clientData.getDeviceKEY());
-                    skpvo.setLxdh(clientData.getKpdh());
-                    skpvo.setKhyh(clientData.getKpyh());
-                    skpvo.setYhzh(clientData.getKpyhzh());
-                    skpvo.setSkr(clientData.getPayee());
-                    skpvo.setFhr(clientData.getReviewer());
-                    skpvo.setKpr(clientData.getDrawer());
-                    skpvo.setDpmax(xfBo.getDzpzdje());
-                    skpvo.setFpfz(xfBo.getDzpfpje());
-                    skpvo.setZpmax(xfBo.getZpzdje());
-                    skpvo.setZpfz(xfBo.getZpfpje());
-                    skpvo.setPpmax(xfBo.getPpzdje());
-                    skpvo.setPpfz(xfBo.getPpfpje());
-                    skpvo.setLrry(xfParm.getLrry());
-                    skpvo.setLrsj(new Date());
-                    skpvo.setXgry(xfParm.getLrry());
-                    skpvo.setXgsj(new Date());
-                    skpvo.setYxbz("1");
-                    skpvo.setPpdm(clientData.getBrandCode());
-                    skpvo.setPpmc(clientData.getBrandName());
-                    String fplx = "";
-                    if(null !=skpvo.getDpmax()&& !skpvo.getDpmax().equals("")){
-                        fplx = "12";
-                    }
-                    if(null !=skpvo.getZpmax()&& !skpvo.getZpmax().equals("")) {
-                        fplx = fplx.equals("")?"01":fplx+",01";
-                    }
-                    if(null !=skpvo.getPpmax()&& !skpvo.getPpmax().equals("")) {
-                        fplx = fplx.equals("")?"02":fplx+",02";
-                    }
-                    skpvo.setKplx(fplx.equals("")?null:fplx);
-                    skpvo.setWrzs("1");//无人值守 ：默认1
-                    skpvo.setGsdm(xfBo.getGsdm());
-                    skpvo.setXfid(xfBo.getId());
-                    result = initialCheckUtil.checkClient(skpvo,clientData.getType(),true);
-                    if(!result.equals("")){
-                        resultMap.put("reCode","9999");
-                        resultMap.put("reMessage",result);
-                        return resultMap;
-                    }else{
-                        Roles roles = rolesService.findDefaultOneByParams(null);
-                        Yh yh = new Yh();
-                        yh.setDlyhid(skpvo.getSkph());
-                        yh.setSjhm(null);
-                        yh.setYx(null);
-                        yh.setXb("1");
-                        yh.setYhmc("开票用户" + yh.getDlyhid());
-                        yh.setGsdm(xfBo.getGsdm());
-                        yh.setYhmm(PasswordUtils.encrypt("12345678"));
-                        yh.setRoleids(roles.getId().toString());
-                        yh.setSjhm(null);
-                        yh.setYx(null);
-                        yh.setYxbz("1");
-                        yh.setLrry(1);
-                        yh.setXgry(1);
-                        yh.setLrsj(new Date());
-                        yh.setXgsj(new Date());
-                        yhService.save(yh);
-                        skpvo.setLrry(yh.getId());
-                        skpvo.setXgry(yh.getId());
-                        skpService.saveNew(new Skp(skpvo));
-                        resultMap.put("reCode","0000");
-                        resultMap.put("reMessage","门店信息新增成功！");
-                        resultMap.put("dlyhid", yh.getDlyhid());
-                        resultMap.put("yhmm", "12345678");
-                        resultMap.put("xfsh", xfBo.getXfsh());
-                        resultMap.put("xfmc", xfBo.getXfmc());
-                        return resultMap;
-                    }
-                }else if(null !=clientData.getType() && clientData.getType().equals("02")){
-                    skpvo.setKpddm(clientData.getClientNO());
-                    skpvo.setKpdmc(clientData.getName());
-                    skpvo.setSkph(clientData.getEquipNum());
-                    skpvo.setSbcs(clientData.getTaxEquip());
-                    skpvo.setLxdz(clientData.getKpdz());
-                    skpvo.setDevicesn(clientData.getDeviceSN());
-                    skpvo.setDevicepassword(clientData.getDevicePSWD());
-                    skpvo.setDevicekey(clientData.getDeviceKEY());
-                    skpvo.setSkpmm(clientData.getTaxDiskPass());
-                    skpvo.setZsmm(clientData.getCertiCipher());
-                    skpvo.setLxdh(clientData.getKpdh());
-                    skpvo.setKhyh(clientData.getKpyh());
-                    skpvo.setYhzh(clientData.getKpyhzh());
-                    skpvo.setSkr(clientData.getPayee());
-                    skpvo.setFhr(clientData.getReviewer());
-                    skpvo.setKpr(clientData.getDrawer());
-                    skpvo.setPpdm(clientData.getBrandCode());
-                    skpvo.setPpmc(clientData.getBrandName());
-                    skpvo.setGsdm(xfBo.getGsdm());
-                    skpvo.setXfid(xfBo.getId());
-                    result = initialCheckUtil.checkClient(skpvo,clientData.getType(),true);
-                    if(!result.equals("")){
-                        resultMap.put("reCode","9999");
-                        resultMap.put("reMessage",result);
-                        return resultMap;
-                    }else{
-                        //校验通过，进行修改处理
-                        Skp params = new Skp();
-                        params.setGsdm(skpvo.getGsdm());
-                        params.setXfid(skpvo.getXfid());
-                        params.setSkph(skpvo.getSkph());
-                        List<Skp> skptmpList = skpService.findAllByParams(params);
-                        for(int i=0;i<skptmpList.size();i++){
-                            Skp skptmp = skptmpList.get(i);
-                            if(null !=skpvo.getKpdmc() && !skpvo.getKpdmc().equals("") && skptmpList.size()==1){
-                                skptmp.setKpdmc(skpvo.getKpdmc());
-                            }
-                            if(null !=skpvo.getPpdm() && !skpvo.getPpdm().equals("")){
-                                skptmp.setPid(skpvo.getPid());
-                            }
-                            if(null !=skpvo.getSkr() && !skpvo.getSkr().equals("") && skptmpList.size()==1){
-                                skptmp.setSkr(skpvo.getSkr());
-                            }
-                            if(null !=skpvo.getFhr() && !skpvo.getFhr().equals("") && skptmpList.size()==1){
-                                skptmp.setFhr(skpvo.getFhr());
-                            }
-                            if(null !=skpvo.getKpr() && !skpvo.getKpr().equals("") && skptmpList.size()==1){
-                                skptmp.setKpr(skpvo.getKpr());
-                            }
-                            if(null !=skpvo.getLxdz() && !skpvo.getLxdz().equals("") && skptmpList.size()==1){
-                                skptmp.setLxdz(skpvo.getLxdz());
-                            }
-                            if(null !=skpvo.getLxdh() && !skpvo.getLxdh().equals("") && skptmpList.size()==1){
-                                skptmp.setLxdh(skpvo.getLxdh());
-                            }
-                            if(null !=skpvo.getKhyh() && !skpvo.getKhyh().equals("") && skptmpList.size()==1){
-                                skptmp.setKhyh(skpvo.getKhyh());
-                            }
-                            if(null !=skpvo.getYhzh() && !skpvo.getYhzh().equals("") && skptmpList.size()==1){
-                                skptmp.setYhzh(skpvo.getYhzh());
-                            }
-                            if(null !=skpvo.getSbcs() && !skpvo.getSbcs().equals("")){
-                                skptmp.setSbcs(skpvo.getSbcs());
-                            }
-                            if(null !=skpvo.getSkph() && !skpvo.getSkph().equals("")){
-                                skptmp.setSkph(skpvo.getSkph());
-                            }
-                            if(null !=skpvo.getSkpmm() && !skpvo.getSkpmm().equals("")){
-                                skptmp.setSkpmm(skpvo.getSkpmm());
-                            }
-                            if(null !=skpvo.getZsmm() && !skpvo.getZsmm().equals("")){
-                                skptmp.setZsmm(skpvo.getZsmm());
-                            }
-                            if(null !=skpvo.getDevicesn() && !skpvo.getDevicesn().equals("")){
-                                skptmp.setDevicesn(skpvo.getDevicesn());
-                            }
-                            if(null !=skpvo.getDevicepassword() && !skpvo.getDevicepassword().equals("")){
-                                skptmp.setDevicepassword(skpvo.getDevicepassword());
-                            }
-                            if(null !=skpvo.getDevicekey() && !skpvo.getDevicekey().equals("")){
-                                skptmp.setDevicekey(skpvo.getDevicekey());
-                            }
-                            skptmp.setXgsj(new Date());
-                        }
-                        skpJpaDao.save(skptmpList);
-                        resultMap.put("reCode","0000");
-                        resultMap.put("reMessage","门店信息更新成功！");
-                        return resultMap;
-                    }
-                }else {
+                Xf xfParm = new Xf();
+                //xfParm.setGsdm(gsxx.getGsdm());
+                xfParm.setXfsh(xfsh);
+                Xf xfBo = xfService.findOneByParams(xfParm);
+                if(null ==xfBo){
                     resultMap.put("reCode","9999");
-                    resultMap.put("reMessage","type参数必须传入;");
+                    resultMap.put("reMessage","销方信息identifier"+xfsh+"不存在;");
                     return resultMap;
+                }else{
+                    SkpVo skpvo = new SkpVo();
+                    //新增开票点。
+                    if(null !=clientData.getType() && clientData.getType().equals("01")){
+                        skpvo.setKpddm(clientData.getClientNO());
+                        skpvo.setKpdmc(clientData.getName());
+                        skpvo.setSkph(clientData.getEquipNum());
+                        skpvo.setSbcs(clientData.getTaxEquip());
+                        skpvo.setLxdz(clientData.getKpdz());
+                        skpvo.setSkpmm(clientData.getTaxDiskPass());
+                        skpvo.setZsmm(clientData.getCertiCipher());
+                        skpvo.setDevicesn(clientData.getDeviceSN());
+                        skpvo.setDevicepassword(clientData.getDevicePSWD());
+                        skpvo.setDevicekey(clientData.getDeviceKEY());
+                        skpvo.setLxdh(clientData.getKpdh());
+                        skpvo.setKhyh(clientData.getKpyh());
+                        skpvo.setYhzh(clientData.getKpyhzh());
+                        skpvo.setSkr(clientData.getPayee());
+                        skpvo.setFhr(clientData.getReviewer());
+                        skpvo.setKpr(clientData.getDrawer());
+                        skpvo.setDpmax(xfBo.getDzpzdje());
+                        skpvo.setFpfz(xfBo.getDzpfpje());
+                        skpvo.setZpmax(xfBo.getZpzdje());
+                        skpvo.setZpfz(xfBo.getZpfpje());
+                        skpvo.setPpmax(xfBo.getPpzdje());
+                        skpvo.setPpfz(xfBo.getPpfpje());
+                        skpvo.setLrry(xfParm.getLrry());
+                        skpvo.setLrsj(new Date());
+                        skpvo.setXgry(xfParm.getLrry());
+                        skpvo.setXgsj(new Date());
+                        skpvo.setYxbz("1");
+                        skpvo.setPpdm(clientData.getBrandCode());
+                        skpvo.setPpmc(clientData.getBrandName());
+                        String fplx = "";
+                        if(null !=skpvo.getDpmax()&& !skpvo.getDpmax().equals("")){
+                            fplx = "12";
+                        }
+                        if(null !=skpvo.getZpmax()&& !skpvo.getZpmax().equals("")) {
+                            fplx = fplx.equals("")?"01":fplx+",01";
+                        }
+                        if(null !=skpvo.getPpmax()&& !skpvo.getPpmax().equals("")) {
+                            fplx = fplx.equals("")?"02":fplx+",02";
+                        }
+                        skpvo.setKplx(fplx.equals("")?null:fplx);
+                        skpvo.setWrzs("1");//无人值守 ：默认1
+                        skpvo.setGsdm(xfBo.getGsdm());
+                        skpvo.setXfid(xfBo.getId());
+                        result = initialCheckUtil.checkClient(skpvo,clientData.getType(),true);
+                        if(!result.equals("")){
+                            resultMap.put("reCode","9999");
+                            resultMap.put("reMessage",result);
+                            return resultMap;
+                        }else{
+                            Roles roles = rolesService.findDefaultOneByParams(null);
+                            Yh yh = new Yh();
+                            yh.setDlyhid(skpvo.getSkph());
+                            yh.setSjhm(null);
+                            yh.setYx(null);
+                            yh.setXb("1");
+                            yh.setYhmc("开票用户" + yh.getDlyhid());
+                            yh.setGsdm(xfBo.getGsdm());
+                            yh.setYhmm(PasswordUtils.encrypt("12345678"));
+                            yh.setRoleids(roles.getId().toString());
+                            yh.setSjhm(null);
+                            yh.setYx(null);
+                            yh.setYxbz("1");
+                            yh.setLrry(1);
+                            yh.setXgry(1);
+                            yh.setLrsj(new Date());
+                            yh.setXgsj(new Date());
+                            yhService.save(yh);
+                            skpvo.setLrry(yh.getId());
+                            skpvo.setXgry(yh.getId());
+                            skpService.saveNew(new Skp(skpvo));
+                            resultMap.put("reCode","0000");
+                            resultMap.put("reMessage","门店信息新增成功！");
+                            resultMap.put("dlyhid", yh.getDlyhid());
+                            resultMap.put("yhmm", "12345678");
+                            resultMap.put("xfsh", xfBo.getXfsh());
+                            resultMap.put("xfmc", xfBo.getXfmc());
+                            return resultMap;
+                        }
+                    }else if(null !=clientData.getType() && clientData.getType().equals("02")){
+                        skpvo.setKpddm(clientData.getClientNO());
+                        skpvo.setKpdmc(clientData.getName());
+                        skpvo.setSkph(clientData.getEquipNum());
+                        skpvo.setSbcs(clientData.getTaxEquip());
+                        skpvo.setLxdz(clientData.getKpdz());
+                        skpvo.setDevicesn(clientData.getDeviceSN());
+                        skpvo.setDevicepassword(clientData.getDevicePSWD());
+                        skpvo.setDevicekey(clientData.getDeviceKEY());
+                        skpvo.setSkpmm(clientData.getTaxDiskPass());
+                        skpvo.setZsmm(clientData.getCertiCipher());
+                        skpvo.setLxdh(clientData.getKpdh());
+                        skpvo.setKhyh(clientData.getKpyh());
+                        skpvo.setYhzh(clientData.getKpyhzh());
+                        skpvo.setSkr(clientData.getPayee());
+                        skpvo.setFhr(clientData.getReviewer());
+                        skpvo.setKpr(clientData.getDrawer());
+                        skpvo.setPpdm(clientData.getBrandCode());
+                        skpvo.setPpmc(clientData.getBrandName());
+                        skpvo.setGsdm(xfBo.getGsdm());
+                        skpvo.setXfid(xfBo.getId());
+                        result = initialCheckUtil.checkClient(skpvo,clientData.getType(),true);
+                        if(!result.equals("")){
+                            resultMap.put("reCode","9999");
+                            resultMap.put("reMessage",result);
+                            return resultMap;
+                        }else{
+                            //校验通过，进行修改处理
+                            Skp params = new Skp();
+                            params.setGsdm(skpvo.getGsdm());
+                            params.setXfid(skpvo.getXfid());
+                            params.setSkph(skpvo.getSkph());
+                            List<Skp> skptmpList = skpService.findAllByParams(params);
+                            for(int i=0;i<skptmpList.size();i++){
+                                Skp skptmp = skptmpList.get(i);
+                                if(null !=skpvo.getKpdmc() && !skpvo.getKpdmc().equals("") && skptmpList.size()==1){
+                                    skptmp.setKpdmc(skpvo.getKpdmc());
+                                }
+                                if(null !=skpvo.getPpdm() && !skpvo.getPpdm().equals("")){
+                                    skptmp.setPid(skpvo.getPid());
+                                }
+                                if(null !=skpvo.getSkr() && !skpvo.getSkr().equals("") && skptmpList.size()==1){
+                                    skptmp.setSkr(skpvo.getSkr());
+                                }
+                                if(null !=skpvo.getFhr() && !skpvo.getFhr().equals("") && skptmpList.size()==1){
+                                    skptmp.setFhr(skpvo.getFhr());
+                                }
+                                if(null !=skpvo.getKpr() && !skpvo.getKpr().equals("") && skptmpList.size()==1){
+                                    skptmp.setKpr(skpvo.getKpr());
+                                }
+                                if(null !=skpvo.getLxdz() && !skpvo.getLxdz().equals("") && skptmpList.size()==1){
+                                    skptmp.setLxdz(skpvo.getLxdz());
+                                }
+                                if(null !=skpvo.getLxdh() && !skpvo.getLxdh().equals("") && skptmpList.size()==1){
+                                    skptmp.setLxdh(skpvo.getLxdh());
+                                }
+                                if(null !=skpvo.getKhyh() && !skpvo.getKhyh().equals("") && skptmpList.size()==1){
+                                    skptmp.setKhyh(skpvo.getKhyh());
+                                }
+                                if(null !=skpvo.getYhzh() && !skpvo.getYhzh().equals("") && skptmpList.size()==1){
+                                    skptmp.setYhzh(skpvo.getYhzh());
+                                }
+                                if(null !=skpvo.getSbcs() && !skpvo.getSbcs().equals("")){
+                                    skptmp.setSbcs(skpvo.getSbcs());
+                                }
+                                if(null !=skpvo.getSkph() && !skpvo.getSkph().equals("")){
+                                    skptmp.setSkph(skpvo.getSkph());
+                                }
+                                if(null !=skpvo.getSkpmm() && !skpvo.getSkpmm().equals("")){
+                                    skptmp.setSkpmm(skpvo.getSkpmm());
+                                }
+                                if(null !=skpvo.getZsmm() && !skpvo.getZsmm().equals("")){
+                                    skptmp.setZsmm(skpvo.getZsmm());
+                                }
+                                if(null !=skpvo.getDevicesn() && !skpvo.getDevicesn().equals("")){
+                                    skptmp.setDevicesn(skpvo.getDevicesn());
+                                }
+                                if(null !=skpvo.getDevicepassword() && !skpvo.getDevicepassword().equals("")){
+                                    skptmp.setDevicepassword(skpvo.getDevicepassword());
+                                }
+                                if(null !=skpvo.getDevicekey() && !skpvo.getDevicekey().equals("")){
+                                    skptmp.setDevicekey(skpvo.getDevicekey());
+                                }
+                                skptmp.setXgsj(new Date());
+                            }
+                            skpJpaDao.save(skptmpList);
+                            resultMap.put("reCode","0000");
+                            resultMap.put("reMessage","门店信息更新成功！");
+                            return resultMap;
+                        }
+                    }else {
+                        resultMap.put("reCode","9999");
+                        resultMap.put("reMessage","type参数必须传入;");
+                        return resultMap;
+                    }
                 }
             }
         }catch (Exception e){
