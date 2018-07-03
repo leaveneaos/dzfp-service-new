@@ -4,6 +4,7 @@ package com.rjxx.taxeasey.service.dealorder;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjxx.taxeasey.service.result.CommQueryClientData;
 import com.rjxx.taxeasey.service.result.CommQueryData;
 import com.rjxx.taxeasey.utils.InitialCheckUtil;
@@ -12,6 +13,8 @@ import com.rjxx.taxeasy.dao.GsxxJpaDao;
 import com.rjxx.taxeasy.dao.SkpJpaDao;
 import com.rjxx.taxeasy.domains.*;
 import com.rjxx.taxeasy.dto.ClientData;
+import com.rjxx.taxeasy.dto.CommonData;
+import com.rjxx.taxeasy.dto.SellerData;
 import com.rjxx.taxeasy.service.RolesService;
 import com.rjxx.taxeasy.service.SkpService;
 import com.rjxx.taxeasy.service.XfService;
@@ -48,7 +51,122 @@ public class InitialData {
     protected YhService yhService;
     @Autowired
     protected SkpJpaDao skpJpaDao;
+    @Autowired
+    protected DealCommData dealCommData;
+
     private static Logger logger= LoggerFactory.getLogger(InitialData.class);
+
+
+    /**
+     * 凯盈盒子最新初始化接口，首先判断凯盈每次传入的
+     * 初始化信息是做销方和开票点的新增还是更新操作，
+     * 判断好后做对应操作
+     * 分为：1、新增销方开票点
+     *      2、新增开票点
+     *      3、新增销方
+     *      4、更新销方
+     *      5、更新开票点
+     * @param commData
+     * @return
+     */
+    public String initialData(String commData){
+
+        HashMap<String, Object> jsonObject = null;
+        try {
+            jsonObject = JSON.parseObject(commData,LinkedHashMap.class, Feature.OrderedField);
+
+        }catch (Exception e){
+            return ResponeseUtils.printResultToJson("9999","JSON数据格式有误！",new HashMap());
+        }
+        try {
+            String sign = String.valueOf(jsonObject.get("sign"));
+            String appId = String.valueOf(jsonObject.get("appId"));
+            JSONObject seller = (JSONObject)jsonObject.get("seller");
+            Gsxx gsxx = gsxxJpaDao.findOneByAppid(appId);
+            if(null == gsxx){
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + ",公司信息没有维护",new HashMap());
+            }
+            String check = RJCheckUtil.decodeXml(gsxx.getSecretKey(), JSON.toJSONString(seller), sign);
+            if ("0".equals(check)) {
+                return ResponeseUtils.printResultToJson("9999","9060:" + appId + "," + sign+"签名不通过",new HashMap());
+            }else{
+                ObjectMapper mapper = new ObjectMapper();
+                CommonData commonData=mapper.readValue(JSON.parseObject(commData).toJSONString(), CommonData.class);
+                SellerData sellerData = commonData.getSeller();
+                String xfsh = sellerData.getIdentifier();
+                List<ClientData> clientDataList = sellerData.getClient();
+                ClientData clientData = clientDataList.get(0);
+                String skph = clientData.getEquipNum();
+                String sn = clientData.getDeviceSN();
+                //校验销方税号，税控盘号必须都不为空
+                if(null ==xfsh || xfsh.equals("") || null == skph || skph.equals("")){
+                    return ResponeseUtils.printResultToJson("9999","销方税号（identifier）、税控盘号（equipNum）必须全不为空！",new HashMap());
+                }
+                Map params = new HashMap();
+                params.put("skph",skph);
+                params.put("xfsh",xfsh);
+                params.put("csz","04");
+                List<Map> list = xfService.findByxfshAndSkph(params);
+                if(list.isEmpty()){
+                    //若未做过初始化销货方等信息，以sn+skph为开票点代码做初始化操作。
+                    commonData.getSeller().getClient().get(0).setClientNO(sn+skph);
+                    Map resultMap = dealCommData.dealCommonData2(gsxx, commonData);
+                    Xf xf = (Xf)resultMap.get("Xf");
+                    List<SkpVo> skpList = (List)resultMap.get("skpList");
+                    String issueType = String.valueOf(resultMap.get("issueType"));
+                    //调用校验数据是否符合规则方法。
+                    boolean isCrestv = false;
+                    //凯盈盒子不校验销方是否已存在。
+                    if(gsxx.getGsdm().equals("crestv") || gsxx.getGsdm().equals("rjxx")){
+                        isCrestv = true;
+                    }
+                    String result = initialCheckUtil.checkCommData(xf,skpList,issueType,isCrestv);
+                    if(null != result && !result.equals("")){
+                        return ResponeseUtils.printResultToJson("9999",result,new HashMap());
+                    }else{
+                        //保存待处理数据。
+                        resultMap = dealCommData.saveXfAndSkp(xf,skpList,issueType,gsxx);
+                        //保存失败
+                        if(null == resultMap || resultMap.isEmpty()){
+                            return ResponeseUtils.printResultToJson("9999","保存信息出错",new HashMap());
+                        }else{
+                            return ResponeseUtils.printResultToJson("0000","成功",resultMap);
+                        }
+                    }
+                 }else{
+                    //做过销方初始化，则调用开票点初始化接口
+                    boolean isupdateClient = false; //是否更新开票点
+                    for (int i=0;i<list.size();i++){
+                        Map result = list.get(i);
+                        if(result.get("skph").equals(skph)){
+                            isupdateClient =true;
+                            break;
+                        }
+                    }
+                    //判断开票点的是否做过初始化
+                    if(isupdateClient){
+                        clientData.setType("02");
+                    }else{
+                        clientData.setType("01");
+                    }
+                    clientData.setIdentifier(xfsh);
+                    clientData.setClientNO(sn+skph);
+                    clientData.setKpyh(sellerData.getBank());
+                    clientData.setKpyhzh(sellerData.getBankAcc());
+                    clientData.setKpdh(sellerData.getTelephoneNo());
+                    clientData.setKpdz(sellerData.getAddress());
+                    clientData.setDrawer(sellerData.getDrawer());
+                    clientData.setReviewer(sellerData.getReviewer());
+                    clientData.setPayee(sellerData.getPayee());
+                    Map resultMap =  dealCommData.updateclientData(gsxx,clientData);
+                    return ResponeseUtils.printResultToJson("0000","销售方及开票点成功！",resultMap);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponeseUtils.printResultToJson("9999","销售方及开票点初始化失败！",new HashMap());
+        }
+    }
 
     /**
      * post Json 销售方及门店信息查询接口  供销售渠道使用
@@ -127,6 +245,12 @@ public class InitialData {
         }
     }
 
+    /**
+     * 渠道用来初始化开票点处理方法
+     * @param gsxx
+     * @param clientData
+     * @return
+     */
     public Map initialClientData(Gsxx gsxx, ClientData clientData){
 
         String result = "";

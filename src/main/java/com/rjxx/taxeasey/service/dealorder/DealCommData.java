@@ -679,7 +679,7 @@ public class DealCommData {
      * @param commonData
      * @return
      */
-    private Map dealCommonData2(Gsxx gsxx, CommonData commonData) {
+     public Map dealCommonData2(Gsxx gsxx, CommonData commonData) {
 
         Map resultMap = new HashMap();
         Xf xfBo = new Xf();
@@ -1002,7 +1002,7 @@ public class DealCommData {
      * @param clientData
      * @return
      */
-    private Map updateclientData(Gsxx gsxx, ClientData clientData) {
+    public Map updateclientData(Gsxx gsxx, ClientData clientData) {
         String result = "";
         Map resultMap = new HashMap();
         try {
