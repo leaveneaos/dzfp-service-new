@@ -224,7 +224,7 @@ public class InitialData {
                     Map map = list1.get(i);
                     CommQueryClientData commQueryClientData = new CommQueryClientData();
                     commQueryClientData.setClientNO(map.get("kpddm") == null ?"":String.valueOf(map.get("kpddm")));
-                    commQueryClientData.setName(map.get("name")==null?"":String.valueOf(map.get("kpdmc")));
+                    commQueryClientData.setName(map.get("kpdmc")==null?"":String.valueOf(map.get("kpdmc")));
 //                    commQueryClientData.setDeviceSN(map.get("devicesn")==null?"":String.valueOf(map.get("devicesn")));//凯盈开票终端sn
 //                    commQueryClientData.setDevicePSWD(map.get("devicepassword")==null?"":String.valueOf(map.get("devicepassword")));
 //                    commQueryClientData.setDeviceKEY(map.get("devicekey")==null?"":String.valueOf(map.get("devicekey")));
