@@ -384,7 +384,7 @@ public class InitialData {
                             Skp params = new Skp();
                             params.setGsdm(skpvo.getGsdm());
                             params.setXfid(skpvo.getXfid());
-                            params.setSkph(skpvo.getSkph());
+                            params.setKpddm(skpvo.getKpddm());
                             List<Skp> skptmpList = skpService.findAllByParams(params);
                             for(int i=0;i<skptmpList.size();i++){
                                 Skp skptmp = skptmpList.get(i);
