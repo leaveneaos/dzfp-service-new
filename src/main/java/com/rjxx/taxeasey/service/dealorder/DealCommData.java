@@ -1119,6 +1119,7 @@ public class DealCommData {
                             resultMap.put("reCode","0000");
                             resultMap.put("reMessage","门店信息新增成功！");
                             resultMap.put("dlyhid", yh.getDlyhid());
+                            resultMap.put("skph",yh.getDlyhid());
                             resultMap.put("yhmm", "12345678");
                             resultMap.put("xfsh", xfBo.getXfsh());
                             resultMap.put("xfmc", xfBo.getXfmc());
