@@ -21,36 +21,47 @@ public class HttpInitServiceUtils {
 	public void sendMessage() throws Exception {
 		System.out.println("调用servlet开始=================");
 		String data ="{\n" +
-				"\t\"appId\": \"RJ2673f9e77a35\",\n" +
-				"\t\"reqType\": \"03\",\n" +
-				"\t\"sign\": \"afafddaf2eweddew\",\n" +
-				"\t\"data\": {\n" +
-				"\t\t\"orderNo\": \"22222cc\",\n" +
-				"\t\t\"totalAmount\": 5000\n" +
+				"\t\"appId\": \"RJf5d8acdbbbcf\",\n" +
+				"\t\"sign\": \"7c2aaad98fea78e182e789abfb75f6b9\",\n" +
+				"\t\"seller\": {\n" +
+				"\t\t\"identifier\": \"500102000000385\",\n" +
+				"\t\t\"name\": \"测试企业用户385\",\n" +
+				"\t\t\"address\": \"福建福州\",\n" +
+				"\t\t\"telephoneNo\": \"0591-83512152\",\n" +
+				"\t\t\"bank\": \"中国银行\",\n" +
+				"\t\t\"bankAcc\": \"66666666\",\n" +
+				"\t\t\"ybnsrqssj\": \"201805\",\n" +
+				"\t\t\"ybnsrlx\": \"2\",\n" +
+				"\t\t\"drawer\": \"开票人\",\n" +
+				"\t\t\"payee\": \"收款人\",\n" +
+				"\t\t\"reviewer\": \"复核人\",\n" +
+				"\t\t\"issueType\": \"04\",\n" +
+				"\t\t\"eticketLim\": null,\n" +
+				"\t\t\"specialticketLim\": \"999999.99\",\n" +
+				"\t\t\"ordinaryticketLim\": \"999999.99\",\n" +
+				"\t\t\"rollticketLim\": \"999999.99\",\n" +
+				"\t\t\"client\": [{\n" +
+				"\t\t\t\"name\": \"开票通\",\n" +
+				"\t\t\t\"brandCode\": null,\n" +
+				"\t\t\t\"brandName\": null,\n" +
+				"\t\t\t\"deviceSN\": \"0302011170100002\",\n" +
+				"\t\t\t\"devicePSWD\": \"123456\",\n" +
+				"\t\t\t\"deviceKEY\": \"02F0D811C577DAC21AC85E2571DB2C9E33644A41C3A925347A51A5E36A1EF69C\",\n" +
+				"\t\t\t\"taxEquip\": \"1\",\n" +
+				"\t\t\t\"equipNum\": \"499000105370\",\n" +
+				"\t\t\t\"taxDiskPass\": \"88888888\",\n" +
+				"\t\t\t\"certiCipher\": \"00000000\"\n" +
+				"\t\t}]\n" +
 				"\t}\n" +
 				"}";
 
-		String seller ="{\"appId\":\"RJ9015cfe90f14\",\"seller\":{\"identifier\":\"876478787232988\",\"name\":\"的方式当2\",\"address\":\"18738727123\",\"telephoneNo\":\"房贷\",\"bank\":\"f韩国国会\",\"bankAcc\":\"韩国国会\",\"issueType\":\"01\",\"drawer\":\"的方式当\",\"yidentifier\":\"876478787232988\"},\"sign\":\"0e731036a3bb3dbd1071e9867f77f712\"}";
+		String seller ="{\"appId\":\"RJf5d8acdbbbcf\",\"seller\":{\"identifier\":\"876478787232989\",\"type\":\"01\",\"name\":\"的方式当3\",\"address\":\"fand得到dd\",\"telephoneNo\":\"18738727124\",\"bank\":\"f韩国国会\",\"bankAcc\":\"韩国国会\",\"issueType\":\"01\",\"drawer\":\"的方式当\",\"yidentifier\":\"876478787232988\"},\"sign\":\"0e731036a3bb3dbd1071e9867f77f712\"}";
 
-		String client ="{\n" +
-				"  \"appId\":\"RJf046355349b8\",\n" +
-				"  \"sign\":\"fjfjfjfjfjfjfjfjf\",\n" +
-				"   \"client\": {\n" +
-				"\"identifier\": \"310101123456790\",\n" +
-				"\"type\": \"02\",\n" +
-				"      \"clientNO\": \"KP002\",\n" +
-				"      \"name\": \"陆家嘴3店\",\n" +
-				"      \"brandCode\": \"pp01\",\n" +
-				"      \"taxEquip\": \"1\",\n" +
-				"      \"equipNum\": \"499000135091\",\n" +
-				"      \"taxDiskPass\": \"税控盘密码\",\n" +
-				"      \"certiCipher\": \"证书密码\"\n" +
-				"    }\n" +
-				"}\n";
+		String client ="{\"appId\":\"RJ5be0d41cb531\",\"sign\":\"5fa1199eda5102a7f16637071e72701b\",\"client\":{\"identifier\":\"201704140000000017\",\"type\":\"01\",\"clientNO\":\"11\",\"name\":\"3dd的的\",\"taxEquip\":\"1\",\"equipNum\":\"499000135091\",\"taxDiskPass\":\"534533\",\"certiCipher\":\"34235\"}}\n";
 		HashMap<String, Object> jsonObject = JSON.parseObject(data,LinkedHashMap.class, Feature.OrderedField);
-		JSONObject Seller =  (JSONObject)jsonObject.get("data");
+		JSONObject Seller =  (JSONObject)jsonObject.get("seller");
 		 //Seller = jsonObject.getJSONObject("seller");
-		String Sign = getSign( Seller.toString(),"f2a825b110d445f9b7dcc032e2b702f0");
+		String Sign = getSign( Seller.toString(),"5aab6270b7042aef2098b8fbb005097e");
 		//JSONObject jsonObject1 = JSON.parseObject(seller);
 		jsonObject.put("sign", Sign);
 		String s = JSON.toJSONString(jsonObject);
@@ -67,10 +78,10 @@ public class HttpInitServiceUtils {
 			StringBuffer buffer = new StringBuffer();
 
 			// 接报文的地址
-			/*URL uploadServlet = new URL(
-					"http://localhost:8080/kptService");*/
 			URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/kptService");
+					"http://localhost:8080/initService/initialData");
+			/*URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/kptService");*/
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数

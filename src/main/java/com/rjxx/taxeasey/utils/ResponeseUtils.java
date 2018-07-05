@@ -6,6 +6,8 @@ import com.rjxx.taxeasey.service.result.CommDataResult;
 import com.rjxx.taxeasey.service.result.DefaultResult;
 import com.rjxx.utils.XmlJaxbUtils;
 
+import java.util.Map;
+
 /**
  * Created by Administrator on 2017-06-02.
  */
@@ -45,20 +47,21 @@ public class ResponeseUtils {
     }
 
     /**
-     * 公共数据初始化返回信息
-     *
-     * @param xfsh
+     * 结果返回信息
+     * @param returnCode
+     * @param returnMes
+     * @param resultMap
      * @return
      */
-    public static String printCommDataResult(String returnCode,String returnMes, String xfsh,
-                                             String name,String loginName,String passWord) {
+    public static String printCommDataResult(String returnCode,String returnMes,Map resultMap) {
         CommDataResult commDataResult = new CommDataResult();
         CommData CommData = new CommData();
         if(returnCode.equals("0000")){
-            CommData.setIdentifier(xfsh);
-            CommData.setName(name);
-            CommData.setLoginName(loginName);
-            CommData.setPassWord(passWord);
+            CommData.setIdentifier(String.valueOf(resultMap.get("xfsh")));
+            CommData.setName(String.valueOf(resultMap.get("xfmc")));
+            CommData.setLoginName(String.valueOf(resultMap.get("dlyhid")));
+            CommData.setEquipNum(String.valueOf(resultMap.get("skph")));
+            CommData.setPassWord(String.valueOf(resultMap.get("yhmm")));
             commDataResult.setCommData(CommData);
         }
         commDataResult.setReturnCode(returnCode);
@@ -69,20 +72,21 @@ public class ResponeseUtils {
 
     /**
      * 公共数据初始化返回信息
-     *
-     * @param xfsh
+     * @param returnCode
+     * @param returnMes
+     * @param resultMap
      * @return
      */
-    public static String printResultToJson(String returnCode,String returnMes, String xfsh,
-                                             String name,String loginName,String passWord) {
+    public static String printResultToJson(String returnCode, String returnMes, Map resultMap) {
         CommDataResult commDataResult = new CommDataResult();
-        CommData CommData = new CommData();
-        if(returnCode.equals("0000") && null!= loginName && !loginName.equals("")){
-            CommData.setIdentifier(xfsh);
-            CommData.setName(name);
-            CommData.setLoginName(loginName);
-            CommData.setPassWord(passWord);
-            commDataResult.setCommData(CommData);
+        CommData commData = new CommData();
+        if(returnCode.equals("0000") && null!= resultMap.get("yhmm") && !resultMap.get("yhmm").equals("")){
+            commData.setIdentifier(String.valueOf(resultMap.get("xfsh")));
+            commData.setName(String.valueOf(resultMap.get("xfmc")));
+            commData.setLoginName(String.valueOf(resultMap.get("dlyhid")));
+            commData.setPassWord(String.valueOf(resultMap.get("yhmm")));
+            commData.setEquipNum(String.valueOf(resultMap.get("skph")));
+            commDataResult.setCommData(commData);
         }
         commDataResult.setReturnCode(returnCode);
         commDataResult.setReturnMessage(returnMes);

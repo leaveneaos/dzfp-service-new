@@ -24,6 +24,9 @@ public class CommData {
     @XmlElement
     private String PassWord;
 
+    @XmlElement
+    private String equipNum;
+
     public String getIdentifier() {
         return Identifier;
     }
@@ -54,5 +57,13 @@ public class CommData {
 
     public void setPassWord(String passWord) {
         PassWord = passWord;
+    }
+
+    public String getEquipNum() {
+        return equipNum;
+    }
+
+    public void setEquipNum(String equipNum) {
+        equipNum = equipNum;
     }
 }
