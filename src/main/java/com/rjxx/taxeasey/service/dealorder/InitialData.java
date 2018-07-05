@@ -22,6 +22,7 @@ import com.rjxx.taxeasy.service.YhService;
 import com.rjxx.taxeasy.vo.SkpVo;
 import com.rjxx.utils.PasswordUtils;
 import com.rjxx.utils.RJCheckUtil;
+import com.rjxx.utils.dwz.ShortUrlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,7 @@ public class InitialData {
     protected SkpJpaDao skpJpaDao;
     @Autowired
     protected DealCommData dealCommData;
+
 
     private static Logger logger= LoggerFactory.getLogger(InitialData.class);
 
@@ -109,7 +111,7 @@ public class InitialData {
                 List<Map> list = xfService.findByxfshAndSkph(params);
                 if(list.isEmpty()){
                     //若未做过初始化销货方等信息，以sn+skph为开票点代码做初始化操作。
-                    commonData.getSeller().getClient().get(0).setClientNO(sn+skph);
+                    commonData.getSeller().getClient().get(0).setClientNO("RJ"+ShortUrlUtil.shortUrl(sn+skph));
                     Map resultMap = dealCommData.dealCommonData2(gsxx, commonData);
                     Xf xf = (Xf)resultMap.get("Xf");
                     List<SkpVo> skpList = (List)resultMap.get("skpList");
@@ -150,7 +152,7 @@ public class InitialData {
                         clientData.setType("01");
                     }
                     clientData.setIdentifier(xfsh);
-                    clientData.setClientNO(sn+skph);
+                    clientData.setClientNO("RJ"+ShortUrlUtil.shortUrl(sn+skph));
                     clientData.setKpyh(sellerData.getBank());
                     clientData.setKpyhzh(sellerData.getBankAcc());
                     clientData.setKpdh(sellerData.getTelephoneNo());
