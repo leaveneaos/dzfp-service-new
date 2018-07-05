@@ -159,7 +159,7 @@ public class InitialData {
                     clientData.setReviewer(sellerData.getReviewer());
                     clientData.setPayee(sellerData.getPayee());
                     Map resultMap =  dealCommData.updateclientData(gsxx,clientData);
-                    return ResponeseUtils.printResultToJson("0000","销售方及开票点成功！",resultMap);
+                    return ResponeseUtils.printResultToJson("0000","销售方及开票点更新成功！",resultMap);
                 }
             }
         }catch (Exception e){

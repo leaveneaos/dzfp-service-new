@@ -21,39 +21,39 @@ public class HttpInitServiceUtils {
 	public void sendMessage() throws Exception {
 		System.out.println("调用servlet开始=================");
 		String data ="{\n" +
-                "\t\"appId\": \"RJf5d8acdbbbcf\",\n" +
-                "\t\"sign\": \"41c58663a8f55949fc97ce7a4aa079db\",\n" +
-                "\t\"seller\": {\n" +
-                "\t\t\"identifier\": \"500102013333333\",\n" +
-                "\t\t\"name\": \"卷票用户2\",\n" +
-                "\t\t\"address\": \"福州仓山2\",\n" +
-                "\t\t\"telephoneNo\": \"0591-83512183\",\n" +
-                "\t\t\"bank\": \"中国银行\",\n" +
-                "\t\t\"bankAcc\": \"3333333666\",\n" +
-                "\t\t\"ybnsrqssj\": \"201807\",\n" +
-                "\t\t\"ybnsrlx\": \"2\",\n" +
-                "\t\t\"drawer\": \"凯盈2\",\n" +
-                "\t\t\"payee\": \"凯盈收款2\",\n" +
-                "\t\t\"reviewer\": \"凯盈复核2\",\n" +
-                "\t\t\"issueType\": \"04\",\n" +
-                "\t\t\"eticketLim\": \"999999999.99\",\n" +
-                "\t\t\"specialticketLim\": \"999999.99\",\n" +
-                "\t\t\"ordinaryticketLim\": \"999999.99\",\n" +
-                "\t\t\"rollticketLim\": \"999999.99\",\n" +
-                "\t\t\"client\": [{\n" +
-                "\t\t\t\"name\": \"开票通\",\n" +
-                "\t\t\t\"brandCode\": null,\n" +
-                "\t\t\t\"brandName\": null,\n" +
-                "\t\t\t\"deviceSN\": \"0302011821000093\",\n" +
-                "\t\t\t\"devicePSWD\": \"123123\",\n" +
-                "\t\t\t\"deviceKEY\": \"E874EAC5678D3C09438FA916714D88FA252392211AAC08B92D39665AEE079B41\",\n" +
-                "\t\t\t\"taxEquip\": \"1\",\n" +
-                "\t\t\t\"equipNum\": \"499901181300\",\n" +
-                "\t\t\t\"taxDiskPass\": \"88888888\",\n" +
-                "\t\t\t\"certiCipher\": \"00000000\"\n" +
-                "\t\t}]\n" +
-                "\t}\n" +
-                "}";
+				"\t\"appId\": \"RJf5d8acdbbbcf\",\n" +
+				"\t\"sign\": \"7c2aaad98fea78e182e789abfb75f6b9\",\n" +
+				"\t\"seller\": {\n" +
+				"\t\t\"identifier\": \"500102000000385\",\n" +
+				"\t\t\"name\": \"测试企业用户385\",\n" +
+				"\t\t\"address\": \"福建福州\",\n" +
+				"\t\t\"telephoneNo\": \"0591-83512152\",\n" +
+				"\t\t\"bank\": \"中国银行\",\n" +
+				"\t\t\"bankAcc\": \"66666666\",\n" +
+				"\t\t\"ybnsrqssj\": \"201805\",\n" +
+				"\t\t\"ybnsrlx\": \"2\",\n" +
+				"\t\t\"drawer\": \"开票人\",\n" +
+				"\t\t\"payee\": \"收款人\",\n" +
+				"\t\t\"reviewer\": \"复核人\",\n" +
+				"\t\t\"issueType\": \"04\",\n" +
+				"\t\t\"eticketLim\": null,\n" +
+				"\t\t\"specialticketLim\": \"999999.99\",\n" +
+				"\t\t\"ordinaryticketLim\": \"999999.99\",\n" +
+				"\t\t\"rollticketLim\": \"999999.99\",\n" +
+				"\t\t\"client\": [{\n" +
+				"\t\t\t\"name\": \"开票通\",\n" +
+				"\t\t\t\"brandCode\": null,\n" +
+				"\t\t\t\"brandName\": null,\n" +
+				"\t\t\t\"deviceSN\": \"0302011170100002\",\n" +
+				"\t\t\t\"devicePSWD\": \"123456\",\n" +
+				"\t\t\t\"deviceKEY\": \"02F0D811C577DAC21AC85E2571DB2C9E33644A41C3A925347A51A5E36A1EF69C\",\n" +
+				"\t\t\t\"taxEquip\": \"1\",\n" +
+				"\t\t\t\"equipNum\": \"499000105369\",\n" +
+				"\t\t\t\"taxDiskPass\": \"88888888\",\n" +
+				"\t\t\t\"certiCipher\": \"00000000\"\n" +
+				"\t\t}]\n" +
+				"\t}\n" +
+				"}";
 
 		String seller ="{\"appId\":\"RJf5d8acdbbbcf\",\"seller\":{\"identifier\":\"876478787232989\",\"type\":\"01\",\"name\":\"的方式当3\",\"address\":\"fand得到dd\",\"telephoneNo\":\"18738727124\",\"bank\":\"f韩国国会\",\"bankAcc\":\"韩国国会\",\"issueType\":\"01\",\"drawer\":\"的方式当\",\"yidentifier\":\"876478787232988\"},\"sign\":\"0e731036a3bb3dbd1071e9867f77f712\"}";
 

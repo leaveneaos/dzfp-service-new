@@ -60,7 +60,7 @@ public class ResponeseUtils {
             CommData.setIdentifier(String.valueOf(resultMap.get("xfsh")));
             CommData.setName(String.valueOf(resultMap.get("xfmc")));
             CommData.setLoginName(String.valueOf(resultMap.get("dlyhid")));
-            CommData.setSkph(String.valueOf(resultMap.get("skph")));
+            CommData.setEquipNum(String.valueOf(resultMap.get("skph")));
             CommData.setPassWord(String.valueOf(resultMap.get("yhmm")));
             commDataResult.setCommData(CommData);
         }
@@ -79,14 +79,14 @@ public class ResponeseUtils {
      */
     public static String printResultToJson(String returnCode, String returnMes, Map resultMap) {
         CommDataResult commDataResult = new CommDataResult();
-        CommData CommData = new CommData();
+        CommData commData = new CommData();
         if(returnCode.equals("0000") && null!= resultMap.get("yhmm") && !resultMap.get("yhmm").equals("")){
-            CommData.setIdentifier(String.valueOf(resultMap.get("xfsh")));
-            CommData.setName(String.valueOf(resultMap.get("xfmc")));
-            CommData.setLoginName(String.valueOf(resultMap.get("dlyhid")));
-            CommData.setPassWord(String.valueOf(resultMap.get("yhmm")));
-            CommData.setSkph(String.valueOf(resultMap.get("skph")));
-            commDataResult.setCommData(CommData);
+            commData.setIdentifier(String.valueOf(resultMap.get("xfsh")));
+            commData.setName(String.valueOf(resultMap.get("xfmc")));
+            commData.setLoginName(String.valueOf(resultMap.get("dlyhid")));
+            commData.setPassWord(String.valueOf(resultMap.get("yhmm")));
+            commData.setEquipNum(String.valueOf(resultMap.get("skph")));
+            commDataResult.setCommData(commData);
         }
         commDataResult.setReturnCode(returnCode);
         commDataResult.setReturnMessage(returnMes);

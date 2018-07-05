@@ -50,6 +50,9 @@ public class DealCommData {
     private CszbService cszbService;
 
     @Autowired
+    private CsbService csbService;
+
+    @Autowired
     private PpJpaDao ppJpaDao;
 
     @Autowired
@@ -417,6 +420,23 @@ public class DealCommData {
                     xf.setLrry(yh.getId());
                     xf.setXgry(yh.getId());
                     xfService.saveNew(xf);
+                    if (null !=issueType || !issueType.equals("")) {
+                        Cszb cszb = new Cszb();
+                        Map map = new HashMap();
+                        map.put("csm","kpfs");
+                        Csb tmp = csbService.findOneByParams(map);
+                        cszb.setCsid(tmp.getId());
+                        cszb.setGsdm(xf.getGsdm());
+                        cszb.setXfid(xf.getId());
+                        cszb.setYxbz("1");
+                        cszb.setLrry(xf.getLrry());
+                        cszb.setXgry(xf.getLrry());
+                        cszb.setKpdid(skpid.compareTo(0)>0?skpid:null);
+                        cszb.setLrsj(TimeUtil.getSysDate());
+                        cszb.setXgsj(TimeUtil.getSysDate());
+                        cszb.setCsz(issueType);
+                        cszbService.save(cszb);
+                    }
                     resultMap.put("dlyhid", yh.getDlyhid());
                     resultMap.put("yhmm", "12345678");
                     resultMap.put("xfsh", xf.getXfsh());
@@ -481,8 +501,10 @@ public class DealCommData {
                 }
                 if (issueType.equals("03") || issueType.equals("04")) {
                     Cszb cszb = new Cszb();
-                    Cszb tmp = cszbService.getSpbmbbh(xf.getGsdm(), null, null, "kpfs");
-                    cszb.setCsid(tmp.getCsid());
+                    Map map = new HashMap();
+                    map.put("csm","kpfs");
+                    Csb tmp = csbService.findOneByParams(map);
+                    cszb.setCsid(tmp.getId());
                     cszb.setGsdm(xf.getGsdm());
                     cszb.setXfid(xf.getId());
                     cszb.setYxbz("1");
