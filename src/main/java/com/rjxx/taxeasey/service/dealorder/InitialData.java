@@ -416,16 +416,36 @@ public class InitialData {
                                     skptmp.setYhzh(skpvo.getYhzh());
                                 }
                                 if(null !=skpvo.getSbcs() && !skpvo.getSbcs().equals("")){
+                                    //百旺盘
+                                    if(skpvo.getSbcs().equals("1")){
+                                        //税控盘密码
+                                        if(null !=skpvo.getSkpmm() && !skpvo.getSkpmm().equals("")){
+                                            skptmp.setSkpmm(skpvo.getSkpmm());
+                                        }
+                                        //证书密码
+                                        if(null !=skpvo.getZsmm() && !skpvo.getZsmm().equals("")){
+                                            skptmp.setZsmm(skpvo.getZsmm());
+                                        }
+                                    }
+                                    //航信盘
+                                    if(skpvo.getSbcs().equals("2")){
+                                        //税控盘密码
+                                        if(null !=skpvo.getSkpmm() && !skpvo.getSkpmm().equals("")){
+                                            skptmp.setSkpmm(skpvo.getSkpmm());
+                                        }else {
+                                            skptmp.setSkpmm(null);
+                                        }
+                                        //证书密码
+                                        if(null !=skpvo.getZsmm() && !skpvo.getZsmm().equals("")){
+                                            skptmp.setZsmm(skpvo.getZsmm());
+                                        }else {
+                                            skptmp.setZsmm(null);
+                                        }
+                                    }
                                     skptmp.setSbcs(skpvo.getSbcs());
                                 }
                                 if(null !=skpvo.getSkph() && !skpvo.getSkph().equals("")){
                                     skptmp.setSkph(skpvo.getSkph());
-                                }
-                                if(null !=skpvo.getSkpmm() && !skpvo.getSkpmm().equals("")){
-                                    skptmp.setSkpmm(skpvo.getSkpmm());
-                                }
-                                if(null !=skpvo.getZsmm() && !skpvo.getZsmm().equals("")){
-                                    skptmp.setZsmm(skpvo.getZsmm());
                                 }
                                 if(null !=skpvo.getDevicesn() && !skpvo.getDevicesn().equals("")){
                                     skptmp.setDevicesn(skpvo.getDevicesn());
