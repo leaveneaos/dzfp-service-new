@@ -138,7 +138,7 @@ public class InitialData {
                     boolean isupdateClient = false; //是否更新开票点
                     for (int i=0;i<list.size();i++){
                         Map result = list.get(i);
-                        if(result.get("skph").equals(skph)){
+                        if(null != result.get("skph") && result.get("skph").equals(skph)){
                             isupdateClient =true;
                             break;
                         }

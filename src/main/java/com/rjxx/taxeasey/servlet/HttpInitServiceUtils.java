@@ -48,7 +48,7 @@ public class HttpInitServiceUtils {
 				"\t\t\t\"devicePSWD\": \"123456\",\n" +
 				"\t\t\t\"deviceKEY\": \"02F0D811C577DAC21AC85E2571DB2C9E33644A41C3A925347A51A5E36A1EF69C\",\n" +
 				"\t\t\t\"taxEquip\": \"1\",\n" +
-				"\t\t\t\"equipNum\": \"499000105369\",\n" +
+				"\t\t\t\"equipNum\": \"499000105370\",\n" +
 				"\t\t\t\"taxDiskPass\": \"88888888\",\n" +
 				"\t\t\t\"certiCipher\": \"00000000\"\n" +
 				"\t\t}]\n" +
