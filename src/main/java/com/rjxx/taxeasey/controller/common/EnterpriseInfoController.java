@@ -3,6 +3,7 @@ package com.rjxx.taxeasey.controller.common;
 import com.rjxx.taxeasy.dao.GsxxJpaDao;
 import com.rjxx.taxeasy.domains.Gsxx;
 import com.rjxx.utils.shouqianba.PayUtil;
+import com.rjxx.utils.weixin.HttpClientUtil;
 import com.rjxx.utils.yjapi.QCCUtils;
 import com.rjxx.utils.yjapi.Result;
 import com.rjxx.utils.yjapi.ResultUtil;
@@ -11,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,14 +28,12 @@ public class EnterpriseInfoController {
     private QCCUtils qccUtils;
     @Autowired
     private GsxxJpaDao gsxxJpaDao;
-    @Autowired
-    private HttpServletRequest request;
 
     private Logger logger = LoggerFactory.getLogger(EnterpriseInfoController.class);
 
     @RequestMapping(value = "/{gsdm}/find", method = RequestMethod.POST)
-    public Result getMsg(@PathVariable String gsdm, @RequestParam String name){
-        boolean validation = validation(gsdm, name);
+    public Result getMsg(@PathVariable String gsdm, @RequestParam String name,@RequestHeader String Sign){
+        boolean validation = validation(gsdm, name,Sign);
         if(!validation){
             return ResultUtil.error("验签失败");
         }
@@ -46,8 +44,8 @@ public class EnterpriseInfoController {
     }
 
     @RequestMapping(value = "/{gsdm}/list", method = RequestMethod.POST)
-    public Result getName(@PathVariable String gsdm,@RequestParam String name){
-        boolean validation = validation(gsdm, name);
+    public Result getName(@PathVariable String gsdm,@RequestParam String name,@RequestHeader String Sign){
+        boolean validation = validation(gsdm, name,Sign);
         if(!validation){
             return ResultUtil.error("验签失败");
         }
@@ -57,9 +55,8 @@ public class EnterpriseInfoController {
         return ResultUtil.success(map);
     }
 
-    private boolean validation(String gsdm,String name){
+    private boolean validation(String gsdm,String name,String authorization){
         logger.info("【key word】={}",name);
-        String authorization = request.getHeader("Sign");
         logger.info("【in sign】={}",authorization);
         Gsxx oneByGsdm = gsxxJpaDao.findOneByGsdm(gsdm);
         String secretKey = oneByGsdm.getSecretKey();
@@ -72,17 +69,13 @@ public class EnterpriseInfoController {
         return true;
     }
 
-//    public static void main(String[] args) {
-//        String url = "http://localhost:8080/enterpriseInfo/two/list";
-//        Map map = new HashMap();
-//        map.put("name", "容津");
-//        String signContent = "name=" + "容津" + "&key=" + "two";
-//        String sign = PayUtil.getSign(signContent);
-//        String s = HttpClientUtil.doPostSign(url, map, sign);
-//        JSONObject jsonObject = JSON.parseObject(s);
-//        JSONObject data = jsonObject.getJSONObject("data");
-//        String companyList = data.getString("companyList");
-//        JSONArray objects = JSON.parseArray(companyList);
-//        System.out.println(JSON.toJSONString(objects));
-//    }
+    public static void main(String[] args) {
+        String url = "http://test.datarj.com/webService/enterpriseInfo/two/list";
+        Map map = new HashMap();
+        map.put("name", "容津");
+        String signContent = "name=" + "容津" + "&key=" + "two";
+        String sign = PayUtil.getSign(signContent);
+        String s = HttpClientUtil.doPostSign(url, map, sign);
+        System.out.println(s);
+    }
 }
