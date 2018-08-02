@@ -317,16 +317,17 @@ public class InvoiceService {
        			   DefaultResult defaultResult = new DefaultResult();
        			   defaultResult = XmlJaxbUtils.convertXmlStrToObject(DefaultResult.class, result);
                     //如果fsyj为1表示发送邮件
-                    if(fsyj.equals("1") && defaultResult.getReturnCode().equals("0000")){
+                    //20180802注释af邮件通知。
+                    /*if(fsyj.equals("1") && defaultResult.getReturnCode().equals("0000")){
                     	GetYjnr yjnrF = new GetYjnr();
-                        /*String path = this.getClass().getClassLoader().getResource("/af.jpg")
-                                .getPath();*/
+                        *//*String path = this.getClass().getClassLoader().getResource("/af.jpg")
+                                .getPath();*//*
                         String path =  InvoiceService.class.getClassLoader().getResource("/template/af.jpg").getPath();
                         String ewm ="data:image/jpeg;base64,"+getImageStr(URLDecoder.decode(path, "UTF-8"));
                     	String yjnr = yjnrF.getAfEmail(ewm, tqlj);
                     	sendalEmail.sendEmail("999999", iurb.getGsdm(), iurb.getGfemail(), "爱芙趣发票提取",
                     			"999999", yjnr, "电子发票","0");
-                    }
+                    }*/
                     /*************************************************/
                     //向爱芙趣返回存库情况
                     //String resXml = invoiceRtnXml(iurb);
