@@ -176,13 +176,63 @@ public class DealOrder04 implements IDealOrder{
                         result04.setReturnCode("9999");
                         result04.setReturnMessage(response.getReturnMessage());
                     }
+                }else if("04".equals(cszb.getCsz())){
+                    skService.SkBoxKP(kpls2.getKplsh());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲成功！");
+                }else if("05".equals(cszb.getCsz())){
+                    skService.skEkyunKP(kpls2.getKplsh());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲成功！");
                 }
             } else {
-                kpls2.setFpztdm("14");
-                kplsService.save(kpls2);
-                skService.callService(kpls2.getKplsh());
-                result04.setReturnCode("0000");
-                result04.setReturnMessage("红冲请求已接受！");
+                if(kpfs.equals("01")){
+                    kpls2.setFpztdm("14");
+                    kplsService.save(kpls2);
+                    skService.callService(kpls2.getKplsh().intValue());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲请求已接受！");
+//                    HcTask hcTask= new HcTask();
+//                    hcTask.setKplsh(kpls2.getKplsh().intValue());
+//                    hcTask.setKpfs("01");
+//                    if (taskExecutor == null) {
+//                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+//                    }
+//                    taskExecutor.execute(hcTask);
+                }else if(kpfs.equals("03")){
+                    skService.SkServerKP(kpls2.getKplsh().intValue());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲请求已接受！");
+//                    HcTask hcTask= new HcTask();
+//                    hcTask.setKplsh(kpls2.getKplsh().intValue());
+//                    hcTask.setKpfs("03");
+//                    if (taskExecutor == null) {
+//                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+//                    }
+//                    taskExecutor.execute(hcTask);
+                }else if("04".equals(cszb.getCsz())){
+                    skService.SkBoxKP(kpls2.getKplsh());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲请求已接受！");
+//                    HcTask hcTask= new HcTask();
+//                    hcTask.setKplsh(kpls2.getKplsh().intValue());
+//                    hcTask.setKpfs("04");
+//                    if (taskExecutor == null) {
+//                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+//                    }
+//                    taskExecutor.execute(hcTask);
+                }else if("05".equals(cszb.getCsz())){
+                    skService.skEkyunKP(kpls2.getKplsh());
+                    result04.setReturnCode("0000");
+                    result04.setReturnMessage("红冲请求已接受！");
+//                    HcTask hcTask= new HcTask();
+//                    hcTask.setKplsh(kpls2.getKplsh().intValue());
+//                    hcTask.setKpfs("05");
+//                    if (taskExecutor == null) {
+//                        taskExecutor = ApplicationContextUtils.getBean(ThreadPoolTaskExecutor.class);
+//                    }
+//                    taskExecutor.execute(hcTask);
+                }
             }
             return XmlJaxbUtils.toXml(result04);
         }catch (Exception e){

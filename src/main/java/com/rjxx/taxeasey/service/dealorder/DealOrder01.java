@@ -232,6 +232,24 @@ public class DealOrder01 implements IDealOrder {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
+                    }else if(cszb2.getCsz().equals("04")){//凯盈开票
+                        List resultList = new ArrayList();
+                        try {
+                            resultList= fpclservice.zjkp(jyxxsqList, "04");// 凯盈盒子
+                            result = responseUtil.lpResponse(null);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }else if(cszb2.getCsz().equals("05")){//盟度开票
+                        List resultList = new ArrayList();
+                        try {
+                            resultList= fpclservice.zjkp(jyxxsqList, "05");// 盟度开票
+                            result = responseUtil.lpResponse(null);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     // 不是直连开票
