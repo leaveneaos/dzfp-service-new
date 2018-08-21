@@ -367,7 +367,7 @@ public class UploadInvoiceService {
             // 购方税号
             String buyerIdentifier = (String) buyer.get("Identifier");
             if (buyerIdentifier != null) {
-                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18)) {
+                if (!(buyerIdentifier.length() == 15 || buyerIdentifier.length() == 18|| buyerIdentifier.length() == 20 || buyerIdentifier.length() == 9)) {
                     return ResponseUtils.printFailure("购方税号只能是15或者18位");
                 }
             }
