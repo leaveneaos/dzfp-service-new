@@ -236,7 +236,7 @@ public class DealOrder01 implements IDealOrder {
                         List resultList = new ArrayList();
                         try {
                             resultList= fpclservice.zjkp(jyxxsqList, "04");// 凯盈盒子
-                            result = responseUtil.lpResponse(null);
+                            result = responseUtil.lpResponse(resultList);
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
