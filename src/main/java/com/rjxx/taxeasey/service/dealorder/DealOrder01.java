@@ -235,8 +235,14 @@ public class DealOrder01 implements IDealOrder {
                     }else if(cszb2.getCsz().equals("04")){//凯盈开票
                         List resultList = new ArrayList();
                         try {
-                            resultList= fpclservice.zjkp(jyxxsqList, "04");// 凯盈盒子
-                            result = responseUtil.lpResponse(resultList);
+                            Jyxxsq jyxxsq1 = jyxxsqList.get(0);
+                            if(jyxxsq1.getFpzldm().equals("12")){
+                                fpclservice.zjkp(jyxxsqList, "04");// 凯盈盒子
+                                result = responseUtil.lpResponse(null);
+                            }else{
+                                resultList= fpclservice.zjkp(jyxxsqList, "04");// 凯盈盒子
+                                result = responseUtil.lpResponse(resultList);
+                            }
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

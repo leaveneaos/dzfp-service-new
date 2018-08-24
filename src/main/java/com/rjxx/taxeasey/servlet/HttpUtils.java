@@ -71,7 +71,7 @@ public class HttpUtils {
 
 		String xml01 = "<Request>\n" +
 				" \t<ClientNO>ceshi5074</ClientNO>\n" +
-				" \t<SerialNumber>062523500801797110552</SerialNumber>\n" +
+				" \t<SerialNumber>062523500801797110558</SerialNumber>\n" +
 				" \t<InvType>02</InvType>\n" +
 				" \t<Spbmbbh>13.0</Spbmbbh>\n" +
 				" \t<Drawer>谭凯</Drawer>\n" +
@@ -90,7 +90,7 @@ public class HttpUtils {
 				" \t<OrderSize count=\"1\">\n" +
 				" \t\t<Order>\n" +
 				" \t\t\t<OrderMain>\n" +
-				" \t\t\t\t<OrderNo>062523500801797110552</OrderNo>\n" +
+				" \t\t\t\t<OrderNo>062523500801797110558</OrderNo>\n" +
 				" \t\t\t\t<InvoiceList>0</InvoiceList>\n" +
 				" \t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
 				" \t\t\t\t<InvoiceSfdy>0</InvoiceSfdy>\n" +
