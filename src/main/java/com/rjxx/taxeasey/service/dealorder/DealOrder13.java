@@ -87,7 +87,7 @@ public class DealOrder13 implements IDealOrder {
                     if(!kpfs.equals("04")){
                         result13.setReturnMessage(response.getReturnMessage());
                     }else {
-                        result13.setReturnMessage("开票盒子不在线！");
+                        result13.setReturnMessage("开票盒子不在线或请求超时！");
                     }
                 }
                 result13.setDqfpdm(response.getFpdm());
