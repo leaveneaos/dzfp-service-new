@@ -84,7 +84,11 @@ public class DealOrder13 implements IDealOrder {
                     result13.setReturnCode("0000");
                 } else {
                     result13.setReturnCode("9999");
-                    result13.setReturnMessage(response.getReturnMessage());
+                    if(!kpfs.equals("04")){
+                        result13.setReturnMessage(response.getReturnMessage());
+                    }else {
+                        result13.setReturnMessage("开票盒子不在线！");
+                    }
                 }
                 result13.setDqfpdm(response.getFpdm());
                 result13.setDqfphm(response.getFphm());
