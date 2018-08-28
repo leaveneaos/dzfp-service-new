@@ -70,9 +70,9 @@ public class HttpUtils {
 
 
 		String xml01 = "<Request>\n" +
-				" \t<ClientNO>family_test01</ClientNO>\n" +
-				" \t<SerialNumber>062523500801797110550</SerialNumber>\n" +
-				" \t<InvType>12</InvType>\n" +
+				" \t<ClientNO>ceshi5074</ClientNO>\n" +
+				" \t<SerialNumber>062523500801797110558</SerialNumber>\n" +
+				" \t<InvType>02</InvType>\n" +
 				" \t<Spbmbbh>13.0</Spbmbbh>\n" +
 				" \t<Drawer>谭凯</Drawer>\n" +
 				" \t<Payee>张冲</Payee>\n" +
@@ -80,8 +80,8 @@ public class HttpUtils {
 				"     <DataSource>5</DataSource>\n" +
 				"     <OpenId>2088002500367799</OpenId>\n" +
 				" \t<Seller>\n" +
-				" \t\t<Identifier>500102010003643</Identifier>\n" +
-				" \t\t<Name>上海百旺测试3643</Name>\n" +
+				" \t\t<Identifier>500102010003697</Identifier>\n" +
+				" \t\t<Name>升级版测试用户3697</Name>\n" +
 				" \t\t<Address>苏州工业园区金鸡湖大道1355号国际科技园四期A1202</Address>\n" +
 				" \t\t<TelephoneNo>0512-69171090</TelephoneNo>\n" +
 				" \t\t<Bank>中国民生银行苏州分行</Bank>\n" +
@@ -90,7 +90,7 @@ public class HttpUtils {
 				" \t<OrderSize count=\"1\">\n" +
 				" \t\t<Order>\n" +
 				" \t\t\t<OrderMain>\n" +
-				" \t\t\t\t<OrderNo>062523500801797110550</OrderNo>\n" +
+				" \t\t\t\t<OrderNo>062523500801797110558</OrderNo>\n" +
 				" \t\t\t\t<InvoiceList>0</InvoiceList>\n" +
 				" \t\t\t\t<InvoiceSplit>1</InvoiceSplit>\n" +
 				" \t\t\t\t<InvoiceSfdy>0</InvoiceSfdy>\n" +
@@ -279,10 +279,10 @@ public class HttpUtils {
 				" \t\t</Order>\n" +
 				" \t</OrderSize>\n" +
 				" </Request>";
-		String Secret = getSign(xml01,"eb27684df1279b68d29e578b421daa58");
+		String Secret = getSign(xml01,"5aab6270b7042aef2098b8fbb005097e");
 		Map param = new HashMap();
 		param.put("methodName", "UploadOrderData");
-		param.put("AppKey","RJd63c8d11434f");
+		param.put("AppKey","RJf5d8acdbbbcf");
 		param.put("Secret", Secret);
 		param.put("Operation","01");
 		param.put("InvoiceData",xml01);
@@ -295,10 +295,10 @@ public class HttpUtils {
 			StringBuffer buffer = new StringBuffer();
 
 			// 接报文的地址
-			URL uploadServlet = new URL(
-					"http://localhost:8080/service");
 			/*URL uploadServlet = new URL(
-					"http://test.datarj.com/webService/service");*/
+					"http://localhost:8080/service");*/
+			URL uploadServlet = new URL(
+					"http://test.datarj.com/webService/service");
 			HttpURLConnection servletConnection = (HttpURLConnection) uploadServlet
 					.openConnection();
 			// 设置连接参数

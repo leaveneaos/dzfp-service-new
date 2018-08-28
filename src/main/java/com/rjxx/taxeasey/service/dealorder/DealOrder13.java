@@ -65,9 +65,20 @@ public class DealOrder13 implements IDealOrder {
         int kpdid = skp.getId();
         Cszb cszb = cszbService.getSpbmbbh(gsdm, xfid, kpdid, "kpfs");
         String kpfs = cszb.getCsz();
-        if ("01".equals(kpfs)) {
-            //文本
+        if ("01".equals(kpfs) || kpfs.equals("04")) {
+            //文本或盒子接口
             try {
+                if(kpfs.equals("04")){
+                    if (fpzldm.equals("01")) {
+                        fpzldm = "004";
+                    } else if (fpzldm.equals("02")) {
+                        fpzldm = "007";
+                    } else if (fpzldm.equals("12")) {
+                        fpzldm = "026" ;
+                    } else if (fpzldm.equals("03")) {
+                        fpzldm= "025";
+                    }
+                }
                 InvoiceResponse response = skService.getCodeAndNo(kpdid, fpzldm);
                 if ("0000".equals(response.getReturnCode())) {
                     result13.setReturnCode("0000");
@@ -83,7 +94,7 @@ public class DealOrder13 implements IDealOrder {
                 result13.setReturnMessage(e.getMessage());
                 return XmlJaxbUtils.toXml(result13);
             }
-        } else if ("02".equals("kpfs")) {
+        } else if (kpfs.equals("02")) {
             if (fpzldm.equals("01")) {
                 fpzldm = "0";
             } else if (fpzldm.equals("02")) {
